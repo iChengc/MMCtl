@@ -1,5 +1,7 @@
 package com.cc.wechatmanager;
 
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -59,13 +61,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000);
         //Rpc.asRpcServer();
+        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        startActivity(intent);
     }
 
     private Command genCommand(String key) {
         Command c = new Command();
         c.setKey(key);
-        List<String> args = new ArrayList<>();
+        List<Object> args = new ArrayList<>();
         args.add("https://pan.baidu.com");
+        args.add(1000);
         c.setArgs(args);
         return c;
     }

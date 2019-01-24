@@ -3,7 +3,11 @@ package com.cc.core;
 import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.app.Application;
+import android.content.Intent;
 
+import com.cc.core.actions.Actions;
+import com.cc.core.actions.accessibility.WechatAccessibilityService;
+import com.cc.core.actions.shell.impl.EnableAccessibilityAction;
 import com.cc.core.data.db.DaoMaster;
 import com.cc.core.data.db.DaoSession;
 import com.cc.core.log.KLog;
@@ -20,6 +24,8 @@ public class MyApplication extends Application {
         super.onCreate();
         init(this);
         setupDatabase();
+        KLog.e("Enable accessibility result:" + Actions.execute(EnableAccessibilityAction.class));
+
     }
 
     public static void init(Application application) {

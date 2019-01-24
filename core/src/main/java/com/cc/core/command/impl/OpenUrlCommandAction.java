@@ -3,6 +3,7 @@ package com.cc.core.command.impl;
 import com.cc.core.actions.Action;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.actions.Actions;
+import com.cc.core.actions.accessibility.impl.BackAction;
 import com.cc.core.utils.Utils;
 import com.cc.core.wechat.invoke.OpenUrlAction;
 
@@ -14,7 +15,8 @@ public class OpenUrlCommandAction implements Action {
             return result;
         }
         if (args.length > 1) {
-            Utils.sleep((Long) args[1]);
+            Utils.sleep((Integer) args[1]);
+            Actions.execute(BackAction.class);
         }
         return ActionResult.successResult();
     }

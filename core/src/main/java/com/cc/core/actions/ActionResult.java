@@ -38,4 +38,13 @@ public class ActionResult {
     public boolean isSuccess() {
          return success;
     }
+
+    @Override
+    public String toString() {
+        return "ActionResult{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
