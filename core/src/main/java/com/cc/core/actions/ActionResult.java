@@ -15,9 +15,14 @@ public class ActionResult {
     }
 
     public static ActionResult successResult() {
+        return successResult(null);
+    }
+
+    public static ActionResult successResult(Object data) {
         ActionResult result = new ActionResult();
         result.success = true;
         result.message = "ok";
+        result.data = data;
         return result;
     }
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Core</string>
+    <string name="accessibility_des">控制微信</string>
 </resources>

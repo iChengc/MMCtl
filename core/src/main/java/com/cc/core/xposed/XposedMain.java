@@ -19,7 +19,7 @@ public class XposedMain implements IXposedHookLoadPackage {
         if(lpparam.packageName.equals(Wechat.WECHAT_PACKAGE_NAME)){
             XposedBridge.log(TAG + ">>process: "+lpparam.processName);
             if(lpparam.processName.equals(Wechat.WECHAT_PACKAGE_NAME)){
-                Wechat.start(lpparam.classLoader);
+                Wechat.start(lpparam);
             }
 
         }

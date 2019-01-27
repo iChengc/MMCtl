@@ -5,40 +5,41 @@ import android.text.TextUtils;
 import com.cc.core.Constant;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.actions.Actions;
-import com.cc.core.log.KLog;
+import com.cc.core.data.db.DbService;
 import com.cc.core.utils.StrUtils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.nio.charset.Charset;
 
 public class Rpc {
 
     private static RpcServer server;
 
-    public static ActionResult call(RpcArgs rpcArgs) {
-        return call(StrUtils.toJson(rpcArgs));
+    private static int getPort(RpcArgs rpcArgs) {
+        if (rpcArgs != null && rpcArgs.getType().equals(RpcArgs.CallType.EXECUTE_DB)) {
+            return Constant.DBHANDLER_PORT;
+        }
+
+        return Constant.SOCKET_PORT;
     }
 
-    public static ActionResult call(String message) {
+    public static ActionResult call(RpcArgs rpcArgs) {
+        return call(StrUtils.toJson(rpcArgs), getPort(rpcArgs));
+    }
+
+    public static ActionResult call(String message, int port) {
 
         DataOutputStream out = null;
         BufferedReader in = null;
         Socket client = null;
         try {
 
-            SocketAddress sa = new InetSocketAddress(InetAddress.getLoopbackAddress().getHostAddress(), Constant.SOCKET_PORT);
+            SocketAddress sa = new InetSocketAddress(InetAddress.getLoopbackAddress().getHostAddress(), port);
             client = new Socket(/*address, Constant.SOCKET_PORT*/);
             client.setSoTimeout(10000);
             client.setTcpNoDelay(true);
@@ -100,24 +101,30 @@ public class Rpc {
         }
     }
 
-    public static ActionResult invoke(RpcArgs msg) {
+    static ActionResult invoke(RpcArgs msg) {
         switch (msg.getType()) {
             case RpcArgs.CallType.EXECUTE_ACTION:
                 return Actions.receivedAction(msg.getData());
+            case RpcArgs.CallType.EXECUTE_DB:
+                return DbService.getInstance().deliverDbOperation(msg.getData());
             default:
                 return null;
         }
     }
-    public static ActionResult invoke(String message) {
+    static ActionResult invoke(String message) {
         RpcArgs msg = RpcArgs.from(message);
         return invoke(msg);
     }
 
     public static void asRpcServer() {
+        asRpcServer(Constant.SOCKET_PORT);
+    }
+
+    public static void asRpcServer(int port) {
         if (server != null) {
             server.stop();
         }
         server = new RpcServer();
-        server.start();
+        server.start(port);
     }
 }

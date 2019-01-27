@@ -3,7 +3,7 @@ package com.cc.core.wechat.invoke;
 import com.cc.core.actions.Action;
 import com.cc.core.actions.ActionResult;
 
-public class XposedSendMessageAction implements Action {
+public class SendMessageAction implements Action {
     @Override
     public ActionResult execute(Object... args) {
         return null;
@@ -11,6 +11,6 @@ public class XposedSendMessageAction implements Action {
 
     @Override
     public String key() {
-        return null;
+        return "wechat:sendMessage";
     }
 }

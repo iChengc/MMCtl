@@ -38,4 +38,12 @@ public class StrUtils {
 
         return sb.toString();
     }
+
+    public static CharSequence stringNotNull(CharSequence s) {
+        if (s == null) {
+            return "";
+        }
+
+        return s;
+    }
 }

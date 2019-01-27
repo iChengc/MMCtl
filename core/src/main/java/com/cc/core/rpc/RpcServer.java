@@ -7,17 +7,10 @@ import com.cc.core.actions.ActionResult;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
@@ -34,15 +27,15 @@ public class RpcServer {
     public RpcServer() {
         executor = Executors.newFixedThreadPool(5);
     }
-    public void start() {
+    public void start(final int port) {
         executor.submit(new Runnable() {
             @Override
             public void run() {
-                startInternal();
+                startInternal(port);
             }
         });
     }
-    public void startInternal() {
+    public void startInternal(int port) {
         do {
             try {
                 if (server != null) {
@@ -50,7 +43,7 @@ public class RpcServer {
                 }
                 KLog.e("RpcServer", ">>>> Start rpc server");
                 InetAddress address = InetAddress.getLoopbackAddress();
-                server = new ServerSocket(Constant.SOCKET_PORT, 50, address);
+                server = new ServerSocket(port, 50, address);
                 while (!disconnect) {
                     Socket client = server.accept();
                     executor.submit(responseClient(client));

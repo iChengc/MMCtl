@@ -1,7 +1,9 @@
 package com.cc.core.actions.shell.impl;
 
+import android.content.ComponentName;
 import android.provider.Settings;
 
+import com.cc.core.MyApplication;
 import com.cc.core.actions.Action;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.actions.Actions;
@@ -15,7 +17,7 @@ public class EnableAccessibilityAction implements Action {
             return result;
         }
 
-        result = Actions.execute(SystemSettingsAction.class, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, WechatAccessibilityService.ACCESSIBILITY_SERVICE_NAME);
+        result = Actions.execute(SystemSettingsAction.class, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, getAccessibilityKey());
         if (!result.isSuccess()) {
             return result;
         }
@@ -25,8 +27,13 @@ public class EnableAccessibilityAction implements Action {
         return result;
     }
 
+    private String getAccessibilityKey() {
+        ComponentName cn = new ComponentName(MyApplication.application(), WechatAccessibilityService.class);
+        return cn.flattenToString();
+    }
+
     @Override
     public String key() {
-        return "enable_accessibility";
+        return "enableAccessibility";
     }
 }

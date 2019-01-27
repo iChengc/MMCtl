@@ -78,6 +78,7 @@ public class RpcArgs implements Parcelable {
 
     public static class CallType {
         public static final String EXECUTE_ACTION = "command";
+        public static final String EXECUTE_DB = "db";
     }
 
     public static RpcArgs newMessage(Actions.RawAction action) {

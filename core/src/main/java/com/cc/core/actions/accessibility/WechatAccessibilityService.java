@@ -10,7 +10,7 @@ public class WechatAccessibilityService extends AccessibilityService {
     private static final String TAG = WechatAccessibilityService.class.getSimpleName();
     private static WechatAccessibilityService mInstance;
 
-    public static final String ACCESSIBILITY_SERVICE_NAME = "com.cc.wechatmanager/com.cc.core.actions.accessibility.WechatAccessibilityService";
+    //public static final String ACCESSIBILITY_SERVICE_NAME = "com.cc.core/com.cc.core.actions.accessibility.WechatAccessibilityService";
     public WechatAccessibilityService() {
         mInstance = this;
     }
@@ -21,7 +21,9 @@ public class WechatAccessibilityService extends AccessibilityService {
 
     @Override
     public void onCreate() {
+        mInstance = this;
         super.onCreate();
+        KLog.d(TAG, "onServiceConnected");
     }
 
     @Override
@@ -32,6 +34,7 @@ public class WechatAccessibilityService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        mInstance = this;
         AccessibilityUtil.notifyAccessibilityEvent(event);
     }
 

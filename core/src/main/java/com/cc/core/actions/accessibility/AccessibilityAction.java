@@ -3,11 +3,17 @@ package com.cc.core.actions.accessibility;
 import android.accessibilityservice.AccessibilityService;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.ListView;
 
 import com.cc.core.actions.Action;
+import com.cc.core.actions.Actions;
+import com.cc.core.command.impl.OpenWechatAction;
 import com.cc.core.log.KLog;
+import com.cc.core.utils.Utils;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.wechat.Wechat.Resources;
 
@@ -20,15 +26,6 @@ import java.util.concurrent.Callable;
 
 public abstract class AccessibilityAction implements Action {
     private static final String TAG = AccessibilityAction.class.getSimpleName();
-
-    // 控件的类型
-    private static final String VIEW_TYPE_TEXT_VIEW = "android.widget.TextView";
-    private static final String VIEW_TYPE_EDIT_TEXT = "android.widget.EditText";
-    private static final String VIEW_TYPE_IMAGE_VIEW = "android.widget.ImageView";
-    private static final String VIEW_RELATIVE_LAYOUT = "android.widget.RelativeLayout";
-    private static final String VIEW_TYPE_FRAME_LAYOUT = "android.widget.FrameLayout";
-    private static final String VIEW_TYPE_LINEAR_LAYOUT = "android.widget.LinearLayout";
-    private static final String VIEW_TYPE_CHECKBOX = "android.widget.CheckBox";
 
     private static final String GOOGLE_PINYIN_PACKAGE_NAME = "com.google.android.inputmethod.pinyin";
     private static final String GOOGLE_PINYIN_IME_ID = GOOGLE_PINYIN_PACKAGE_NAME + "/.PinyinIME";
@@ -49,20 +46,10 @@ public abstract class AccessibilityAction implements Action {
     private final static int TAB_INDEX_DISCOVERY = 2;
     private final static int TAB_INDEX_ME = 3;
 
-    private StringBuilder mTrace = new StringBuilder();
-    private AccessibilityService mAccessibilityService;
     private boolean isDismissingSystemHangDialog;
 
     public AccessibilityAction() {
-        this(WechatAccessibilityService.getInstance());
-    }
 
-    public AccessibilityAction(AccessibilityService accessibilityService) {
-        mAccessibilityService = accessibilityService;
-    }
-
-    protected AccessibilityService getAccessibilityService() {
-        return mAccessibilityService;
     }
 
     protected boolean performClickByRidWithRetry(String id) {
@@ -78,41 +65,58 @@ public abstract class AccessibilityAction implements Action {
         return result;
     }
 
+    protected boolean performClick(String id) {
+        AccessibilityNodeInfo node = getNodeById(id, null);
+        if (node == null) {
+            return false;
+        }
+        return performClick(node);
+    }
+
+    protected boolean performClickListItem(String id, int index) {
+        AccessibilityNodeInfo node = getNodeById(id, null);
+        if (node == null) {
+            return false;
+        }
+        if (isView(node, ListView.class) || isView(node, RecyclerView.class)) {
+            if (node.getChildCount() > index) {
+                node = node.getChild(index);
+            }
+        }
+        return performClick(node);
+    }
+
     protected boolean performClick(AccessibilityNodeInfo item) {
-        return click(item) && sleep(1000);
+        return click(item) && Utils.sleep(1000);
+    }
+
+    protected boolean performLongClick(String id) {
+        AccessibilityNodeInfo node = getNodeById(id, null);
+        if (node == null) {
+            return false;
+        }
+        return performLongClick(node);
     }
 
     protected boolean performLongClick(AccessibilityNodeInfo item) {
-        KLog.d(this.getClass().getSimpleName(), ">>>>> perform long click start <<<<<");
         AccessibilityNodeInfo clickItem = getClickableParent(item);
         if (clickItem != null) {
             boolean result = clickItem.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
-            sleep(1000);
+            Utils.sleep(1000);
             return result;
         } else {
             return false;
         }
     }
 
-//    /**
-//     * Perform a long click operation at the specify position in the screen
-//     *
-//     * @param x the X coordinate in the screen
-//     * @param y the Y coordinate in the screen
-//     * @return
-//     */
-//    protected boolean performLongClick(int x, int y) {
-//        return new InputSwipeShell(x, y, x + 1, y + 1, 2000).run();
-//    }
-
     protected boolean performDoubleClick(AccessibilityNodeInfo item) {
         KLog.d(this.getClass().getSimpleName(), ">>>>> perform double click start <<<<<");
         AccessibilityNodeInfo clickItem = getClickableParent(item);
         if (clickItem != null) {
             boolean result = clickItem.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            sleep(150);
+            Utils.sleep(100);
             result &= clickItem.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            sleep(1000);
+            Utils.sleep(1000);
             return result;
         } else {
             return false;
@@ -120,31 +124,24 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean goToHomePage() {
-        return backToHomePage() && clickMainPageTab(TAB_INDEX_HOMEPAGE) && clickMainPageTab(TAB_INDEX_HOMEPAGE) && sleep(200);
+        return backToHomePage() && clickMainPageTab(TAB_INDEX_HOMEPAGE) && Utils.sleep(100);
     }
 
     protected boolean goToContacts() {
-        return backToHomePage() && clickMainPageTab(TAB_INDEX_CONTACTS) && clickMainPageTab(TAB_INDEX_CONTACTS) && sleep(200);
+        return backToHomePage() && clickMainPageTab(TAB_INDEX_CONTACTS) && Utils.sleep(100);
     }
 
     protected boolean goToMe() {
-        return backToHomePage() && clickMainPageTab(TAB_INDEX_ME) && clickMainPageTab(TAB_INDEX_ME) && sleep(200);
+        return backToHomePage() && clickMainPageTab(TAB_INDEX_ME) && Utils.sleep(100);
     }
 
     protected boolean goToDiscovery() {
-        return backToHomePage() && clickMainPageTab(TAB_INDEX_DISCOVERY) && clickMainPageTab(TAB_INDEX_DISCOVERY) && sleep(200);
+        return backToHomePage() && clickMainPageTab(TAB_INDEX_DISCOVERY) && Utils.sleep(100);
     }
 
     protected void startWeChat() {
-        Wechat.startApp(mAccessibilityService.getApplicationContext());
-    }
-
-    protected boolean sleep(long time) {
-        if (time > 0) {
-            SystemClock.sleep(time);
-        }
-
-        return true;
+        //Wechat.startApp(WechatAccessibilityService.getInstance().getApplicationContext());
+        Actions.execute(OpenWechatAction.class);
     }
 
     private boolean clickMainPageTab(int tabIndex) {
@@ -169,7 +166,7 @@ public abstract class AccessibilityAction implements Action {
         }
     }
 
-    protected boolean backFromDialogCancel() {
+    protected boolean cancleDialog() {
         // 普通窗口
         AccessibilityNodeInfo backItem = getNodeByText(Wechat.Resources.NODE_DIALOG_CONFIRM_CANCEL, null);
         if (backItem != null) {
@@ -191,36 +188,9 @@ public abstract class AccessibilityAction implements Action {
         }
     }
 
-//    /**
-//     * 检测好友是否已经满
-//     *
-//     * @return
-//     */
-//    protected boolean validateFriendsFull() {
-//        // 检测好友是否已经满
-//        AccessibilityNodeInfo dialogContentNode = getNodeById(Resources.NODE_DIALOG_CONTENT, null, 3 * 1000);
-//        if (dialogContentNode != null) {
-//            if (dialogContentNode.getText() != null
-//                    && Resources.NODE_DIALOG_CONTENT_FRIEND_FULL.equals(dialogContentNode.getText().toString())) {
-//                TaskTracker.fail("friends are full!");
-//
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    protected boolean performSwipe(int x1, int y1, int x2, int y2) {
-//        return new InputSwipeShell(x1, y1, x2, y2).run();
-//    }
-
-    protected boolean isCheckBox(AccessibilityNodeInfo node) {
-        return isSpecifiedView(node, VIEW_TYPE_CHECKBOX);
-    }
-
-    private boolean isSpecifiedView(AccessibilityNodeInfo node, String type) {
+    private boolean isView(AccessibilityNodeInfo node, Class<? extends View> type) {
         boolean result = false;
-        if (node != null && node.getClassName().toString().equals(type)) {
+        if (node != null && node.getClassName().toString().equals(type.getName())) {
             result = true;
         }
 
@@ -232,19 +202,14 @@ public abstract class AccessibilityAction implements Action {
             return null;
         }
 
-        if (item.isClickable()) {
-            return item;
-        }
-
-        AccessibilityNodeInfo parent = item.getParent();
-        if (parent != null) {
-            if (parent.isClickable()) {
-                return parent;
+        do {
+            if (item.isClickable()) {
+                break;
             }
-            return getClickableParent(parent);
-        } else {
-            return null;
-        }
+            item = item.getParent();
+        } while (item != null);
+
+        return item;
     }
 
     // region New logic
@@ -337,7 +302,7 @@ public abstract class AccessibilityAction implements Action {
     /***
      * 在返回true之前不断retry， callable必须返回boolean
      */
-    protected boolean tryUntillSuccess(Callable callable, int timeout) {
+    protected boolean tryUntilSuccess(Callable callable, int timeout) {
         boolean result;
         long startTime = System.currentTimeMillis();
         try {
@@ -366,7 +331,7 @@ public abstract class AccessibilityAction implements Action {
                 SystemClock.sleep(FIND_NODE_INTERVAL);
             }
         } catch (Exception e) {
-           KLog.i(TAG, "Error when tryUntilSuccess", e);
+            KLog.i(TAG, "Error when tryUntilSuccess", e);
 
             result = false;
         }
@@ -387,7 +352,7 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean click(final AccessibilityNodeInfo nodeInfo, int timeout) {
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 AccessibilityNodeInfo clickItem = getClickableParent(nodeInfo);
@@ -408,7 +373,7 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean longClick(final AccessibilityNodeInfo nodeInfo, int timeout) {
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 AccessibilityNodeInfo clickItem = getClickableParent(nodeInfo);
@@ -427,7 +392,7 @@ public abstract class AccessibilityAction implements Action {
             return false;
         }
 
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return nodeInfo.isScrollable() && nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD) && AccessibilityUtil.waitScroll();
@@ -440,12 +405,22 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean scrollBack(final AccessibilityNodeInfo nodeInfo, int timeout) {
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return nodeInfo.isScrollable() && nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD) && AccessibilityUtil.waitScroll();
             }
         }, timeout);
+    }
+
+    protected boolean inputText(String id, String text) {
+        AccessibilityNodeInfo node = getNodeById(id, null);
+        if (node == null) {
+            return false;
+        }
+
+        inputText(node, text);
+        return true;
     }
 
     protected boolean inputText(AccessibilityNodeInfo nodeInfo, String text) {
@@ -460,7 +435,7 @@ public abstract class AccessibilityAction implements Action {
         final Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text);
 
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
@@ -477,7 +452,7 @@ public abstract class AccessibilityAction implements Action {
             return false;
         }
 
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return nodeInfo.isCheckable() && (nodeInfo.isChecked() || nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK));
@@ -494,7 +469,7 @@ public abstract class AccessibilityAction implements Action {
             return false;
         }
 
-        return tryUntillSuccess(new Callable() {
+        return tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return nodeInfo.isCheckable() && (!nodeInfo.isChecked() || nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK));
@@ -503,18 +478,22 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean systemBack() {
-        return mAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+        return accessibilityService().performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+    }
+
+    protected AccessibilityService accessibilityService() {
+        return WechatAccessibilityService.getInstance();
     }
 
     // 用于屏幕键盘弹出时的后退
     protected boolean doubleSystemBack() {
-        return mAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
-                && sleep(150)
-                && mAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+        return accessibilityService().performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
+                && Utils.sleep(150)
+                && accessibilityService().performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
     }
 
     protected boolean systemHome() {
-        return mAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
+        return accessibilityService().performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
     }
 
 //    protected boolean sendEnterKey() {
@@ -553,6 +532,14 @@ public abstract class AccessibilityAction implements Action {
         return true;
     }
 
+    protected boolean waitForLoading() {
+        int times = 0;
+        while (getNodeById(Resources.LOADING_DIALOG, null) == null || ++times <= 10) {
+            Utils.sleep(1000);
+        }
+        return times < 10;
+    }
+
     protected boolean waitForLoading(String loadingNodeId) {
         return waitForLoading(loadingNodeId, WAIT_ACTION_DEFAULT_TIMEOUT, true);
     }
@@ -562,7 +549,7 @@ public abstract class AccessibilityAction implements Action {
     }
 
     protected boolean waitForLoading(final String loadingNodeId, int timeout, boolean needBackSystemHome) {
-        boolean result = tryUntillSuccess(new Callable() {
+        boolean result = tryUntilSuccess(new Callable() {
             @Override
             public Object call() throws Exception {
                 return getNodeById(loadingNodeId, null, FIND_LOADING_NODE_TIMEOUT) == null;
@@ -597,6 +584,10 @@ public abstract class AccessibilityAction implements Action {
         AccessibilityUtil.waitWindowStateChange(Resources.WEBVIEW_ACTIVITY_CLASS_NAME, 5000);
         // 微信一般等待10秒就 timeout. 我们这里等待 15s 如果, 如果还不行就返回 true
         return waitForLoading(Resources.NODE_WEBVIEW_PROGRESSBAR, 15000, false);
+    }
+
+    protected void waitForWindowChange(String windowName) {
+        AccessibilityUtil.waitWindowStateChange(windowName, 5000);
     }
 
     protected Boolean dismissSystemPermissionDialog() {
@@ -749,10 +740,10 @@ public abstract class AccessibilityAction implements Action {
 
     protected boolean backToHomePage() {
         int triedTimes = 0;
-        while (triedTimes < 50) {
+        while (triedTimes < 10) {
             triedTimes++;
 
-            AccessibilityNodeInfo rootNode = mAccessibilityService.getRootInActiveWindow();
+            AccessibilityNodeInfo rootNode = accessibilityService().getRootInActiveWindow();
             String rootNodePackageName = "";
             if (rootNode == null) {
                 KLog.i(TAG, "Cannot find root node when trying to go to wechat main page");
@@ -787,27 +778,29 @@ public abstract class AccessibilityAction implements Action {
 
                 startWeChat();
 
-                AccessibilityUtil.waitWindowStateChange(Resources.LAUNCHER_UI_CLASS, 10 * 1000);
+                AccessibilityUtil.waitWindowStateChange(Resources.LAUNCHER_UI_CLASS, 15 * 1000);
 
                 continue;
             }
 
-            if (getNodeByIdWithText(Resources.HomePage.NODE_TAB_TEXT, Resources.NODE_TAB_TEXT_ME, null, 100) != null) {
+            KLog.e("------>>>>>");
+            if (getNodeByIdWithText(Resources.HomePage.NODE_TAB_TEXT, Resources.HomePage.TAB_WECHAT_TEXT, null, 100) != null) {
 //                if (getNodeById(ConversationConstant.NODE_CONVERSATION_PLUS_BUTTON, null, 0) == null) {
 //                    return true;
 //                }
 
-                if (!systemBack()) {
+               /* if (!systemBack()) {
                     return false;
                 }
 
-                return tryUntillSuccess(new Callable() {
+                return tryUntilSuccess(new Callable() {
                     @Override
                     public Object call() throws Exception {
                         return null;
 //                        return getNodeById(ConversationConstant.NODE_CONVERSATION_PLUS_BUTTON, null, 0) == null;
                     }
-                }, FIND_NODE_DEFAULT_TIMEOUT);
+                }, FIND_NODE_DEFAULT_TIMEOUT);*/
+                return true;
             }
 
             Boolean wechatStandardDialogResult = dismissWechatStandardDialog();
@@ -829,7 +822,7 @@ public abstract class AccessibilityAction implements Action {
             }
 
             if (!systemBack() || !AccessibilityUtil.waitWindowStateChange()) {
-                rootNode = mAccessibilityService.getRootInActiveWindow();
+                rootNode = accessibilityService().getRootInActiveWindow();
                 if (rootNode == null) {
                     return false;
                 }
@@ -912,7 +905,7 @@ public abstract class AccessibilityAction implements Action {
             return rootNode;
         }
 
-        return this.mAccessibilityService.getRootInActiveWindow();
+        return this.accessibilityService().getRootInActiveWindow();
     }
 
     private List<AccessibilityNodeInfo> getNodes(AccessibilityNodeInfo rootNode, NodesFinder nodesFinder, int timeout) {

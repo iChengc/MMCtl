@@ -13,10 +13,14 @@ public class ActionNames {
 		"com.cc.core.actions.accessibility.impl.AddFriendAction",
 		"com.cc.core.actions.accessibility.impl.BackAction",
 		"com.cc.core.actions.accessibility.impl.ClickLoginAction",
+		"com.cc.core.actions.accessibility.impl.CreateGroupAction",
 		"com.cc.core.command.impl.OpenUrlCommandAction",
 		"com.cc.core.command.impl.OpenWechatAction",
+		"com.cc.core.wechat.invoke.AddFriendAction",
+		"com.cc.core.wechat.invoke.GetContactsAction",
+		"com.cc.core.wechat.invoke.GetUserInfoAction",
 		"com.cc.core.wechat.invoke.OpenUrlAction",
-		"com.cc.core.wechat.invoke.XposedAddFriendAction",
-		"com.cc.core.wechat.invoke.XposedSendMessageAction",
+		"com.cc.core.wechat.invoke.SendMessageAction",
+		"com.cc.core.wechat.invoke.StartActivityAction",
 	};
 }

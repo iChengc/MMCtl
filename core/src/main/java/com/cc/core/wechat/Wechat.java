@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cc.core.MyApplication;
+import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
 import com.cc.core.xposed.BaseXposedHook;
 
@@ -12,14 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
+
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class Wechat {
     public static final String WECHAT_PACKAGE_NAME = "com.tencent.mm";
     private static List<BaseXposedHook> hooks = new ArrayList<>();
-    private void Wechat(){}
+
+    public static String LoginWechatId;
+
+    private void Wechat() {
+    }
+
     static {
         loadHooks();
     }
+
+    public static ClassLoader WECHAT_CLASSLOADER;
+    public static String DB_PATH;
+    public static String DB_PASSWORD;
 
     private static void loadHooks() {
         try {
@@ -31,14 +46,34 @@ public class Wechat {
         }
     }
 
-    public static void start(ClassLoader classLoader) {
+    public static void start(XC_LoadPackage.LoadPackageParam lpparam) {
+        if (MyApplication.application() != null) {
+            KLog.e(">>>>已经Hook微信，无需再hook");
+            return;
+        }
         XposedBridge.log(">>开始hook微信主进程");
+        WECHAT_CLASSLOADER = lpparam.classLoader;
         MyApplication.init(AndroidAppHelper.currentApplication());
         for (BaseXposedHook h : hooks) {
-            h.hook(classLoader);
+            h.hook(lpparam.classLoader);
         }
         Rpc.asRpcServer();
         XposedBridge.log("---->>结束hook微信主进程");
+    }
+
+    public static void initEnvironment(String packageName) {
+        try {
+            Context context = MyApplication.application();
+            if (context == null) {
+                context = (Context) callMethod(callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread", new Object[0]), "getSystemContext", new Object[0]);
+            }
+            String versionName = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+
+            HookMethodFunctions.init(versionName);
+            Resources.init(versionName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void addHook(String className) throws Exception {
@@ -57,10 +92,118 @@ public class Wechat {
 
     public static class HookMethodFunctions {
 
-        public static String AEDHLPClass = "";
-        public static String AEDHLPGetAccessibilityClickCountFunc = "";
-        public static String NormsgSourceImplClass = "";
-        public static String NormsgSourceImplGetEnabledAccessibilityServicesFunc = "";
+        public static String KernelClass ="";
+        public static String LOGGER ="";
+        public static String UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
+        public static String UploadCrashLogFunc = "fV";
+        public static String UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
+        public static String UploadCrashWXRecoveryUploadServicePushDataFunc = "pushData";
+        public static String UploadCrashLogEnumClass = "com.tencent.mm.plugin.report.service.h";
+        public static String UploadCrashLogEnumFunc = "a";
+        public static String UploadCrashCrashUploaderServiceClass = "com.tencent.mm.crash.CrashUploaderService";
+        public static String UploadCrashCrashUploaderServiceOnHandleIntentFunc = "onHandleIntent";
+        public static String UploadCrashTraceRouteClass = "com.tencent.mm.plugin.traceroute.b.a.f";
+        public static String UploadCrashTraceRouteFunc = "a";
+        public static String UploadCrashStackReportUploaderClass = "com.tencent.mm.platformtools.ae";
+        public static String UploadCrashStackReportUploaderFunc = "a";
+        public static String SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
+        public static String SaveAnrWatchDogSetHandlerFunc = "a";
+        public static String  SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
+        public static String MMCrashReporterClass = "com.tencent.mm.app.k";
+        public static String WechatStorageClass = "com.tencent.mm.storage.ac";
+        public static String WechatStorageCrashPath = "dFK";
+        public static void init(String version) {
+            Sqlite.init(version);
+            Account.init(version);switch (version) {
+                case "7.0.0":
+                    break;
+                case "6.7.2":
+                    KernelClass = "com.tencent.mm.kernel.g";
+                    LOGGER = "com.tencent.mm.sdk.platformtools.y";
+                    UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
+                    UploadCrashLogFunc = "fV";
+                    UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
+                    UploadCrashWXRecoveryUploadServicePushDataFunc = "pushData";
+                    UploadCrashLogEnumClass = "com.tencent.mm.plugin.report.service.h";
+                    UploadCrashLogEnumFunc = "a";
+                    UploadCrashCrashUploaderServiceClass = "com.tencent.mm.crash.CrashUploaderService";
+                    UploadCrashCrashUploaderServiceOnHandleIntentFunc = "onHandleIntent";
+                    UploadCrashTraceRouteClass = "com.tencent.mm.plugin.traceroute.b.a.f";
+                    UploadCrashTraceRouteFunc = "a";
+                    UploadCrashStackReportUploaderClass = "com.tencent.mm.platformtools.ae";
+                    UploadCrashStackReportUploaderFunc = "a";
+                    SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
+                    SaveAnrWatchDogSetHandlerFunc = "a";
+                    SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
+                    MMCrashReporterClass = "com.tencent.mm.app.k";
+                    WechatStorageClass = "com.tencent.mm.storage.ac";
+                    WechatStorageCrashPath = "dFK";
+                    break;
+            }
+        }
+
+        public static class Account {
+            public static String Account = "";
+            public static String GetContactManagerFunc = "";
+            public static String GetGroupManagerFunc = "";
+            public static String GetConfigManagerFunc = "";
+            public static String GetMsgInfoManagerFunc = "";
+            public static String GetConversationManagerFunc = "";
+            public static String ConfigStorageGetFunc = "";
+
+            public static String RegionCodeDecoderClass = "";
+            public static String RegionCodeDecoderEncodeFunc = "";
+
+            public static int UserInfoId_WechatId = 0x0002;
+            public static int UserInfoId_Alias = 0x002A;
+            public static int UserInfoId_Nickname = 0x0004;
+            public static int UserInfoId_Phone = 0x0006;
+            public static int UserInfoId_Sex = 0x3002;
+            public static int UserInfoId_Signature = 0x3003;
+            public static int UserInfoId_CountryCode = 0x3024;
+            public static int UserInfoId_ProvinceCode = 0x3025;
+            public static int UserInfoId_CityCode = 0x3026;
+
+            public static void init(String version) {
+                switch (version) {
+                    case "7.0.0":
+                        RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
+                        break;
+                    case "6.7.2":
+                        Account = "com.tencent.mm.model.c";
+                        GetContactManagerFunc = "EO";
+                        GetGroupManagerFunc = "EX";
+                        GetConfigManagerFunc = "CQ";
+                        GetMsgInfoManagerFunc = "EQ";
+                        GetConversationManagerFunc = "ET";
+                        ConfigStorageGetFunc = "get";
+                        RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
+                        RegionCodeDecoderEncodeFunc = "an";
+                        break;
+                }
+            }
+        }
+
+        public static class Sqlite {
+            public static String GetDBHelerFunc = "";
+            public static String DBRawQueryFunc = "";
+            public static String DBExecSqlFunc = "";
+            public static String DbHelperField = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "7.0.0":
+                        DBRawQueryFunc = "rawQuery";
+                        break;
+                    case "6.7.2":
+                        GetDBHelerFunc = "Dg";
+                        DBRawQueryFunc = "rawQuery";
+                        DBExecSqlFunc = "gf";
+                        DbHelperField = "dBo";
+                        break;
+                }
+            }
+        }
     }
 
     public static class Resources {
@@ -69,8 +212,6 @@ public class Wechat {
         public final static String WEBVIEW_ACTIVITY_CLASS_NAME = "com.tencent.mm.plugin.webview.ui.tools.WebViewUI";
         public static String PROGRESS_DIALOG_CLASS_NAME = "";
 
-        // 首页tab文字-我
-        public static final String NODE_TAB_TEXT_ME = "我";
 
         // 系统权限弹框节点
         public final static String NODE_SYSTEM_PERMISSION_MESSAGE = "com.android.packageinstaller:id/permission_message";
@@ -78,25 +219,8 @@ public class Wechat {
         public final static String NODE_SYSTEM_PERMISSION_ALLOW = "com.android.packageinstaller:id/permission_allow_button";
         public final static String NODE_SYSTEM_PERMISSION_DENY = "com.android.packageinstaller:id/permission_deny_button";
 
-
-        // 对话框内容
-        public final static String NODE_DIALOG_CONTENT_FORBIDDEN = "操作太频繁，请稍后再试。";
-        // 对话框内容
-        public final static String NODE_DIALOG_CONTENT_FRIEND_FULL = "你的朋友数量已达到上限，可删除部分朋友后重新添加。";
-        // 邀请内容
-        public final static String NODE_DIALOG_CONFIRM_INVITE = "邀请";
-        // 发送邀请确认
-        public final static String NODE_DIALOG_CONFIRM_SEND = "发送";
-        // 邀请内容
-        public final static String NODE_DIALOG_CONFIRM_PUBLISH = "发布";
-        // 邀请内容
-        public final static String NODE_DIALOG_CONFIRM_CLEAR = "清空";
-        // 确定
-        public final static String NODE_DIALOG_CONFIRM_CONFIRM = "确定";
         // 取消
         public final static String NODE_DIALOG_CONFIRM_CANCEL = "取消";
-        // 去验证
-        public final static String NODE_DIALOG_CONFIRM_VALIDATION = "去验证";
         // android手机anr等待按钮
         public final static String NODE_DIALOG_ANR_WAITING = "android:id/button2";
 
@@ -106,36 +230,10 @@ public class Wechat {
 
         // 对话框内容
         public final static String NODE_DIALOG_CONTENT_CANCEL_INSTALL = "是否取消安装？";
-        public final static String NODE_DIALOG_CONTENT_CERTIFICATION = "你需要实名验证后才能接受邀请，可在“我”->“钱包”中绑定银行卡进行验证。";
         public final static String NODE_DIALOG_CONTENT_QUIT_MALL = "你要关闭购物页面?";
         public final static String NODE_DIALOG_CONTENT_QUIT_TRANSACTION = "是否要放弃本次交易？";// 对话框内容
 
-        public final static String NODE_DIALOG_CONTENT_INVITATION_ERROR = "接受群邀请被禁止";
-        public final static String NODE_DIALOG_CONTENT_SCAN_JOIN_GROUP_ERROR = "扫码进群被禁止";
-
-        public final static String NODE_DIALOG_TITLE_LOGIN_FAIL = "登录失败";
-
-        // 完成
-        public final static String NODE_GO_BUTTON_TEXT_FINISH = "完成";
-
-        public static class HomePage {
-            // common
-            // 主页tab的节点
-            public static String NODE_TAB = "";
-            // 主页tab里面的文字节点
-            public static String NODE_TAB_TEXT = "";
-
-            public static void  init(String version) {
-                switch (version) {
-                    case "6.7.2":
-                        NODE_TAB = "com.tencent.mm:id/chn";
-                        NODE_TAB_TEXT = "com.tencent.mm:id/chp";
-                        break;
-                }
-            }
-        }
-
-        public static class ChatPage {}
+        public static String LOADING_DIALOG = "";
 
         // 搜索窗口的返回节点
         public static String NODE_SEARCH_BACK = "";
@@ -169,6 +267,7 @@ public class Wechat {
         public static void init(String version) {
             switch (version) {
                 case "6.7.2":
+                    LOADING_DIALOG = "com.tencent.mm:id/a06";
                     NODE_SEARCH_BACK = "com.tencent.mm:id/ja";
                     NODE_OTHER_BACK = "com.tencent.mm:id/j7";
                     NODE_LOADING_BACK = "com.tencent.mm:id/a05";
@@ -188,6 +287,102 @@ public class Wechat {
                     break;
             }
             HomePage.init(version);
+            Search.init(version);
+            ChatRoom.init(version);
+            ContactInfo.init(version);
+            SayHiUI.init(version);
+        }
+
+
+        public static class HomePage {
+
+            // 首页tab文字-我
+            public static final String TAB_WECHAT_TEXT = "微信";
+
+            // 主页tab的节点
+            public static String NODE_TAB = "";
+            // 主页tab里面的文字节点
+            public static String NODE_TAB_TEXT = "";
+            public static String PLUS_BTN = "";
+            public static String POP_PLUS_ITEM = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        NODE_TAB = "com.tencent.mm:id/chn";
+                        NODE_TAB_TEXT = "com.tencent.mm:id/chp";
+                        PLUS_BTN = "com.tencent.mm:id/hp";
+                        POP_PLUS_ITEM = "com.tencent.mm:id/ci";
+                        break;
+                }
+            }
+        }
+
+        public static class ChatRoom {
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                }
+            }
+        }
+
+        public static class Search {
+            public static String ADD_FRIEND_SEARCH_INPUT = "";
+            public static String ADD_FRIEND_SEARCH_MAIN_INPUT = "";
+
+            public static String FTS_ADD_FRIEND_UI = "";
+            public static String FTS_ADD_FRIEND_LIST = "";
+            public static String FTS_ADD_FRIEND_SEARCH_INPUT = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        FTS_ADD_FRIEND_UI = "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI";
+                        ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/jd";
+                        ADD_FRIEND_SEARCH_MAIN_INPUT = "com.tencent.mm:id/bhl";
+                        FTS_ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/jd";
+                        FTS_ADD_FRIEND_LIST = "com.tencent.mm:id/bh9";
+                        break;
+                }
+            }
+        }
+
+        public static class ContactInfo {
+            public static String CONTACT_INFO_UI = "";
+            public static String ADD_FRIEND_BTN = "";
+            public static String SELECT_CONTACT_UI = "";
+            public static String SELECT_CONTACT_INPUT = "";
+            public static String SELECT_CONTACT_LIST = "";
+            public static String SELECT_CONTACT_CONFIRM_BTN = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        SELECT_CONTACT_UI = "com.tencent.mm.ui.contact.SelectContactUI";
+                        CONTACT_INFO_UI = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";
+
+                        ADD_FRIEND_BTN = "com.tencent.mm:id/arl";
+                        SELECT_CONTACT_INPUT = "com.tencent.mm:id/cmy";
+                        SELECT_CONTACT_LIST = "com.tencent.mm:id/h8";
+                        SELECT_CONTACT_CONFIRM_BTN = "com.tencent.mm:id/iv";
+                        break;
+                }
+            }
+        }
+
+        public static class SayHiUI {
+            public static String SAY_HI_UI = "";
+            public static String SEND_BTN = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        SAY_HI_UI = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";
+                        SEND_BTN = "com.tencent.mm:id/iv";
+                        break;
+                }
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ public class KLog {
     /**
      * The GLOBAL_TAG of the Application
      */
-    private static final String GLOBAL_TAG = "MiguVideo";
+    private static final String GLOBAL_TAG = "MMCtrl";
 
     /**
      * Whether to enable the log

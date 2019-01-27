@@ -56,33 +56,51 @@ public class AvoidRiskHooks extends BaseXposedHook {
         hookMethod("android.app.ApplicationPackageManager", classLoader, "getInstalledPackages", int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                List<PackageInfo> packageInfos = (List<PackageInfo>) param.getResult();
-                for (PackageInfo packageInfo : packageInfos.toArray(new PackageInfo[0])) {
-                    if (riskPackages.contains(packageInfo.packageName.toLowerCase())) {
-                        packageInfos.remove(packageInfo);
+                if (!param.hasThrowable() && param.getResult() != null) {
+                    List<PackageInfo> packageInfos = (List<PackageInfo>) param.getResult();
+                    for (PackageInfo packageInfo : packageInfos.toArray(new PackageInfo[0])) {
+                        if (riskPackages.contains(packageInfo.packageName.toLowerCase())) {
+                            packageInfos.remove(packageInfo);
+                        }
                     }
+
+                    param.setResult(packageInfos);
                 }
             }
         });
         hookMethod("android.app.ApplicationPackageManager", classLoader, "getPreferredPackages", int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                List<PackageInfo> packageInfos = (List<PackageInfo>) param.getResult();
-                for (PackageInfo packageInfo : packageInfos.toArray(new PackageInfo[0])) {
-                    if (riskPackages.contains(packageInfo.packageName.toLowerCase())) {
-                        packageInfos.remove(packageInfo);
+                if (!param.hasThrowable() && param.getResult() != null) {
+                    List<PackageInfo> packageInfos = (List<PackageInfo>) param.getResult();
+                    for (PackageInfo packageInfo : packageInfos.toArray(new PackageInfo[0])) {
+                        if (riskPackages.contains(packageInfo.packageName.toLowerCase())) {
+                            packageInfos.remove(packageInfo);
+                        }
                     }
+
+                    param.setResult(packageInfos);
                 }
             }
         });
         hookMethod("android.app.ApplicationPackageManager", classLoader, "getInstalledApplications", int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                List<ApplicationInfo> packageInfos = (List<ApplicationInfo>) param.getResult();
+                /*List<ApplicationInfo> packageInfos = (List<ApplicationInfo>) param.getResult();
                 for (PackageInfo packageInfo : packageInfos.toArray(new PackageInfo[0])) {
                     if (riskPackages.contains(packageInfo.packageName.toLowerCase())) {
                         packageInfos.remove(packageInfo);
                     }
+                }*/
+                if (!param.hasThrowable() && param.getResult() != null) {
+                    List<ApplicationInfo> applicationInfos = (List<ApplicationInfo>) param.getResult();
+                    for (ApplicationInfo applicationInfo : applicationInfos.toArray(new ApplicationInfo[0])) {
+                        if (riskPackages.contains(applicationInfo.packageName.toLowerCase())) {
+                            applicationInfos.remove(applicationInfo);
+                        }
+                    }
+
+                    param.setResult(applicationInfos);
                 }
             }
         });
