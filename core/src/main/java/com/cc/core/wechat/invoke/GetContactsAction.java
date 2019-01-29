@@ -10,6 +10,8 @@ import com.cc.core.wechat.Wechat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+
 public class GetContactsAction implements Action {
     private static final String QUERY_CONTACT_SQL = "SELECT rowid, username, alias, conRemark, nickname, verifyFlag, type " +
             "FROM rcontact WHERE type & 1 != 0 AND type & 8 = 0 AND type & 32 = 0 AND (verifyFlag & 8 = 0 AND username NOT LIKE '%@%') ORDER BY rowid";
@@ -25,6 +27,7 @@ public class GetContactsAction implements Action {
                     continue;
                 }
 
+                callMethod(HookUtils.getContactManager(), Wechat.HookMethodFunctions.Account.GetContactInfoFunc, wechatId);
                 wechatIds.add(wechatId);
             }
         }

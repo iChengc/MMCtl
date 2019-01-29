@@ -151,6 +151,8 @@ public class Wechat {
             public static String GetConversationManagerFunc = "";
             public static String ConfigStorageGetFunc = "";
 
+            public static String GetContactInfoFunc = "";
+
             public static String RegionCodeDecoderClass = "";
             public static String RegionCodeDecoderEncodeFunc = "";
 
@@ -179,6 +181,7 @@ public class Wechat {
                         ConfigStorageGetFunc = "get";
                         RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
                         RegionCodeDecoderEncodeFunc = "an";
+                        GetContactInfoFunc = "ZQ";
                         break;
                 }
             }

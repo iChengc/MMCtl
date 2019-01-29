@@ -8,4 +8,7 @@ public class Fridend {
     // 微信号
     private String alias;
     private String nickname;
+    private String remark;
+    private String avatar;
+    private String phone;
 }
