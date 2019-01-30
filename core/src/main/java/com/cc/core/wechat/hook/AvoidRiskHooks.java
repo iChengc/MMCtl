@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.VersionedPackage;
 import android.os.Build;
 
-import com.cc.core.MyApplication;
+import com.cc.core.ApplicationContext;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.util.ArrayList;
@@ -32,15 +32,15 @@ public class AvoidRiskHooks extends BaseXposedHook {
         riskPackages.add("eu.chainfire.supersu");
         riskPackages.add("com.joeykrim.rootcheck");
         riskPackages.add("de.robv.android.xposed.installer");
-        riskPackages.add(MyApplication.PACKAGE_NAME);
+        riskPackages.add(ApplicationContext.PACKAGE_NAME);
 
         classPrefixHiddenList = new ArrayList<>();
         classPrefixHiddenList.add("de.robv.android.xposed");
-        classPrefixHiddenList.add(MyApplication.PACKAGE_NAME);
+        classPrefixHiddenList.add(ApplicationContext.PACKAGE_NAME);
 
         threadPrefixHiddenList = new ArrayList<>();
         classPrefixHiddenList.add("de.robv.android.xposed");
-        threadPrefixHiddenList.add(MyApplication.PACKAGE_NAME);
+        threadPrefixHiddenList.add(ApplicationContext.PACKAGE_NAME);
 
         libHiddenFiles = new ArrayList<>();
         libHiddenFiles.add("/data/dalvik-cache/arm/data@app@com.cc.wechatmanager-0@base.apk@classes.dex");

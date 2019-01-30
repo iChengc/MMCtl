@@ -13,11 +13,11 @@ public class ScreenshotAction implements Action {
         try {
             String savePath = FileUtil.getExternalCacheDir() + "/" + System.currentTimeMillis() + ".jpg";
             ShellUtils.runShell(true, ShellCommands.genCmd(ShellCommands.SCREENSHOT_CMD, savePath));
-            ActionResult result = ActionResult.successResult();
-            result.data = savePath;
+            ActionResult result = ActionResult.Companion.successResult();
+            result.setData(savePath);
             return result;
         } catch (Exception e) {
-            return ActionResult.failedResult(e);
+            return ActionResult.Companion.failedResult(e);
         }
     }
 

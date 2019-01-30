@@ -8,7 +8,7 @@ public class ClearCacheAction implements Action {
     @Override
     public ActionResult execute(Object... args) {
         FileUtil.clearCache();
-        return ActionResult.successResult();
+        return ActionResult.Companion.successResult();
     }
 
     @Override

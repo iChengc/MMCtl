@@ -4,7 +4,7 @@ import android.app.AndroidAppHelper;
 import android.content.Context;
 import android.content.Intent;
 
-import com.cc.core.MyApplication;
+import com.cc.core.ApplicationContext;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
 import com.cc.core.xposed.BaseXposedHook;
@@ -47,13 +47,13 @@ public class Wechat {
     }
 
     public static void start(XC_LoadPackage.LoadPackageParam lpparam) {
-        if (MyApplication.application() != null) {
+        if (ApplicationContext.application() != null) {
             KLog.e(">>>>已经Hook微信，无需再hook");
             return;
         }
         XposedBridge.log(">>开始hook微信主进程");
         WECHAT_CLASSLOADER = lpparam.classLoader;
-        MyApplication.init(AndroidAppHelper.currentApplication());
+        ApplicationContext.init(AndroidAppHelper.currentApplication());
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
         }
@@ -63,7 +63,7 @@ public class Wechat {
 
     public static void initEnvironment(String packageName) {
         try {
-            Context context = MyApplication.application();
+            Context context = ApplicationContext.application();
             if (context == null) {
                 context = (Context) callMethod(callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread", new Object[0]), "getSystemContext", new Object[0]);
             }
@@ -79,6 +79,16 @@ public class Wechat {
     private static void addHook(String className) throws Exception {
         Class hook = Class.forName(className);
         hooks.add((BaseXposedHook) hook.newInstance());
+    }
+
+    public static <T extends BaseXposedHook> BaseXposedHook lookup(Class<T> clazz) {
+        for (BaseXposedHook h : hooks) {
+            if (h.getClass() == clazz) {
+                return h;
+            }
+        }
+
+        return null;
     }
 
     public static void startApp(Context context) {

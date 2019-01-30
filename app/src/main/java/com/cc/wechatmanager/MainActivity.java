@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Messenger.sendCommand(genCommand("wechat:UnhookXLog"), new Callback() {
+                            @Override
+                            public void onResult(String result) {
+
+                                KLog.e("---->>.", "Result:" + result);
+
+                            }
+                        });
                         Messenger.sendCommand(genCommand("openWechat"), new Callback() {
                             @Override
                             public void onResult(String result) {

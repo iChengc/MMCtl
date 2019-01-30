@@ -14,7 +14,7 @@ public class Messenger {
         WorkerHandler.postOnWorkThread(new Runnable() {
             @Override
             public void run() {
-                String result = Actions.executeCommand(cmd.getKey(),
+                String result = Actions.Companion.executeCommand(cmd.getKey(),
                         Utils.isEmpty(cmd.getArgs()) ? null: cmd.getArgs().toArray());
                 callback.onResult(result);
             }

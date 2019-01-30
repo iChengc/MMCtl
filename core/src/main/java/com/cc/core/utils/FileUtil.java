@@ -14,7 +14,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.cc.core.MyApplication;
+import com.cc.core.ApplicationContext;
 import com.cc.core.log.KLog;
 
 import java.io.BufferedReader;
@@ -214,7 +214,7 @@ public class FileUtil {
      * @return
      */
     public static File getInternalCacheDir() {
-        return MyApplication.application().getCacheDir();
+        return ApplicationContext.application().getCacheDir();
     }
 
     /**
@@ -224,7 +224,7 @@ public class FileUtil {
      * @return
      */
     public static File getInternalFileDir() {
-        return MyApplication.application().getFilesDir();
+        return ApplicationContext.application().getFilesDir();
     }
 
     /**
@@ -277,10 +277,10 @@ public class FileUtil {
             appCacheDir = getExternalStorageRootDir();
         }
         if (appCacheDir == null) {
-            appCacheDir = MyApplication.application().getCacheDir();
+            appCacheDir = ApplicationContext.application().getCacheDir();
         }
         if (appCacheDir == null) {
-            String cacheDirPath = "/data/data/" + MyApplication.application().getPackageName() + "/cache/";
+            String cacheDirPath = "/data/data/" + ApplicationContext.application().getPackageName() + "/cache/";
             appCacheDir = new File(cacheDirPath);
         }
 
@@ -292,7 +292,7 @@ public class FileUtil {
 
     public static boolean canAccessExternalStorage() {
         return MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                && hasExternalStoragePermission(MyApplication.application());
+                && hasExternalStoragePermission(ApplicationContext.application());
     }
 
     private static File getExternalStorageRootDir() {
@@ -312,7 +312,7 @@ public class FileUtil {
 
     public static File getImageCacheDirectory() {
         File file;
-        if (hasExternalStoragePermission(MyApplication.application())) {
+        if (hasExternalStoragePermission(ApplicationContext.application())) {
             file = getSubDirectory(IMAGE_CACHE);
         } else {
             file = new File(getInternalCacheDir(), IMAGE_CACHE);
@@ -640,9 +640,9 @@ public class FileUtil {
         clearDir(getInternalCacheDir());
         clearDir(getExternalCacheDir());
         clearDir(getTmpDir());
-        //clearDir(MyApplication.getInstance().getFilesDir());
-        MyApplication.application().deleteDatabase("webview.db");
-        MyApplication.application().deleteDatabase("webviewCache.db");
+        //clearDir(ApplicationContext.getInstance().getFilesDir());
+        ApplicationContext.application().deleteDatabase("webview.db");
+        ApplicationContext.application().deleteDatabase("webviewCache.db");
     }
 
     /**
@@ -662,7 +662,7 @@ public class FileUtil {
         long size;
         File cachedFileDir = new File(getInternalCacheDir(), IMAGE_CACHE) ;
         size = getFolderSize(cachedFileDir);
-        if (hasExternalStoragePermission(MyApplication.application())) {
+        if (hasExternalStoragePermission(ApplicationContext.application())) {
             cachedFileDir = getImageCacheDirectory();
             size += getFolderSize(cachedFileDir);
         }
@@ -677,7 +677,7 @@ public class FileUtil {
     private static long getSystemCacheSize() {
         File cacheDir = getInternalCacheDir();
         long size = getFolderSize(cacheDir);
-        /*cacheDir = MyApplication.getInstance().getFilesDir();
+        /*cacheDir = ApplicationContext.getInstance().getFilesDir();
         size += getFolderSize(cacheDir);*/
         return size;
     }

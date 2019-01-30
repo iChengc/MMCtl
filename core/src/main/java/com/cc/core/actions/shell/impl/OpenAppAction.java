@@ -11,9 +11,9 @@ public class OpenAppAction implements Action {
     public ActionResult execute(Object... args) {
         try {
             ShellUtils.runShell(true, ShellCommands.genCmd(ShellCommands.START_APP_CMD, args));
-            return ActionResult.successResult();
+            return ActionResult.Companion.successResult();
         } catch (Exception e) {
-            return ActionResult.failedResult(e);
+            return ActionResult.Companion.failedResult(e);
         }
     }
 

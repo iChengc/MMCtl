@@ -141,7 +141,7 @@ public abstract class AccessibilityAction implements Action {
 
     protected void startWeChat() {
         //Wechat.startApp(WechatAccessibilityService.getInstance().getApplicationContext());
-        Actions.execute(OpenWechatAction.class);
+        Actions.Companion.execute(OpenWechatAction.class);
     }
 
     private boolean clickMainPageTab(int tabIndex) {

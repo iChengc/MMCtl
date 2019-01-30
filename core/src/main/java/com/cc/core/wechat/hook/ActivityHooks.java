@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.cc.core.MyApplication;
+import com.cc.core.ApplicationContext;
 import com.cc.core.log.KLog;
 import com.cc.core.xposed.BaseXposedHook;
 
@@ -19,7 +19,7 @@ public class ActivityHooks extends BaseXposedHook {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 Activity activity = (Activity) param.thisObject;
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-                MyApplication.forgroundActivity = activity;
+                ApplicationContext.forgroundActivity = activity;
                 KLog.e("Start Activity:" + activity.getClass().getName() + "  Intent:"  + bundle2String(activity.getIntent().getExtras()));
             }
         });

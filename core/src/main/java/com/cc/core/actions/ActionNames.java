@@ -12,7 +12,6 @@ public class ActionNames {
 		"com.cc.core.actions.shell.impl.UnlockScreenAction",
 		"com.cc.core.actions.accessibility.impl.AddFriendAction",
 		"com.cc.core.actions.accessibility.impl.BackAction",
-		"com.cc.core.actions.accessibility.impl.ClickLoginAction",
 		"com.cc.core.actions.accessibility.impl.CreateGroupAction",
 		"com.cc.core.command.impl.OpenUrlCommandAction",
 		"com.cc.core.command.impl.OpenWechatAction",
@@ -22,5 +21,6 @@ public class ActionNames {
 		"com.cc.core.wechat.invoke.OpenUrlAction",
 		"com.cc.core.wechat.invoke.SendMessageAction",
 		"com.cc.core.wechat.invoke.StartActivityAction",
+		"com.cc.core.wechat.invoke.UnhookXLogAction",
 	};
 }

@@ -8,7 +8,7 @@ public class UnlockScreenAction implements Action {
     @Override
     public ActionResult execute(Object... args) {
         DeviceUtils.unlockScreen();
-        return ActionResult.successResult();
+        return ActionResult.Companion.successResult();
     }
 
     @Override

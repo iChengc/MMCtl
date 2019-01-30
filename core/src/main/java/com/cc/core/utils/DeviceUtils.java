@@ -4,7 +4,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
 
-import com.cc.core.MyApplication;
+import com.cc.core.ApplicationContext;
 import com.cc.core.shell.ShellCommands;
 import com.cc.core.shell.ShellUtils;
 
@@ -14,7 +14,7 @@ public class DeviceUtils {
 
     public static void unlockScreen() {
         // 获取电源管理器对象
-        PowerManager pm = (PowerManager) MyApplication.application()
+        PowerManager pm = (PowerManager) ApplicationContext.application()
                 .getSystemService(Context.POWER_SERVICE);
         boolean screenOn = pm.isScreenOn();
         if (!screenOn) {
@@ -26,7 +26,7 @@ public class DeviceUtils {
             wl.release(); // 释放
         }
         // 屏幕解锁
-        KeyguardManager keyguardManager = (KeyguardManager) MyApplication.application()
+        KeyguardManager keyguardManager = (KeyguardManager) ApplicationContext.application()
                 .getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("AutoClockIn:LockScreen");
         // 屏幕锁定
@@ -35,7 +35,7 @@ public class DeviceUtils {
 
     public static void lockScreen() {
         // 获取电源管理器对象
-        PowerManager pm = (PowerManager) MyApplication.application()
+        PowerManager pm = (PowerManager) ApplicationContext.application()
                 .getSystemService(Context.POWER_SERVICE);
         boolean screenOn = pm.isScreenOn();
         if (screenOn) {

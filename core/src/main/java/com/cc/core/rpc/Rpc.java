@@ -61,7 +61,7 @@ public class Rpc {
             }
 
             if (TextUtils.isEmpty(sb.toString())) {
-                return ActionResult.failedResult("Empty response");
+                return ActionResult.Companion.failedResult("Empty response");
             }
             return StrUtils.fromJson(sb.toString(), ActionResult.class);
             /*out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
@@ -82,7 +82,7 @@ public class Rpc {
             return StrUtils.fromJson(sb.toString(), ActionResult.class);*/
         } catch (Exception e) {
             e.printStackTrace();
-            return ActionResult.failedResult(e);
+            return ActionResult.Companion.failedResult(e);
         } finally {
 
             try {
@@ -104,7 +104,7 @@ public class Rpc {
     static ActionResult invoke(RpcArgs msg) {
         switch (msg.getType()) {
             case RpcArgs.CallType.EXECUTE_ACTION:
-                return Actions.receivedAction(msg.getData());
+                return Actions.Companion.receivedAction(msg.getData());
             case RpcArgs.CallType.EXECUTE_DB:
                 return DbService.getInstance().deliverDbOperation(msg.getData());
             default:

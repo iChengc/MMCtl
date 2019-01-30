@@ -16,12 +16,12 @@ public class SystemSettingsAction implements Action {
     @Override
     public ActionResult execute(Object... args) {
         if (args.length != 3) {
-            return ActionResult.failedResult("The length of system settings args must be 3");
+            return ActionResult.Companion.failedResult("The length of system settings args must be 3");
         }
 
         String cmd = String.format("settings put %s %s \"%s\"", args[0], args[1], args[2]);
         CommandResult result = ShellUtils.runShell(true, cmd);
-        return result.isSuccessful() ? ActionResult.successResult() : ActionResult.failedResult(result.getStderr());
+        return result.isSuccessful() ? ActionResult.Companion.successResult() : ActionResult.Companion.failedResult(result.getStderr());
     }
 
     @Override

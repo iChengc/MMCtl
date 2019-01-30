@@ -1,9 +1,7 @@
 package com.cc.core.data.db;
 
-import android.content.Context;
 
-import com.cc.core.MyApplication;
-
+import com.cc.core.ApplicationContext;
 
 class DBManager {
 
@@ -13,7 +11,7 @@ class DBManager {
 
     private DBManager(){
         if (mInstance == null) {
-            DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(MyApplication.application(), "messenger.db");
+            DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(ApplicationContext.application(), "messenger.db");
             mDaoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
             mDaoSession = mDaoMaster.newSession();
         }

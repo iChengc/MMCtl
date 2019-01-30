@@ -9,10 +9,10 @@ public class LockScreenAction implements Action {
     public ActionResult execute(Object... args) {
         try {
             DeviceUtils.lockScreen();
-            return ActionResult.successResult();
+            return ActionResult.Companion.successResult();
         } catch (Exception e) {
             e.printStackTrace();
-            return ActionResult.failedResult(e);
+            return ActionResult.Companion.failedResult(e);
         }
     }
 
