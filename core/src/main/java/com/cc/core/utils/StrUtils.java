@@ -8,10 +8,16 @@ public class StrUtils {
     private static final Gson gson = new Gson();
 
     public static <T> T fromJson(String json, Class<T> clazz) {
+        if (json == null) {
+            return null;
+        }
         return gson.fromJson(json, clazz);
     }
 
     public static <T> T fromJson(String json, Type clazz) {
+        if (json == null) {
+            return null;
+        }
         return gson.fromJson(json, clazz);
     }
 

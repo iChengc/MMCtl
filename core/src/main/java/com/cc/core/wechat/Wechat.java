@@ -126,6 +126,9 @@ public class Wechat {
             Sqlite.init(version);
             Account.init(version);switch (version) {
                 case "7.0.0":
+                    //KernelClass = "com.tencent.mm.kernel.g";
+                    LOGGER = "com.tencent.mm.sdk.platformtools.ab";
+                    UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -153,6 +156,38 @@ public class Wechat {
         }
 
         public static class Account {
+            /**
+             * type说明：flag enum
+             * 0 - Unknown
+             * 1 - 是好友关系
+             * 2 - 有聊天记录
+             * 4 - 有相同群
+             * 8 - 黑名单
+             * 16 - 无参考数据，未知, 从代码看似乎是 android only的意思，缺乏数据验证，不能确定
+             * 32 - plugin
+             * 64 - 星标好友
+             * 128 - 无参考数据，未知
+             * 256 - 不让对方看朋友圈
+             * 512 - Mute, 消息免打扰
+             * 1024 - 无参考数据，未知
+             * 2048 - 聊天置顶
+             * 32768 - 隐藏可以匹配手机通讯录的好友手机号
+             * 65536 - 不看对方朋友圈
+             * 524288 - 微信运动不与对方排行
+             * <p>
+             * 微信中好友列表使用的规则是 type & 1 = 1 and type & 8 = 0 and type & 32 = 0 and verifyFlag & 8 = 0
+             */
+
+            /**
+             * verifyFlag说明：flag enum
+             * 0 - Unknown
+             * 1 - 目前唯一含有1的是京东，并且京东的原始id为qqwanggou001，猜测1是合作方或自营电商等含义
+             * 2 - 无参考数据，未知
+             * 4 - 无参考数据，未知
+             * 8 - 公众号
+             * 16 - 已认证
+             * 32 - 微信团队
+             */
             public static String Account = "";
             public static String GetContactManagerFunc = "";
             public static String GetGroupManagerFunc = "";

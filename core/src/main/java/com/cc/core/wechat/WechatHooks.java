@@ -8,6 +8,7 @@ public class WechatHooks {
 		"com.cc.core.wechat.hook.DbHooks",
 		"com.cc.core.wechat.hook.LauchUIHooks",
 		"com.cc.core.wechat.hook.MessageHooks",
+		"com.cc.core.wechat.hook.TestHooks",
 		"com.cc.core.wechat.hook.UploadCrashLogHooks",
 		"com.cc.core.wechat.hook.XLogHooks",
 	};

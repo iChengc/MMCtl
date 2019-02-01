@@ -3,8 +3,10 @@ package com.cc.core.wechat;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.cc.core.data.db.model.Fridend;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.FileUtil;
+import com.cc.core.utils.StrUtils;
 
 import java.io.File;
 
@@ -30,7 +32,7 @@ import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
-public class HookUtils {
+public // class HookUtils {
     private HookUtils(){}
 
     public static Object getContactManager() {
@@ -110,24 +112,12 @@ public class HookUtils {
         } catch (Exception e) {
         }
 
-        //copy avatar to sdcard
-        /*if (!TextUtils.isEmpty(thumbAvatarUrl)) {
-            String filename = MD5.getMD5(thumbAvatarUrl);
-            String extension = MimeTypeMap.getFileExtensionFromUrl(thumbAvatarUrl);
-            if (TextUtils.isEmpty(extension)) {
-                filename = filename + ".png";
-            } else {
-                filename = filename + "." + extension;
-            }
-
-            String path = PathUtil.getCachedImagePath(filename);
-
-            FileUtil.fileCpy(thumbAvatarUrl, path, true);
-
-            return path;
-        }*/
-
         return avatar;
+    }
+
+    public static Fridend getContactByWechatId(String wechatId) {
+        Object j = callMethod(getContactManager(), Wechat.HookMethodFunctions.Account.GetContactInfoFunc, wechatId);
+        return StrUtils.fromJson(StrUtils.toJson(j), Fridend.class);
     }
 /*
     public static Map<String, String> xmlToMap(String xml, String rootNodeName) {
@@ -165,19 +155,7 @@ public class HookUtils {
         return null;
     }
 
-    public static XposedContactInfo getXposedContactInfoBySQL(String username) {
-        try (Cursor contactCursor = WechatCoreUtil.executeRawQuery(String.format(StringUtil.isGroupWechatId(username) ? XposedContactInfo.SELECT_USER_GROUP_CONTACT_BY_USER_NAME_SQL : XposedContactInfo.SELECT_USER_CONTACT_BY_USER_NAME_SQL, username))) {
-            if (contactCursor.moveToFirst()) {
-                XposedContactInfo xposedContactInfo = new XposedContactInfo();
-                xposedContactInfo.field_username = contactCursor.getString(0);
-                xposedContactInfo.field_nickname = contactCursor.getString(1);
 
-                return xposedContactInfo;
-            }
-        }
-
-        return null;
-    }
 
     public static String getImageMessagePath(String imgPath) {
         try {

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Messenger.sendCommand(genCommand("wechat:UnhookXLog"), new Callback() {
+                        Messenger.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        Messenger.sendCommand(genCommand("openWechat"), new Callback() {
+                        Messenger.sendCommand(genCommand("wechat:getContacts"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
                                 KLog.e("---->>.", "Result:" + result);
-                                Messenger.sendCommand(genCommand("createGroup"), new Callback() {
+                                Messenger.sendCommand(genCommand("wechat:getContacts"), new Callback() {
                                     @Override
                                     public void onResult(String result) {
 
@@ -107,7 +107,4 @@ public class MainActivity extends AppCompatActivity {
         c.setArgs(args);
         return c;
     }
-
-
-
 }

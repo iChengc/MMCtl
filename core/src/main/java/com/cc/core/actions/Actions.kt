@@ -94,8 +94,17 @@ class Actions {
 
         fun executeCommand(key: String, vararg args: Any?): String {
             val action = lookup(key)
-            KLog.e("--->>>>", "execute action:" + action.key())
-            return StrUtils.toJson(action.execute(*args))
+            return if (isWechatAction(action)) {
+                try {
+                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, args))))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    StrUtils.toJson(ActionResult.failedResult(e))
+                }
+
+            } else {
+                StrUtils.toJson(action.execute(args))
+            }
         }
 
         fun receivedAction(rawAction: String): ActionResult? {

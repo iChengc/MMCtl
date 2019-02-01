@@ -18,6 +18,7 @@ public class ActionNames {
 		"com.cc.core.wechat.invoke.AddFriendAction",
 		"com.cc.core.wechat.invoke.GetContactsAction",
 		"com.cc.core.wechat.invoke.GetUserInfoAction",
+		"com.cc.core.wechat.invoke.HookXLogAction",
 		"com.cc.core.wechat.invoke.OpenUrlAction",
 		"com.cc.core.wechat.invoke.SendMessageAction",
 		"com.cc.core.wechat.invoke.StartActivityAction",
