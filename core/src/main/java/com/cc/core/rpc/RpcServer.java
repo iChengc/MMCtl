@@ -98,6 +98,7 @@ public class RpcServer {
                     out.write(StrUtils.toJson(result).getBytes(Charset.forName("utf-8")));
                     out.flush();
                 } catch (Exception e) {
+                    KLog.e("Failed to execute RPC", e);
                     if (out != null) {
                         try {
                             out.write(StrUtils.toJson(ActionResult.Companion.failedResult("failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));

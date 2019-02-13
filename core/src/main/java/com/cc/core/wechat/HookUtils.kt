@@ -8,7 +8,7 @@ import com.cc.core.utils.FileUtil
 import com.cc.core.utils.StrUtils
 
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.ConfigStorageGetFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.Account
+import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.AccountStorage
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetContactManagerFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetConversationManagerFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetConfigManagerFunc
@@ -24,6 +24,7 @@ import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBExecSqlFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBRawQueryFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DbHelperField
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.GetDBHelerFunc
+import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.*
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findClass
@@ -32,19 +33,23 @@ import de.robv.android.xposed.XposedHelpers.getObjectField
 class HookUtils {
     companion object {
         fun getContactManager(): Any {
-            return callStaticMethod(findClass(Account, Wechat.WECHAT_CLASSLOADER), GetContactManagerFunc)
+            return callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetContactManagerFunc)
         }
 
         fun getGroupManager(): Any {
-            return callStaticMethod(findClass(Account, Wechat.WECHAT_CLASSLOADER), GetGroupManagerFunc)
+            return callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetGroupManagerFunc)
         }
 
         fun getMsgInfoStorage(): Any {
-            return callStaticMethod(findClass(Account, Wechat.WECHAT_CLASSLOADER), GetMsgInfoManagerFunc)
+            return callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetMsgInfoManagerFunc)
         }
 
         fun getConversationStorage(): Any {
-            return callStaticMethod(findClass(Account, Wechat.WECHAT_CLASSLOADER), GetConversationManagerFunc)
+            return callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetConversationManagerFunc)
+        }
+
+        fun getNetscenQueue(): Any {
+            return callStaticMethod(findClass(GetNetSceneQueueClass, Wechat.WECHAT_CLASSLOADER), GetNetSceneQueueFunc)
         }
 
         fun getLoginUserInfo(id: Int): Any {
@@ -52,7 +57,7 @@ class HookUtils {
         }
 
         fun getLoginUserInfo(id: Int, defaultValue: Any?): Any {
-            val coreStorageObject = callStaticMethod(findClass(Account, Wechat.WECHAT_CLASSLOADER), GetConfigManagerFunc)
+            val coreStorageObject = callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetConfigManagerFunc)
 
 
             return callMethod(coreStorageObject, ConfigStorageGetFunc, id, defaultValue)
@@ -114,6 +119,10 @@ class HookUtils {
             return if (j == null) {
                 null
             } else StrUtils.fromJson(StrUtils.toJson(j), Fridend::class.java)
+        }
+
+        fun enqueueNetScene(request: Any, type: Int) {
+            callMethod(getNetscenQueue(), NetSceneEnqueueFunc, request, type)
         }
     }
 }

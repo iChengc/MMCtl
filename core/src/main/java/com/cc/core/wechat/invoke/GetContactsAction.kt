@@ -25,7 +25,6 @@ class GetContactsAction : Action {
             while (contactCursor.moveToNext()) {
                 val wechatId = contactCursor.getString(0)
 
-                KLog.e("----->>>>> ${wechatId}")
                 // Robot self should not be considered as a friend
                 if (Wechat.LoginWechatId == wechatId) {
                     continue
@@ -38,7 +37,6 @@ class GetContactsAction : Action {
                 val f = HookUtils.getContactByWechatId(w)
 
                 if (f != null) {
-                    KLog.e("---->>>", StrUtils.toJson(f))
                     f.avatar = getAvatarBy(w)
                     friends.add(f)
                 }

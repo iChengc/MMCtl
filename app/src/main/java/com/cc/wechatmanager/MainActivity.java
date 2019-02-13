@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        Messenger.sendCommand(genCommand("wechat:getContacts"), new Callback() {
+                        Messenger.sendCommand(genCommand("wechat:addFriend"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
-                                KLog.e("---->>.", "Result:" + result);
+                                KLog.e("---->>.", "addFriend Result:" + result);
                                 Messenger.sendCommand(genCommand("wechat:getContacts"), new Callback() {
                                     @Override
                                     public void onResult(String result) {

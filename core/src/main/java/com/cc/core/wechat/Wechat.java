@@ -119,16 +119,36 @@ public class Wechat {
         public static String SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
         public static String SaveAnrWatchDogSetHandlerFunc = "a";
         public static String  SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
-        public static String MMCrashReporterClass = "com.tencent.mm.app.k";
-        public static String WechatStorageClass = "com.tencent.mm.storage.ac";
+        public static String MMCrashReporter = "com.tencent.mm.app.k";
+        public static String ConstantsStorage = "com.tencent.mm.storage.ac";
         public static String WechatStorageCrashPath = "dFK";
         public static void init(String version) {
             Sqlite.init(version);
-            Account.init(version);switch (version) {
-                case "7.0.0":
-                    //KernelClass = "com.tencent.mm.kernel.g";
+            Account.init(version);
+            NetScene.init(version);
+
+            switch (version) {
+                case "7.0.3":
+                    KernelClass = "com.tencent.mm.kernel.g";
                     LOGGER = "com.tencent.mm.sdk.platformtools.ab";
                     UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
+                    UploadCrashLogFunc = "hD";
+                    UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
+                    UploadCrashWXRecoveryUploadServicePushDataFunc = "pushData";
+                    UploadCrashLogEnumClass = "com.tencent.mm.plugin.report.service.h";
+                    UploadCrashLogEnumFunc = "a";
+                    UploadCrashCrashUploaderServiceClass = "com.tencent.mm.crash.CrashUploaderService";
+                    UploadCrashCrashUploaderServiceOnHandleIntentFunc = "onHandleIntent";
+                    UploadCrashTraceRouteClass = "com.tencent.mm.plugin.traceroute.b.a.f";
+                    UploadCrashTraceRouteFunc = "a";
+                    UploadCrashStackReportUploaderClass = "com.tencent.mm.platformtools.ad";
+                    UploadCrashStackReportUploaderFunc = "a";
+                    SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
+                    SaveAnrWatchDogSetHandlerFunc = "a";
+                    SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
+                    MMCrashReporter = "com.tencent.mm.app.k";
+                    ConstantsStorage = "com.tencent.mm.storage.ac";
+                    WechatStorageCrashPath = "eEe";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -148,8 +168,8 @@ public class Wechat {
                     SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
                     SaveAnrWatchDogSetHandlerFunc = "a";
                     SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
-                    MMCrashReporterClass = "com.tencent.mm.app.k";
-                    WechatStorageClass = "com.tencent.mm.storage.ac";
+                    MMCrashReporter = "com.tencent.mm.app.k";
+                    ConstantsStorage = "com.tencent.mm.storage.ac";
                     WechatStorageCrashPath = "dFK";
                     break;
             }
@@ -188,7 +208,7 @@ public class Wechat {
              * 16 - 已认证
              * 32 - 微信团队
              */
-            public static String Account = "";
+            public static String AccountStorage = "";
             public static String GetContactManagerFunc = "";
             public static String GetGroupManagerFunc = "";
             public static String GetConfigManagerFunc = "";
@@ -213,20 +233,29 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "7.0.0":
+                    case "7.0.3":
+                        AccountStorage = "com.tencent.mm.model.c";
+                        GetContactManagerFunc = "VI";
+                        GetGroupManagerFunc = "VR";
+                        GetConfigManagerFunc = "PO";
+                        GetMsgInfoManagerFunc = "VK";
+                        GetConversationManagerFunc = "VN";
+                        GetContactInfoFunc = "anm";
+                        ConfigStorageGetFunc = "get";
                         RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
+                        RegionCodeDecoderEncodeFunc = "az";
                         break;
                     case "6.7.2":
-                        Account = "com.tencent.mm.model.c";
+                        AccountStorage = "com.tencent.mm.model.c";
                         GetContactManagerFunc = "EO";
                         GetGroupManagerFunc = "EX";
                         GetConfigManagerFunc = "CQ";
                         GetMsgInfoManagerFunc = "EQ";
                         GetConversationManagerFunc = "ET";
+                        GetContactInfoFunc = "ZQ";
                         ConfigStorageGetFunc = "get";
                         RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
                         RegionCodeDecoderEncodeFunc = "an";
-                        GetContactInfoFunc = "ZQ";
                         break;
                 }
             }
@@ -240,14 +269,48 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "7.0.0":
+                    case "7.0.3":
+                        GetDBHelerFunc = "Qe";
                         DBRawQueryFunc = "rawQuery";
+                        DBExecSqlFunc = "hN";
+                        DbHelperField = "ewi";
                         break;
                     case "6.7.2":
                         GetDBHelerFunc = "Dg";
                         DBRawQueryFunc = "rawQuery";
                         DBExecSqlFunc = "gf";
                         DbHelperField = "dBo";
+                        break;
+                }
+            }
+        }
+
+        public static class NetScene {
+            public static String GetNetSceneQueueClass;
+            public static String GetNetSceneQueueFunc;
+
+            public static String NetSceneRequestClass;
+            public static String NetSceneEnqueueFunc;
+            public static String NetSceneEndFunc;
+            public static String NetSceneQueueClass;
+
+            public static String FriendRequestNetSceneClass;
+            public static String SearchFriendNetSceneClass;
+
+            static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        GetNetSceneQueueClass = "com.tencent.mm.model.av";
+                        GetNetSceneQueueFunc = "CB";
+                        NetSceneEnqueueFunc = "a";
+                        NetSceneRequestClass = "com.tencent.mm.af.m";
+                        NetSceneQueueClass = "com.tencent.mm.af.p";
+                        NetSceneEndFunc = "onSceneEnd";
+                        FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
+                        SearchFriendNetSceneClass = "com.tencent.mm.plugin.brandservice.b.h";
+                        break;
+                    case "7.0.3":
+                        NetSceneEndFunc = "onSceneEnd";
                         break;
                 }
             }

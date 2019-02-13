@@ -9,6 +9,7 @@ import android.content.pm.VersionedPackage;
 import android.os.Build;
 
 import com.cc.core.ApplicationContext;
+import com.cc.core.log.KLog;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class AvoidRiskHooks extends BaseXposedHook {
         libHiddenFiles.add("/system/bin/app_process32_xposed");
         libHiddenFiles.add("/system/lib/libxposed_art.so");
         libHiddenFiles.add("/system/bin/app_process32_xposed");
+
+
     }
 
     private void hideRiskPackagesFromPackageManager(ClassLoader classLoader) {

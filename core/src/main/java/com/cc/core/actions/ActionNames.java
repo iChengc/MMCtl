@@ -22,6 +22,7 @@ public class ActionNames {
 		"com.cc.core.wechat.invoke.OpenUrlAction",
 		"com.cc.core.wechat.invoke.SendMessageAction",
 		"com.cc.core.wechat.invoke.StartActivityAction",
+		"com.cc.core.wechat.invoke.TestAction",
 		"com.cc.core.wechat.invoke.UnhookXLogAction",
 	};
 }

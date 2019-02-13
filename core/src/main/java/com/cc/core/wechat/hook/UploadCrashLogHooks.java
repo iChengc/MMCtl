@@ -31,7 +31,7 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        String path = (String) getStaticObjectField(classLoader.loadClass(Wechat.HookMethodFunctions.WechatStorageClass), Wechat.HookMethodFunctions.WechatStorageCrashPath);
+                        String path = (String) getStaticObjectField(classLoader.loadClass(Wechat.HookMethodFunctions.ConstantsStorage), Wechat.HookMethodFunctions.WechatStorageCrashPath);
                         String crashLogFile = path + "crash/" + param.args[0] + "." + param.args[1] + ".crashlog";
                         // 删除crash日志文件，禁止上报
                         FileUtil.deleteFile(crashLogFile);
@@ -119,7 +119,7 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable {
-                        if (param.args[0] != null && !param.args[0].getClass().getName().equals(Wechat.HookMethodFunctions.MMCrashReporterClass)) {
+                        if (param.args[0] != null && !param.args[0].getClass().getName().equals(Wechat.HookMethodFunctions.MMCrashReporter)) {
                             KLog.d(TAG, "set anr watch handler: " + param.args[0]);
                         }
 

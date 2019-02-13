@@ -111,7 +111,8 @@ class Actions {
             val raw = StrUtils.fromJson(rawAction, RawAction::class.java)
             KLog.e(raw.toString())
             val action = lookup(raw.actionName)
-            return action.execute(if (raw.args != null) raw.args!!.toTypedArray() else null)
+            val args = if (raw.args != null) raw.args!!.toTypedArray() else null
+            return action.execute(args)
         }
 
         private fun isWechatAction(action: Action): Boolean {
