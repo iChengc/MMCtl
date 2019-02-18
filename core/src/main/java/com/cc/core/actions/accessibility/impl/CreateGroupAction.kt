@@ -51,6 +51,6 @@ class CreateGroupAction : AccessibilityAction() {
     }
 
     override fun key(): String? {
-        return "createGroup"
+        return "accessibility:createGroup"
     }
 }

@@ -18,8 +18,12 @@ class SendMessage : Action {
         }
         val gson = Utils.messageDeserializeGson()
 
-        KLog.e("*******", StrUtils.toJson(args))
-        val msg = gson.fromJson(args[0].toString(), WeChatMessage::class.java)
+        val msg : WeChatMessage
+        if (args[0] is WeChatMessage) {
+            msg = args[0] as WeChatMessage
+        } else {
+            msg = gson.fromJson(args[0].toString(), WeChatMessage::class.java)
+        }
         if (msg is ImageMessage) {
             val path = Utils.downloadFile(msg.getImageUrl(), false)
             msg.setImageUrl(path)

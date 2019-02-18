@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Id;
 
-public class Fridend {
+public class Friend {
     @Id
     @SerializedName(value = "wechatId", alternate = "field_username")
     private String wechatId;

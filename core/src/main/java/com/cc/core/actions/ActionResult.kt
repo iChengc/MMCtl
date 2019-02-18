@@ -1,8 +1,8 @@
 package com.cc.core.actions
 
 class ActionResult {
-    public var success: Boolean = false
-    public var message: String? = null
+    var success: Boolean = false
+    var message: String? = null
     var data: Any? = null
 
     constructor()

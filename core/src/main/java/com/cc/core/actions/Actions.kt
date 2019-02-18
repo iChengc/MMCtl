@@ -75,7 +75,7 @@ class Actions {
             return actions
         }
 
-        fun execute(clazz: Class<out Action>, vararg args: Any): ActionResult? {
+        fun execute(clazz: Class<out Action>, vararg args: Any?): ActionResult? {
             val action = lookup(clazz)
             return if (isWechatAction(action)) {
                 try {

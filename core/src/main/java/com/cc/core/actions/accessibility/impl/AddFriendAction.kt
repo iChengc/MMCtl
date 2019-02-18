@@ -86,6 +86,6 @@ class AddFriendAction : AccessibilityAction() {
     }
 
     override fun key(): String {
-        return "addFriend"
+        return "accessibility:addFriend"
     }
 }

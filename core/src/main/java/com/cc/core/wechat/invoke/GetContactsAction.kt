@@ -2,9 +2,8 @@ package com.cc.core.wechat.invoke
 
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
-import com.cc.core.data.db.model.Fridend
+import com.cc.core.data.db.model.Friend
 import com.cc.core.log.KLog
-import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat
 import java.util.ArrayList
@@ -20,7 +19,7 @@ class GetContactsAction : Action {
 
     override fun execute(vararg args: Any?): ActionResult? {
         val wechatIds = ArrayList<String>()
-        val friends = ArrayList<Fridend>()
+        val friends = ArrayList<Friend>()
         HookUtils.executeRawQuery(QUERY_CONTACT_SQL).use { contactCursor ->
             while (contactCursor.moveToNext()) {
                 val wechatId = contactCursor.getString(0)
