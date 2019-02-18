@@ -23,8 +23,9 @@ public class ApplicationContext {
     private static DaoSession session;
 
     public static void setup(Application application) {
+        KLog.setLog2ConsoleEnabled(BuildConfig.DEBUG);
         init(application);
-        enableAccessibility();
+        //enableAccessibility();
         setupDatabase();
         DbService.getInstance().init();
     }

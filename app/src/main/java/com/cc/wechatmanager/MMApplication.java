@@ -9,7 +9,6 @@ public class MMApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        KLog.setLog2ConsoleEnabled(true);
         ApplicationContext.setup(this);
     }
 }
