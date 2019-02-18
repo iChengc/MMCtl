@@ -1,7 +1,11 @@
 package com.cc.core.wechat.hook;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.lang.reflect.Field;
@@ -60,15 +64,25 @@ public class TestHooks extends BaseXposedHook {
 
             }
         });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.j", classLoader,
+                Context.class, List.class, Intent.class, String.class, int.class, XposedHelpers.findClass("com.tencent.mm.pluginsdk.model.j$a", Wechat.WECHAT_CLASSLOADER),
+        new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                for (Object f : param.args) {
+                    KLog.e("======>>>>>>  ", f == null ? "null" : f.toString());
+                }
+                KLog.e("======>>>>>>  ", new Exception());
+            }
+        });
 
-        hookMethod("com.tencent.mm.plugin.messenger.a.f", classLoader, "a", int.class, int.class, int.class, String.class,
-                XposedHelpers.findClass("com.tencent.mm.network.q", classLoader), byte[].class, new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startVideoStreamingDownload",
+                 XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        Field[] filelds = param.thisObject.getClass().getFields();
-                        for (Field f : filelds) {
-                            KLog.e("<<<<==== response ====>>>>>> " + f.getName() + "  " + f.get(param.thisObject));
-                        }
+
+                        KLog.e("====+++++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
                     }
                 });
     }

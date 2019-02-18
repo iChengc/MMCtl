@@ -22,7 +22,7 @@ public class LauchUIHooks extends BaseXposedHook {
         hookMethod(Wechat.Resources.LAUNCHER_UI_CLASS, classLoader, "onResume", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                User userInfo = new User();
+                /*User userInfo = new User();
                 userInfo.setWechatId(HookUtils.Companion.getLoginUserWechatId());
                 userInfo.setAlias((String) HookUtils.Companion.getLoginUserInfo(UserInfoId_Alias));
                 userInfo.setNickname((String) HookUtils.Companion.getLoginUserInfo(UserInfoId_Nickname));
@@ -36,7 +36,7 @@ public class LauchUIHooks extends BaseXposedHook {
                     public void onResult(String result) {
                         KLog.e(">>>>" + result);
                     }
-                });
+                });*/
 
             }
         });

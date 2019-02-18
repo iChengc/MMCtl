@@ -124,5 +124,9 @@ class HookUtils {
         fun enqueueNetScene(request: Any, type: Int) {
             callMethod(getNetscenQueue(), NetSceneEnqueueFunc, request, type)
         }
+
+        fun downloadVideo(msgInfo:String) {
+
+        }
     }
 }

@@ -6,8 +6,6 @@ import com.cc.core.rpc.Rpc
 import com.cc.core.rpc.RpcArgs
 import com.cc.core.utils.StrUtils
 import com.google.gson.annotations.SerializedName
-import java.util.*
-import kotlin.collections.HashMap
 
 class Actions {
     companion object {
@@ -88,7 +86,7 @@ class Actions {
                 }
 
             } else {
-                action.execute(args)
+                action.execute(*args)
             }
         }
 
@@ -96,23 +94,21 @@ class Actions {
             val action = lookup(key)
             return if (isWechatAction(action)) {
                 try {
-                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, args))))
+                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, *args))))
                 } catch (e: Exception) {
                     e.printStackTrace()
                     StrUtils.toJson(ActionResult.failedResult(e))
                 }
 
             } else {
-                StrUtils.toJson(action.execute(args))
+                StrUtils.toJson(action.execute(*args))
             }
         }
 
         fun receivedAction(rawAction: String): ActionResult? {
             val raw = StrUtils.fromJson(rawAction, RawAction::class.java)
-            KLog.e(raw.toString())
             val action = lookup(raw.actionName)
-            val args = if (raw.args != null) raw.args!!.toTypedArray() else null
-            return action.execute(args)
+            return action.execute(*raw.args!!.toTypedArray())
         }
 
         private fun isWechatAction(action: Action): Boolean {
@@ -125,7 +121,7 @@ class Actions {
         var actionName: String? = null
 
         @SerializedName("args")
-        var args: List<Any>? = null
+        var args: MutableList<Any?>? = null
 
         override fun toString(): String {
             return """
@@ -135,10 +131,14 @@ class Actions {
 
         companion object {
 
-            fun fromAction(action: Action, vararg args: Any): RawAction {
+            fun fromAction(action: Action, vararg args: Any?): RawAction {
                 val a = RawAction()
                 a.actionName = action.key()
-                a.args = Arrays.asList(*args)
+                a.args = mutableListOf()
+
+                for (arg in args) {
+                    (a.args as MutableList).add(arg)
+                }
                 return a
             }
         }

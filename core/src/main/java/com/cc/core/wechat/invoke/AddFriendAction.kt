@@ -1,70 +1,114 @@
 package com.cc.core.wechat.invoke
 
+import android.text.TextUtils
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 import com.cc.core.log.KLog
 import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat
-import com.cc.core.wechat.hook.NetsceneQueueHooks
+import com.cc.core.wechat.hook.RemoteRespHooks
 import de.robv.android.xposed.XposedHelpers
+import org.json.JSONObject
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.TimeUnit
 
 class AddFriendAction : Action {
+    private val lock = ArrayBlockingQueue<String>(2)
     override fun execute(vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
             return ActionResult.failedResult("No mobile phone ")
         }
 
-//        2
-//        ["xnhjcc"]
-//        [15]
-//        null
-//        "我是娇娇JoJo"
-//        ""
-//        {"xnhjcc":0}
-//        null
-//        ""
-//
-        searchFriend("15921123483")
         val wechatId = getWechatId(args[0].toString())
-        val sayHi = if (args.size > 1){args[1].toString()} else {"你好啊！"}
+        if (TextUtils.isEmpty(wechatId)) {
+            return ActionResult.failedResult("can not find user:" + args[0])
+        }
+
+        val sayHi = if (args.size > 1) {
+            args[1].toString()
+        } else {
+            "你好啊！"
+        }
         sendRequest(wechatId, sayHi)
 
         return ActionResult.successResult()
     }
 
-    private fun searchFriend(phone:String) {
+    private fun getWechatId(phone: String): String? {
         val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.SearchFriendNetSceneClass, Wechat.WECHAT_CLASSLOADER)
-                .getConstructor(String::class.java, Long::class.javaPrimitiveType, Int::class.javaPrimitiveType,Int::class.javaPrimitiveType, String::class.java)
-                .newInstance(phone, 1, 0, 16, "")
+                .getConstructor(String::class.java, Int::class.javaPrimitiveType)
+                .newInstance(phone, 0)
 
         HookUtils.enqueueNetScene(request, 0)
-        NetsceneQueueHooks.registerSceneListener(request) { type, code, message ->
-            KLog.e("----->>> Type:" + type + " Code:" + code + "  Message:" + message)
+        RemoteRespHooks.registerOnResponseListener(106) { response ->
+            val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
+            var wechatId: String
+            if (jsonObject.optInt("eWZ") == 1) {
+                wechatId = jsonObject.optJSONObject("sgh").optString("sVc")
+                if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
+                    val sb = StringBuilder(wechatId)
+                    sb.insert(4, "_")
+                    wechatId = sb.toString()
+                }
+            } else {
+                wechatId = jsonObject.optJSONObject("sgx").optString("sVc")
+            }
+
+            if (TextUtils.isEmpty(wechatId)) {
+                lock.offer(wechatId)
+            } else {
+                verifyUser(wechatId, jsonObject.optString("sqc"))
+            }
         }
+        return lock.poll(30, TimeUnit.SECONDS)
     }
 
-    private fun getWechatId(phone:String) : String {
-        return "xnhjcc"
-    }
-
-    private fun sendRequest(wechatId: String, sayHi: String) {
-        val args = ArrayList<String>()
+    private fun verifyUser(wechatId: String?, antispamTicket: String) {
+        /* =====>>>>>> 1
+          ["xnhjcc"]
+          [15]
+          ["v2_936b8a81d0373f569028ea01e15bbb5e76f73c98c7fbfb8778f6d8998d224132dddc0b8d62f6709256f2c0bff29b022d@stranger"]
+          ""
+          ""
+          null
+          ""
+          ""*/
+        val args = ArrayList<String?>()
         args.add(wechatId)
         val args2 = ArrayList<Int>()
         args2.add(15)
-        val mapArgs = HashMap<String, Int>()
-        mapArgs[wechatId] = 0
+        val args3 = ArrayList<String>()
+        args3.add(antispamTicket)
 
-
-        val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
+        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
+                1, args, args2, args3, "", "", null, "", "")
+        /*val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
                 .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
                         String::class.java, Map::class.java, String::class.java, String::class.java)
-                .newInstance(2, args, args2, null, sayHi, "", mapArgs, null, "")
+                .newInstance(1, args, args2, args3, "", "", null, "", "")*/
 
         HookUtils.enqueueNetScene(request, 0)
-        NetsceneQueueHooks.registerSceneListener(request) { type, code, message ->
-            KLog.e("----->>> Type:" + type + " Code:" + code + "  Message:" + message)
+        RemoteRespHooks.registerOnResponseListener(137) {
+            lock.offer(wechatId)
         }
+    }
+
+    private fun sendRequest(wechatId: String?, sayHi: String) {
+        val args = ArrayList<String?>()
+        args.add(wechatId)
+        val args2 = ArrayList<Int>()
+        args2.add(15)
+        val mapArgs = HashMap<String?, Int>()
+        mapArgs[wechatId] = 0
+
+        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
+                2, args, args2, null, sayHi, "", mapArgs, null, "")
+        /*val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
+                .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
+                        String::class.java, Map::class.java, String::class.java, String::class.java)
+                .newInstance(2, args, args2, null, sayHi, "", mapArgs, null, "")*/
+
+        HookUtils.enqueueNetScene(request, 0)
     }
 
     override fun key(): String? {

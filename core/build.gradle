@@ -3,143 +3,144 @@ apply plugin: 'kotlin-android'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-  compileSdkVersion 27
-  buildToolsVersion "28.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "28.0.3"
 
 
-  defaultConfig {
-    minSdkVersion 19
-    targetSdkVersion 27
-    versionCode 1
-    versionName "1.0"
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
 
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-  }
-  sourceSets {
-    main {
-      java.srcDir 'build/generated/source/mmctrl'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
-  }
+    sourceSets {
+        main {
+            java.srcDir 'build/generated/source/mmctrl'
+        }
+    }
 }
 
 
 
 greendao {
-  schemaVersion 1 //数据库版本号
-  daoPackage 'com.cc.core.data.db' //设置DaoMaster、DaoSession、Dao包名
-  //targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
-  //targetGenDirTest：设置生成单元测试目录
-  //generateTests：设置自动生成单元测试用例
+    schemaVersion 1 //数据库版本号
+    daoPackage 'com.cc.core.data.db' //设置DaoMaster、DaoSession、Dao包名
+    //targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+    //targetGenDirTest：设置生成单元测试目录
+    //generateTests：设置自动生成单元测试用例
 }
 
 task mkGenDirs {
-  doFirst {
-    file('build/generated/source/mmctrl/com/cc/core/actions/').mkdirs()
-    file('build/generated/source/mmctrl/com/cc/core/wechat/').mkdirs()
-  }
+    doFirst {
+        file('build/generated/source/mmctrl/com/cc/core/actions/').mkdirs()
+        file('build/generated/source/mmctrl/com/cc/core/wechat/').mkdirs()
+    }
 }
 
-task genActions (dependsOn: [mkGenDirs, sourceSets]) {
+task genActions(dependsOn: [mkGenDirs, sourceSets]) {
 
-  doLast {
+    doLast {
 
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriter('UTF-8') { writer ->
-          writer.write("package com.cc.core.actions;\n\npublic class ActionNames {\n" +
-              "\tpublic static final String[] ACTION_NAMES = new String[]{\n")
-        }
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriterAppend('UTF-8') { writer ->
-          fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
-            writer.write("\t\t\"com.cc.core.actions.shell.impl." + it.name.substring(0,
-                it.name.lastIndexOf('.java')) + "\",\n")
-          }
-        }
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriterAppend('UTF-8') { writer ->
-          fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.kt").each {
-            writer.write("\t\t\"com.cc.core.actions.accessibility.impl." + it.name.substring(0,
-                it.name.lastIndexOf('.kt')) + "\",\n")
-          }
-        }
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriterAppend('UTF-8') { writer ->
-          fileTree('src/main/java/com/cc/core/command/impl').include("*.kt").each {
-            writer.write("\t\t\"com.cc.core.command.impl." + it.name.substring(0,
-                it.name.lastIndexOf('.kt')) + "\",\n")
-          }
-        }
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriterAppend('UTF-8') { writer ->
-          fileTree('src/main/java/com/cc/core/wechat/invoke').include("*.kt").each {
-            writer.write("\t\t\"com.cc.core.wechat.invoke." + it.name.substring(0,
-                it.name.lastIndexOf('.kt')) + "\",\n")
-          }
-        }
-    file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
-        withWriterAppend('UTF-8') { writer ->
-          writer.write("\t};\n}")
-        }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriter('UTF-8') { writer ->
+                    writer.write("package com.cc.core.actions;\n\npublic class ActionNames {\n" +
+                            "\tpublic static final String[] ACTION_NAMES = new String[]{\n")
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
+                        writer.write("\t\t\"com.cc.core.actions.shell.impl." + it.name.substring(0,
+                                it.name.lastIndexOf('.java')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.kt").each {
+                        writer.write("\t\t\"com.cc.core.actions.accessibility.impl." + it.name.substring(0,
+                                it.name.lastIndexOf('.kt')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/command/impl').include("*.kt").each {
+                        writer.write("\t\t\"com.cc.core.command.impl." + it.name.substring(0,
+                                it.name.lastIndexOf('.kt')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/wechat/invoke').include("*.kt").each {
+                        writer.write("\t\t\"com.cc.core.wechat.invoke." + it.name.substring(0,
+                                it.name.lastIndexOf('.kt')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    writer.write("\t};\n}")
+                }
 
-    //        file('src/main/assets/actions.ini').withWriter('UTF-8') { writer ->
-    //            fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
-    //                writer.write("com.cc.core.actions.shell.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
-    //            }
-    //        }
-    //
-    //        file('src/main/assets/actions.ini').withWriterAppend('UTF-8') { writer ->
-    //            fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.java").each {
-    //                writer.write("com.cc.core.actions.accessibility.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
-    //            }
-    //        }
-  }
+        //        file('src/main/assets/actions.ini').withWriter('UTF-8') { writer ->
+        //            fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
+        //                writer.write("com.cc.core.actions.shell.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
+        //            }
+        //        }
+        //
+        //        file('src/main/assets/actions.ini').withWriterAppend('UTF-8') { writer ->
+        //            fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.java").each {
+        //                writer.write("com.cc.core.actions.accessibility.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
+        //            }
+        //        }
+    }
 }
 
 task genWechatHooks(dependsOn: mkGenDirs) {
 
-  doLast {
-    file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriter('UTF-8') { writer ->
-      writer.write("package com.cc.core.wechat;\n\npublic class WechatHooks {\n" +
-          "\tpublic static String[] HOOKS = new String[] {\n")
+    doLast {
+        file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriter('UTF-8') { writer ->
+            writer.write("package com.cc.core.wechat;\n\npublic class WechatHooks {\n" +
+                    "\tpublic static String[] HOOKS = new String[] {\n")
+        }
+        file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriterAppend('UTF-8') { writer ->
+            fileTree('src/main/java/com/cc/core/wechat/hook').include("*.java").each {
+                writer.write(
+                        "\t\t\"com.cc.core.wechat.hook." + it.name.substring(0, it.name.lastIndexOf('.java')) +
+                                "\",\n")
+            }
+        }
+        file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriterAppend('UTF-8') { writer ->
+            writer.write("\t};\n}")
+        }
     }
-    file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriterAppend('UTF-8') { writer ->
-      fileTree('src/main/java/com/cc/core/wechat/hook').include("*.java").each {
-        writer.write(
-            "\t\t\"com.cc.core.wechat.hook." + it.name.substring(0, it.name.lastIndexOf('.java')) +
-                "\",\n")
-      }
-    }
-    file('build/generated/source/mmctrl/com/cc/core/wechat/WechatHooks.java').withWriterAppend('UTF-8') { writer ->
-      writer.write("\t};\n}")
-    }
-  }
 }
 
 preBuild.dependsOn genActions
 preBuild.dependsOn genWechatHooks
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.android.support:appcompat-v7:27.1.1'
-  compile 'com.android.support:recyclerview-v7:27.+'
-  testCompile 'junit:junit:4.12'
-  androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  })
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:recyclerview-v7:27.+'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 
-  compile 'org.greenrobot:greendao:3.2.2'
-  compile 'com.google.code.gson:gson:2.8.5'
-  provided 'de.robv.android.xposed:api:82'
-  provided 'de.robv.android.xposed:api:82:sources'
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'com.google.code.gson:gson:2.8.5'
+    provided 'de.robv.android.xposed:api:82'
+    provided 'de.robv.android.xposed:api:82:sources'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile 'com.squareup.okhttp3:okhttp:3.12.1'
 }
 repositories {
-  mavenCentral()
+    mavenCentral()
 }

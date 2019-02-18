@@ -3,6 +3,7 @@ package com.cc.core.utils;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 
 public class StrUtils {
     private static final Gson gson = new Gson();

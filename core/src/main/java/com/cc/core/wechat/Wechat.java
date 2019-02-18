@@ -102,8 +102,8 @@ public class Wechat {
 
     public static class HookMethodFunctions {
 
-        public static String KernelClass ="";
-        public static String LOGGER ="";
+        public static String KernelClass = "";
+        public static String LOGGER = "";
         public static String UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
         public static String UploadCrashLogFunc = "fV";
         public static String UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
@@ -118,14 +118,16 @@ public class Wechat {
         public static String UploadCrashStackReportUploaderFunc = "a";
         public static String SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
         public static String SaveAnrWatchDogSetHandlerFunc = "a";
-        public static String  SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
+        public static String SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
         public static String MMCrashReporter = "com.tencent.mm.app.k";
         public static String ConstantsStorage = "com.tencent.mm.storage.ac";
         public static String WechatStorageCrashPath = "dFK";
+
         public static void init(String version) {
             Sqlite.init(version);
             Account.init(version);
             NetScene.init(version);
+            Message.init(version);
 
             switch (version) {
                 case "7.0.3":
@@ -297,6 +299,12 @@ public class Wechat {
             public static String FriendRequestNetSceneClass;
             public static String SearchFriendNetSceneClass;
 
+            public static String NetSceneSendMsgClass = "";
+            public static String NetSceneUploadMsgImg = "";
+            public static String NetSceneUploadMsgVideo = "";
+            public static String UploadMsgVideoHandler = "";
+            public static int NetSceneUploadMsgImgMaskResId;
+
             static void init(String version) {
                 switch (version) {
                     case "6.7.2":
@@ -307,10 +315,62 @@ public class Wechat {
                         NetSceneQueueClass = "com.tencent.mm.af.p";
                         NetSceneEndFunc = "onSceneEnd";
                         FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
-                        SearchFriendNetSceneClass = "com.tencent.mm.plugin.brandservice.b.h";
+                        SearchFriendNetSceneClass = "com.tencent.mm.plugin.messenger.a.f";
+                        // SearchFriendNetSceneClass = "com.tencent.mm.plugin.brandservice.b.h";
+
+                        NetSceneSendMsgClass = "com.tencent.mm.modelmulti.h";
+                        NetSceneUploadMsgImg = "com.tencent.mm.ap.l";
+                        NetSceneUploadMsgImgMaskResId = 2130838032;
+                        NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
+                        UploadMsgVideoHandler = "com.tencent.mm.sdk.f.e";
                         break;
                     case "7.0.3":
+                        GetNetSceneQueueClass = "com.tencent.mm.model.av";
+                        GetNetSceneQueueFunc = "Pw";
+                        NetSceneEnqueueFunc = "a";
+                        NetSceneRequestClass = "com.tencent.mm.ah.m";
+                        NetSceneQueueClass = "com.tencent.mm.ah.p";
                         NetSceneEndFunc = "onSceneEnd";
+                        FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
+                        SearchFriendNetSceneClass = "com.tencent.mm.plugin.messenger.a.f";
+
+                        NetSceneSendMsgClass = "com.tencent.mm.modelmulti.h";
+                        NetSceneUploadMsgImg = "com.tencent.mm.as.l";
+                        NetSceneUploadMsgImgMaskResId = 2130838032;
+                        NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
+                        UploadMsgVideoHandler = "com.tencent.mm.sdk.g.d";
+                        break;
+                }
+            }
+        }
+
+        public static class Message {
+            public static String MessageSyncExtensionClass = "";
+            public static String MessageSyncExtensionProcessCommonMessageFunc = "";
+            public static String SyncMessageNotifierClass = "";
+            public static String ProtocolAddMsgInfoClass = "";
+
+            public static String MessageInfoFieldId = "";
+            public static String MessageContentFieldId = "";
+            public static String MessageToFieldId = "";
+            public static String MessageTypeFieldId = "";
+            public static String MessageDatetimeFieldId = "";
+            public static void init(String version) {
+
+                switch (version) {
+                    case "6.7.2":
+                        MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
+                        MessageSyncExtensionProcessCommonMessageFunc = "a";
+                        SyncMessageNotifierClass = "com.tencent.mm.plugin.messenger.foundation.a.t";
+                        ProtocolAddMsgInfoClass = "com.tencent.mm.af.e.a";
+
+                        MessageInfoFieldId = "dsF";
+                        MessageContentFieldId = "rMB";
+                        MessageToFieldId = "rMz";
+                        MessageTypeFieldId = "knu";
+                        MessageDatetimeFieldId = "mkk";
+                        break;
+                    case "7.0.3":
                         break;
                 }
             }

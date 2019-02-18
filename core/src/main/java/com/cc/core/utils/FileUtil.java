@@ -41,7 +41,7 @@ import static android.os.Environment.MEDIA_MOUNTED;
 
 public class FileUtil {
 
-    public final static String ROOT_DIR = "/clockin";
+    public final static String ROOT_DIR = "/mmctrl";
     public final static String CACHE_DIR = "cache";
     public final static String LOG_DIR = "logs";
     public final static String IMAGE_CACHE = "img";//存储的文件夹
