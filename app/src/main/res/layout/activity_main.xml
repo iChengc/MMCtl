@@ -39,7 +39,7 @@
             android:padding="8dp"
             android:text="获取"
             />
-        <TextView
+        <ListView
             android:id="@+id/wechatInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

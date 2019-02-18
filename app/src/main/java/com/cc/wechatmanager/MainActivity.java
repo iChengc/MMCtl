@@ -5,13 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
+import com.cc.core.data.db.model.Fridend;
 import com.cc.core.log.KLog;
 
+import com.cc.core.utils.StrUtils;
+import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+        findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Messenger.sendCommand(genCommand("addFriend"), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                        List<Fridend> contacts = StrUtils.fromJson(result, new TypeToken<List<Fridend>>(){}.getType());
+                        BaseAdapter adapter = new ContactsAdapter(contacts);
+                        ListView lv = findViewById(R.id.wechatInfo);
+                        lv.setAdapter(adapter);
+                        KLog.e("---->>.", "addFriend Result:" + result);
+                    }
+                });
+            }
+        });
        /* getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -119,17 +139,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private Command genCommand(String key) {
-        Command c = new Command();
-        c.setKey(key);
-        List<Object> args = new ArrayList<>();
-        args.add("wxfake");
-        args.add("wxfake1");
-        args.add("winnielala0323");
-        c.setArgs(args);
-        return c;
     }
 
     private Command genCommand(String key, Object... data) {
