@@ -85,5 +85,89 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====+++++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
                     }
                 });
+
+        /**
+         * l(int paramInt1, int paramInt2)
+         *
+         *
+         *   public l(int paramInt1, int paramInt2, byte paramByte)
+         *
+         *
+         *   public l(int paramInt1, String paramString1, String paramString2, String paramString3, int paramInt2, com.tencent.mm.ah.g paramG, int paramInt3, String paramString4, String paramString5, boolean paramBoolean, int paramInt4)
+         *
+         *
+         *   public l(int paramInt1, String paramString1, String paramString2, String paramString3, int paramInt2, final com.tencent.mm.ah.g paramG, int paramInt3, String paramString4, String paramString5, boolean paramBoolean, int paramInt4, int paramInt5, float paramFloat1, float paramFloat2)
+         *
+         *
+         *   public l(long paramLong, String paramString1, String paramString2, String paramString3, int paramInt1, final com.tencent.mm.ah.g paramG, int paramInt2, String paramString4, String paramString5, int paramInt3)
+         *
+         *   public l(String paramString1, String paramString2, String paramString3, int paramInt)
+         *   {
+         *     this(paramString1, paramString2, paramString3, paramInt, "", "");
+         *   }
+         *
+         *   public l(String paramString1, String paramString2, String paramString3, int paramInt1, com.tencent.mm.ah.g paramG, int paramInt2, a paramA, int paramInt3)
+         *   {
+         */
+
+        // int paramInt1, String paramString1, String paramString2, String paramString3, int paramInt2, com.tencent.mm.ah.g paramG, int paramInt3, String paramString4, String paramString5, boolean paramBoolean, int paramInt4
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, String.class, String.class, String.class,
+                int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
+                XposedHelpers.findClass("com.tencent.mm.as.l$a", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" : o.toString());
+                        }
+                    }
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, String.class, String.class, String.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" : o.toString());
+                        }
+                    }
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, long.class, String.class, String.class, String.class,
+                int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
+                String.class, String.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
+                        }
+                    }
+                });
+        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, int.class, String.class, String.class, String.class,
+                int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
+                String.class, String.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
+                        }
+                    }
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, int.class, String.class, String.class, String.class,
+                int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
+                String.class, String.class, boolean.class, int.class, int.class, float.class, float.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
+                        }
+                    }
+                });*/
     }
 }

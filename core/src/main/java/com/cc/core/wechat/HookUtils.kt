@@ -53,12 +53,11 @@ class HookUtils {
         }
 
         fun getLoginUserInfo(id: Int): Any {
-            return getLoginUserInfo(id, null)
+            return getLoginUserInfo(id, -1)
         }
 
-        fun getLoginUserInfo(id: Int, defaultValue: Any?): Any {
+        fun getLoginUserInfo(id: Int, defaultValue: Any): Any {
             val coreStorageObject = callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetConfigManagerFunc)
-
 
             return callMethod(coreStorageObject, ConfigStorageGetFunc, id, defaultValue)
         }
@@ -70,9 +69,9 @@ class HookUtils {
         fun getLoginUserRegionCode(): String {
             val countryCode = getLoginUserInfo(UserInfoId_CountryCode) as String
             val provinceCode = getLoginUserInfo(UserInfoId_ProvinceCode) as String
-            val cityCode = getLoginUserInfo(UserInfoId_CityCode) as String
+            val cityCode = getLoginUserInfo(UserInfoId_CityCode) as Int
 
-            return encodeRegionCode(countryCode, provinceCode, cityCode)
+            return encodeRegionCode(countryCode, provinceCode, String.format("%d", cityCode) )
         }
 
         private fun encodeRegionCode(countryCode: String, provinceCode: String, cityCode: String): String {
@@ -99,7 +98,6 @@ class HookUtils {
                 executeRawQuery("SELECT value FROM userinfo2 WHERE sid = 'USERINFO_LAST_LOGIN_AVATAR_PATH_STRING'").use { cursor ->
                     if (cursor.moveToNext()) {
                         avatar = cursor.getString(0)
-                        KLog.e(">>>>> avatar:$avatar")
                         if (!TextUtils.isEmpty(avatar) && !avatar.startsWith("user_hd")) {
                             val file = FileUtil.copyFile(avatar, FileUtil.getImageCacheDirectory().absolutePath)
                             if (file != null) {

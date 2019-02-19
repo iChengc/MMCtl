@@ -9,12 +9,17 @@ import android.view.View;
 
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.cc.core.actions.ActionResult;
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
+import com.cc.core.data.db.model.User;
 import com.cc.core.log.KLog;
 
 import com.cc.core.utils.StrUtils;
@@ -22,7 +27,9 @@ import com.cc.core.wechat.model.ImageMessage;
 import com.cc.core.wechat.model.TextMessage;
 import com.cc.core.wechat.model.VideoMessage;
 import com.cc.wechatmanager.model.ContactsResult;
+import com.cc.wechatmanager.model.LoginUserResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,9 +48,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Messenger.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
-                    public void onResult(String result) {
+                    public void onResult(final String result) {
 
                         KLog.e("---->>.", "getLoginUserInfo Result:" + result);
+                        contactListView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                LoginUserResult result1 = StrUtils.fromJson(result, LoginUserResult.class);
+                                if (result1.isSuccess()) {
+                                    View v = findViewById(R.id.wechatInfo);
+                                    TextView tv = v.findViewById(R.id.name);
+                                    tv.setText(result1.getData().getNickname());
+                                    tv = v.findViewById(R.id.wechatId);
+                                    tv.setText(result1.getData().getWechatId());
+                                    ImageView iv = v.findViewById(R.id.avatar);
+                                    Glide.with(MainActivity.this).load(new File(result1.getData().getAvatar())).into(iv);
+                                }
+                            }
+                        });
+
 
                     }
                 });
@@ -186,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         msg.setCreateTime(System.currentTimeMillis());
                         msg.setTarget(to);
                         msg.setImageUrl(content);
+                        msg.setFrom("denghongxing997955");
 
                         Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
                             @Override

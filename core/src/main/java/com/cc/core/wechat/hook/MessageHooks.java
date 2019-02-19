@@ -17,8 +17,10 @@ import static com.cc.core.wechat.Wechat.HookMethodFunctions.Message.SyncMessageN
 public class MessageHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
+        KLog.e("===>>>>>" + ProtocolAddMsgInfoClass);
         hookMethod(MessageSyncExtensionClass, classLoader, MessageSyncExtensionProcessCommonMessageFunc,
-                findClass(ProtocolAddMsgInfoClass, classLoader), findClass(SyncMessageNotifierClass, classLoader),
+                findClass(ProtocolAddMsgInfoClass, classLoader),
+                findClass(SyncMessageNotifierClass, classLoader),
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {

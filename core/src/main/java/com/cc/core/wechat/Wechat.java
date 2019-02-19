@@ -271,17 +271,17 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "7.0.3":
-                        GetDBHelerFunc = "Qe";
-                        DBRawQueryFunc = "rawQuery";
-                        DBExecSqlFunc = "hN";
-                        DbHelperField = "ewi";
-                        break;
                     case "6.7.2":
                         GetDBHelerFunc = "Dg";
                         DBRawQueryFunc = "rawQuery";
                         DBExecSqlFunc = "gf";
                         DbHelperField = "dBo";
+                        break;
+                    case "7.0.3":
+                        GetDBHelerFunc = "Qe";
+                        DBRawQueryFunc = "rawQuery";
+                        DBExecSqlFunc = "hN";
+                        DbHelperField = "evI";
                         break;
                 }
             }
@@ -295,6 +295,7 @@ public class Wechat {
             public static String NetSceneEnqueueFunc;
             public static String NetSceneEndFunc;
             public static String NetSceneQueueClass;
+            public static String NetSceneRemoteRespClass = "";
 
             public static String FriendRequestNetSceneClass;
             public static String SearchFriendNetSceneClass;
@@ -317,6 +318,7 @@ public class Wechat {
                         FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
                         SearchFriendNetSceneClass = "com.tencent.mm.plugin.messenger.a.f";
                         // SearchFriendNetSceneClass = "com.tencent.mm.plugin.brandservice.b.h";
+                        NetSceneRemoteRespClass = "com.tencent.mm.af.v";
 
                         NetSceneSendMsgClass = "com.tencent.mm.modelmulti.h";
                         NetSceneUploadMsgImg = "com.tencent.mm.ap.l";
@@ -333,10 +335,11 @@ public class Wechat {
                         NetSceneEndFunc = "onSceneEnd";
                         FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
                         SearchFriendNetSceneClass = "com.tencent.mm.plugin.messenger.a.f";
+                        NetSceneRemoteRespClass = "com.tencent.mm.ah.v";
 
                         NetSceneSendMsgClass = "com.tencent.mm.modelmulti.h";
                         NetSceneUploadMsgImg = "com.tencent.mm.as.l";
-                        NetSceneUploadMsgImgMaskResId = 2130838032;
+                        NetSceneUploadMsgImgMaskResId = 2130838200;
                         NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.g.d";
                         break;
@@ -371,6 +374,16 @@ public class Wechat {
                         MessageDatetimeFieldId = "mkk";
                         break;
                     case "7.0.3":
+                        MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
+                        MessageSyncExtensionProcessCommonMessageFunc = "a";
+                        SyncMessageNotifierClass = "com.tencent.mm.plugin.messenger.foundation.a.t";
+                        ProtocolAddMsgInfoClass = "com.tencent.mm.ah.e.a";
+
+                        MessageInfoFieldId = "dsF";
+                        MessageContentFieldId = "rMB";
+                        MessageToFieldId = "rMz";
+                        MessageTypeFieldId = "knu";
+                        MessageDatetimeFieldId = "mkk";
                         break;
                 }
             }

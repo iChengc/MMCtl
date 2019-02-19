@@ -41,7 +41,7 @@ class AddFriendAction : Action {
 
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
-            val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
+            /* val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
             var wechatId: String
             if (jsonObject.optInt("eWZ") == 1) {
                 wechatId = jsonObject.optJSONObject("sgh").optString("sVc")
@@ -58,6 +58,24 @@ class AddFriendAction : Action {
                 lock.offer(wechatId)
             } else {
                 verifyUser(wechatId, jsonObject.optString("sqc"))
+            }*/
+            val jsonObject = JSONObject(response).optJSONObject("feW").optJSONObject("fdy")
+            var wechatId: String
+            if (jsonObject.optInt("gfi") == 1) {
+                wechatId = jsonObject.optJSONObject("vqP").optString("wiP")
+                if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
+                    val sb = StringBuilder(wechatId)
+                    sb.insert(4, "_")
+                    wechatId = sb.toString()
+                }
+            } else {
+                wechatId = jsonObject.optJSONObject("vrl").optString("wiP")
+            }
+
+            if (TextUtils.isEmpty(wechatId)) {
+                lock.offer(wechatId)
+            } else {
+                verifyUser(wechatId, jsonObject.optString("vAm"))
             }
         }
         return lock.poll(30, TimeUnit.SECONDS)

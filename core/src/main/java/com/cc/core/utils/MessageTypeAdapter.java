@@ -1,5 +1,6 @@
 package com.cc.core.utils;
 
+import com.cc.core.wechat.WechatMessageType;
 import com.cc.core.wechat.model.ImageMessage;
 import com.cc.core.wechat.model.TextMessage;
 import com.cc.core.wechat.model.VideoMessage;
@@ -47,9 +48,9 @@ public class MessageTypeAdapter implements JsonDeserializer<WeChatMessage>,
 
     private Type getMessageActualType(int type) {
         switch (type) {
-            case 2:
+            case WechatMessageType.IMAGE:
                 return ImageMessage.class;
-            case 3:
+            case WechatMessageType.VIDEO:
                 return VideoMessage.class;
             default:
                 return TextMessage.class;

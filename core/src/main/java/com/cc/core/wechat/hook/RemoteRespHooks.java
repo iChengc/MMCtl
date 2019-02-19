@@ -12,18 +12,21 @@ import java.lang.reflect.Field;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 
+import static com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.NetSceneRemoteRespClass;
+
 public class RemoteRespHooks extends BaseXposedHook {
     private static SparseArray<OnResponseListener> responseListeners = new SparseArray<>();
 
     @Override
     public void hook(ClassLoader classLoader) {
             hookMethod(
-                    "com.tencent.mm.af.v",
+                    NetSceneRemoteRespClass,
                     classLoader,
                     "a",
                     int.class,
                     byte[].class,
                     byte[].class,
+                    long.class,
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
