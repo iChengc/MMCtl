@@ -355,6 +355,7 @@ public class Wechat {
 
             public static String MessageInfoFieldId = "";
             public static String MessageContentFieldId = "";
+            public static String MessageFromFieldId = "";
             public static String MessageToFieldId = "";
             public static String MessageTypeFieldId = "";
             public static String MessageDatetimeFieldId = "";
@@ -379,11 +380,12 @@ public class Wechat {
                         SyncMessageNotifierClass = "com.tencent.mm.plugin.messenger.foundation.a.t";
                         ProtocolAddMsgInfoClass = "com.tencent.mm.ah.e.a";
 
-                        MessageInfoFieldId = "dsF";
-                        MessageContentFieldId = "rMB";
-                        MessageToFieldId = "rMz";
-                        MessageTypeFieldId = "knu";
-                        MessageDatetimeFieldId = "mkk";
+                        MessageInfoFieldId = "emv";
+                        MessageContentFieldId = "uUw";
+                        MessageToFieldId = "uUu";
+                        MessageTypeFieldId = "mxa";
+                        MessageDatetimeFieldId = "ozl";
+                        MessageFromFieldId = "";
                         break;
                 }
             }

@@ -1,5 +1,7 @@
 package com.cc.core.utils;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -52,5 +54,13 @@ public class StrUtils {
         }
 
         return s;
+    }
+
+    public static boolean isGroupWechatId(String wechatId) {
+        if (TextUtils.isEmpty(wechatId)) {
+            return false;
+        }
+
+        return wechatId.endsWith("@chatroom");
     }
 }
