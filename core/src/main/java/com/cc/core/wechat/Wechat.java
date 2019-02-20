@@ -24,6 +24,7 @@ public class Wechat {
     private static List<BaseXposedHook> hooks = new ArrayList<>();
 
     public static String LoginWechatId;
+    public static String WechatVersion;
 
     private void Wechat() {
     }
@@ -67,10 +68,10 @@ public class Wechat {
             if (context == null) {
                 context = (Context) callMethod(callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread", new Object[0]), "getSystemContext", new Object[0]);
             }
-            String versionName = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+            WechatVersion = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
 
-            HookMethodFunctions.init(versionName);
-            Resources.init(versionName);
+            HookMethodFunctions.init(WechatVersion);
+            Resources.init(WechatVersion);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -41,41 +41,44 @@ class AddFriendAction : Action {
 
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
-            /* val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
-            var wechatId: String
-            if (jsonObject.optInt("eWZ") == 1) {
-                wechatId = jsonObject.optJSONObject("sgh").optString("sVc")
-                if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
-                    val sb = StringBuilder(wechatId)
-                    sb.insert(4, "_")
-                    wechatId = sb.toString()
+            if ("6.7.2".equals(Wechat.WechatVersion)) {
+                val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
+                var wechatId: String
+                if (jsonObject.optInt("eWZ") == 1) {
+                    wechatId = jsonObject.optJSONObject("sgh").optString("sVc")
+                    if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
+                        val sb = StringBuilder(wechatId)
+                        sb.insert(4, "_")
+                        wechatId = sb.toString()
+                    }
+                } else {
+                    wechatId = jsonObject.optJSONObject("sgx").optString("sVc")
                 }
-            } else {
-                wechatId = jsonObject.optJSONObject("sgx").optString("sVc")
-            }
 
-            if (TextUtils.isEmpty(wechatId)) {
-                lock.offer(wechatId)
-            } else {
-                verifyUser(wechatId, jsonObject.optString("sqc"))
-            }*/
-            val jsonObject = JSONObject(response).optJSONObject("feW").optJSONObject("fdy")
-            var wechatId: String
-            if (jsonObject.optInt("gfi") == 1) {
-                wechatId = jsonObject.optJSONObject("vqP").optString("wiP")
-                if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
-                    val sb = StringBuilder(wechatId)
-                    sb.insert(4, "_")
-                    wechatId = sb.toString()
+                if (TextUtils.isEmpty(wechatId)) {
+                    lock.offer(wechatId)
+                } else {
+                    verifyUser(wechatId, jsonObject.optString("sqc"))
                 }
-            } else {
-                wechatId = jsonObject.optJSONObject("vrl").optString("wiP")
-            }
+            } else if ("7.0.3".equals(Wechat.WechatVersion)) {
+                val jsonObject = JSONObject(response).optJSONObject("feW").optJSONObject("fdy")
+                var wechatId: String
+                if (jsonObject.optInt("gfi") == 1) {
+                    wechatId = jsonObject.optJSONObject("vqP").optString("wiP")
+                    if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
+                        val sb = StringBuilder(wechatId)
+                        sb.insert(4, "_")
+                        wechatId = sb.toString()
+                    }
+                } else {
+                    wechatId = jsonObject.optJSONObject("vrl").optString("wiP")
+                }
 
-            if (TextUtils.isEmpty(wechatId)) {
-                lock.offer(wechatId)
-            } else {
-                verifyUser(wechatId, jsonObject.optString("vAm"))
+                if (TextUtils.isEmpty(wechatId)) {
+                    lock.offer(wechatId)
+                } else {
+                    verifyUser(wechatId, jsonObject.optString("vAm"))
+                }
             }
         }
         return lock.poll(30, TimeUnit.SECONDS)
