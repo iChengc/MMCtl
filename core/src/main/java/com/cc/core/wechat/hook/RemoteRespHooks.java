@@ -5,6 +5,7 @@ import android.util.SparseArray;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.lang.reflect.Field;
@@ -19,6 +20,33 @@ public class RemoteRespHooks extends BaseXposedHook {
 
     @Override
     public void hook(ClassLoader classLoader) {
+        if ("6.7.2".equals(Wechat.WechatVersion)) {
+            hookMethod(
+                    NetSceneRemoteRespClass,
+                    classLoader,
+                    "a",
+                    int.class,
+                    byte[].class,
+                    byte[].class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            KLog.e("bufToResp: " + "{\"response\": " + StrUtils.toJson(param.thisObject) + ", \"stackTrace\": \"" + Log.getStackTraceString(new Exception()) + "\"}");
+                            try {
+                                int type = XposedHelpers.getIntField(param.thisObject, "type");
+                                OnResponseListener l = responseListeners.get(type);
+                                if (l != null) {
+                                    responseListeners.remove(type);
+                                    l.onResponse(StrUtils.toJson(param.thisObject));
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    });
+        } else if ("7.0.3".equals(Wechat.WechatVersion)) {
             hookMethod(
                     NetSceneRemoteRespClass,
                     classLoader,
@@ -45,7 +73,7 @@ public class RemoteRespHooks extends BaseXposedHook {
                         }
 
                     });
-
+        }
     }
 
     public static void registerOnResponseListener(int type, OnResponseListener listener) {

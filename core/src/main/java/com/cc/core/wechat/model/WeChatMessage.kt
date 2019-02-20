@@ -9,4 +9,6 @@ interface WeChatMessage {
     fun setType(type: Int)
     fun getCreateTime(): Long
     fun setCreateTime(createTime: Long)
+    fun setMsgServId(servId: String?)
+    fun getMsgServId(): String?
 }

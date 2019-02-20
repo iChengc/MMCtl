@@ -86,6 +86,16 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
+       /* XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startC2CDownload",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });*/
+
         /**
          * l(int paramInt1, int paramInt2)
          *
@@ -111,7 +121,7 @@ public class TestHooks extends BaseXposedHook {
          */
 
         // int paramInt1, String paramString1, String paramString2, String paramString3, int paramInt2, com.tencent.mm.ah.g paramG, int paramInt3, String paramString4, String paramString5, boolean paramBoolean, int paramInt4
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, String.class, String.class, String.class,
+        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, String.class, String.class, String.class,
                 int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
                 XposedHelpers.findClass("com.tencent.mm.as.l$a", Wechat.WECHAT_CLASSLOADER), int.class,
                 new XC_MethodHook() {
@@ -145,7 +155,7 @@ public class TestHooks extends BaseXposedHook {
                         }
                     }
                 });
-        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, int.class, String.class, String.class, String.class,
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, int.class, String.class, String.class, String.class,
                 int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
                 String.class, String.class, int.class,
                 new XC_MethodHook() {
@@ -156,10 +166,10 @@ public class TestHooks extends BaseXposedHook {
                             KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
                         }
                     }
-                });
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.as.l", classLoader, int.class, String.class, String.class, String.class,
-                int.class, XposedHelpers.findClass("com.tencent.mm.ah.g", Wechat.WECHAT_CLASSLOADER), int.class,
-                String.class, String.class, boolean.class, int.class, int.class, float.class, float.class,
+                });*/
+        XposedHelpers.findAndHookMethod("com.tencent.mm.ap.d", classLoader, "a", long.class, long.class, int.class, Object.class,
+                int.class, XposedHelpers.findClass("com.tencent.mm.ap.d$a", Wechat.WECHAT_CLASSLOADER), int.class,
+
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -168,6 +178,18 @@ public class TestHooks extends BaseXposedHook {
                             KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
                         }
                     }
-                });*/
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.ap.k", classLoader, long.class, long.class, int.class,
+                XposedHelpers.findClass("com.tencent.mm.af.g", Wechat.WECHAT_CLASSLOADER), int.class,
+
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
+                        }
+                    }
+                });
     }
 }

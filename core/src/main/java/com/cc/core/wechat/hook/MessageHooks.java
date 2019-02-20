@@ -4,9 +4,15 @@ import android.util.Log;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.MessageUtils;
 import com.cc.core.wechat.Wechat;
+import com.cc.core.wechat.WechatMessageType;
+import com.cc.core.wechat.model.ImageMessage;
 import com.cc.core.wechat.model.TextMessage;
+import com.cc.core.wechat.model.WeChatMessage;
 import com.cc.core.xposed.BaseXposedHook;
+
+import java.io.File;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
@@ -37,7 +43,6 @@ public class MessageHooks extends BaseXposedHook {
                         obj = XposedHelpers.getObjectField(messageInfo, Wechat.HookMethodFunctions.Message.MessageContentFieldId);
                         if (StrUtils.isGroupWechatId(to)) {
                             String[] info = obj == null ? new String[]{"", ""} : obj.toString().split(":", 2);
-                            Log.e("====>>>>>>", obj.toString());
                             from = info[0];
                             content = info.length > 1 ? info[1] : "";
                             if (content.charAt(0) == '\n') {
@@ -49,14 +54,28 @@ public class MessageHooks extends BaseXposedHook {
                         }
                         long dateTime = XposedHelpers.getLongField(messageInfo, Wechat.HookMethodFunctions.Message.MessageDatetimeFieldId);
 
-                        TextMessage msg = new TextMessage();
+                        obj = XposedHelpers.getObjectField(messageInfo, Wechat.HookMethodFunctions.Message.MessageServIdFieldId);
+                        String msgservId = obj == null ? "" : obj.toString();
+
+                        WeChatMessage msg;
+                        if (msgType == WechatMessageType.IMAGE) {
+                            msg = new ImageMessage();
+                            ((ImageMessage) msg).setImageUrl(content);
+                        } else {
+                            msg = new TextMessage();
+                            ((TextMessage) msg).setContent(content);
+                        }
                         msg.setFrom(from);
                         msg.setTarget(to);
-                        msg.setContent(content);
                         msg.setCreateTime(dateTime * 1000);
                         msg.setType(msgType);
-                        KLog.e("message", StrUtils.toJson(msg));
+                        msg.setMsgServId(msgservId);
 
+                        if (msg instanceof ImageMessage) {
+                            ((ImageMessage) msg).setImageUrl(MessageUtils.downloadImage((ImageMessage) msg));
+                            KLog.e("message:" + new File(((ImageMessage) msg).getImageUrl()).exists(), StrUtils.toJson(msg));
+                        }
+                        KLog.e("message", StrUtils.toJson(msg));
                     }
                 });
     }

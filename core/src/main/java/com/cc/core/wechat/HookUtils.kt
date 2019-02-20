@@ -6,6 +6,7 @@ import com.cc.core.data.db.model.Friend
 import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.StrUtils
+import com.cc.core.wechat.Wechat.HookMethodFunctions.*
 
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.ConfigStorageGetFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.AccountStorage
@@ -19,7 +20,6 @@ import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_CityCode
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_CountryCode
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_ProvinceCode
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_WechatId
-import com.cc.core.wechat.Wechat.HookMethodFunctions.KernelClass
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBExecSqlFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBRawQueryFunc
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DbHelperField
@@ -29,6 +29,7 @@ import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findClass
 import de.robv.android.xposed.XposedHelpers.getObjectField
+import java.util.HashMap
 
 class HookUtils {
     companion object {
@@ -123,8 +124,16 @@ class HookUtils {
             callMethod(getNetscenQueue(), NetSceneEnqueueFunc, request, type)
         }
 
-        fun downloadVideo(msgInfo:String) {
 
+        fun xmlToMap(xml: String, rootNodeName: String): Map<String, String> {
+            val rawMap = callStaticMethod(
+                    findClass(commonWechatSdkXmlParserClass, Wechat.WECHAT_CLASSLOADER),
+                    commonWechatSdkXmlParserToMapFunc,
+                    xml,
+                    rootNodeName
+            )
+
+            return if (rawMap == null) HashMap() else rawMap as Map<String, String>
         }
     }
 }

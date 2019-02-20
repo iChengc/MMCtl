@@ -124,6 +124,11 @@ public class Wechat {
         public static String ConstantsStorage = "com.tencent.mm.storage.ac";
         public static String WechatStorageCrashPath = "dFK";
 
+
+
+        public static String commonWechatSdkXmlParserClass = "";
+        public static String commonWechatSdkXmlParserToMapFunc = "";
+
         public static void init(String version) {
             Sqlite.init(version);
             Account.init(version);
@@ -152,6 +157,10 @@ public class Wechat {
                     MMCrashReporter = "com.tencent.mm.app.k";
                     ConstantsStorage = "com.tencent.mm.storage.ac";
                     WechatStorageCrashPath = "eEe";
+
+                    //TODO: support 7.0.3
+                    commonWechatSdkXmlParserClass = "";
+                    commonWechatSdkXmlParserToMapFunc = "";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -174,6 +183,9 @@ public class Wechat {
                     MMCrashReporter = "com.tencent.mm.app.k";
                     ConstantsStorage = "com.tencent.mm.storage.ac";
                     WechatStorageCrashPath = "dFK";
+
+                    commonWechatSdkXmlParserClass = "com.tencent.mm.sdk.platformtools.bm";
+                    commonWechatSdkXmlParserToMapFunc = "r";
                     break;
             }
         }
@@ -306,6 +318,8 @@ public class Wechat {
             public static String NetSceneUploadMsgVideo = "";
             public static String UploadMsgVideoHandler = "";
             public static int NetSceneUploadMsgImgMaskResId;
+            public static String ModelCdnTranHelper = "";
+            public static String ModelCdnTranHelperGetFileKeyFunc = "";
 
             static void init(String version) {
                 switch (version) {
@@ -326,6 +340,8 @@ public class Wechat {
                         NetSceneUploadMsgImgMaskResId = 2130838032;
                         NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.f.e";
+                        ModelCdnTranHelper = "com.tencent.mm.modelcdntran.d";
+                        ModelCdnTranHelperGetFileKeyFunc = "a";
                         break;
                     case "7.0.3":
                         GetNetSceneQueueClass = "com.tencent.mm.model.av";
@@ -343,6 +359,11 @@ public class Wechat {
                         NetSceneUploadMsgImgMaskResId = 2130838200;
                         NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.g.d";
+
+
+                        //TODO: support 7.0.3
+                        ModelCdnTranHelper = "com.tencent.mm.modelcdntran.d";
+                        ModelCdnTranHelperGetFileKeyFunc = "a";
                         break;
                 }
             }
@@ -360,6 +381,7 @@ public class Wechat {
             public static String MessageToFieldId = "";
             public static String MessageTypeFieldId = "";
             public static String MessageDatetimeFieldId = "";
+            public static String MessageServIdFieldId = "";
             public static void init(String version) {
 
                 switch (version) {
@@ -374,6 +396,7 @@ public class Wechat {
                         MessageToFieldId = "rMz";
                         MessageTypeFieldId = "knu";
                         MessageDatetimeFieldId = "mkk";
+                        MessageServIdFieldId = "rMG";
                         break;
                     case "7.0.3":
                         MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
@@ -386,7 +409,10 @@ public class Wechat {
                         MessageToFieldId = "uUu";
                         MessageTypeFieldId = "mxa";
                         MessageDatetimeFieldId = "ozl";
+
+                        //TODO: support 7.0.3
                         MessageFromFieldId = "";
+                        MessageServIdFieldId = "";
                         break;
                 }
             }
