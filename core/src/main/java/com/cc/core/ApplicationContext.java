@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.app.Application;
 
+import com.cc.core.actions.Actions;
+import com.cc.core.actions.accessibility.WechatAccessibilityService;
+import com.cc.core.actions.shell.impl.EnableAccessibilityAction;
 import com.cc.core.data.db.DaoMaster;
 import com.cc.core.data.db.DaoSession;
 import com.cc.core.data.db.DbService;
 import com.cc.core.log.KLog;
+import com.cc.core.utils.Utils;
 import com.cc.core.wechat.Wechat;
 
 import org.greenrobot.greendao.database.Database;
@@ -32,6 +36,12 @@ public class ApplicationContext {
         WorkerHandler.getInstance().init();
         Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
         KLog.enableLog2Console(KLog.POLICY_MASK);
+    }
+
+    private static void enableAccessibility() {
+        if (!Utils.isStartAccessibilityService(application, WechatAccessibilityService.class.getName())) {
+            KLog.e("Enable accessibility result:" + Actions.Companion.execute(EnableAccessibilityAction.class));
+        }
     }
 
     public static Application application() {
