@@ -54,7 +54,7 @@ class HookUtils {
         }
 
         fun getLoginUserInfo(id: Int): Any {
-            return getLoginUserInfo(id, -1)
+            return getLoginUserInfo(id, "")
         }
 
         fun getLoginUserInfo(id: Int, defaultValue: Any): Any {

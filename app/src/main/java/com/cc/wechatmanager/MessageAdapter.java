@@ -89,16 +89,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     break;
                 case WeChatMessageType.IMAGE:
                     contentView.setText("图片消息：");
-                    Glide.with(imgView.getContext()).load(new File(((ImageMessage) msg).getImageUrl())).centerCrop().placeholder(R.drawable.ic_launcher_foreground).into(imgView);
+                    Glide.with(imgView.getContext()).load(new File(((ImageMessage) msg).getImageUrl())).placeholder(R.mipmap.ic_launcher_round).into(imgView);
                     break;
                 case WeChatMessageType.EMOJI:
                     contentView.setText("emoji表情：");
-                    Glide.with(imgView.getContext()).load(((ImageMessage) msg).getImageUrl()).placeholder(R.drawable.ic_launcher_foreground).into(imgView);
+                    Glide.with(imgView.getContext()).load(((ImageMessage) msg).getImageUrl()).placeholder(R.mipmap.ic_launcher_round).into(imgView);
                     break;
                 case WeChatMessageType.CARD:
                     contentView.setText("卡片消息：\n"
-                        + ((CardMessage) msg).getTitle()
-                        + ((CardMessage) msg).getDescription()
+                        + ((CardMessage) msg).getTitle() + "\n\n"
+                        + ((CardMessage) msg).getDescription() + "\n\n"
                         + "Url:"
                         + ((CardMessage) msg).getUrl());
                     break;
