@@ -1,8 +1,8 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
-import com.cc.core.wechat.WechatMessageType
+import com.cc.core.wechat.WeChatMessageType
 
-class ImageMessage : BaseMessage(WechatMessageType.IMAGE) {
+class ImageMessage : BaseMessage(WeChatMessageType.IMAGE) {
     private var imageUrl: String? = null
 
 

@@ -1,11 +1,11 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
-import com.cc.core.wechat.WechatMessageType
+import com.cc.core.wechat.WeChatMessageType
 
 abstract class BaseMessage : WeChatMessage {
     private var target: String? = null
     private var from: String? = null
-    private var type: Int = WechatMessageType.UNKNOWN
+    private var type: Int = WeChatMessageType.UNKNOWN
     private var createTime: Long = System.currentTimeMillis()
     private var msgServId : String? = null
 

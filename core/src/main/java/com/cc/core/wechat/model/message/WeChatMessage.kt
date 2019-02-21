@@ -1,4 +1,4 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
 interface WeChatMessage {
     fun setFrom(from: String?)

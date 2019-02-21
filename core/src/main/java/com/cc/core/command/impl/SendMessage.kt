@@ -3,20 +3,20 @@ package com.cc.core.command.impl
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 import com.cc.core.actions.Actions
-import com.cc.core.log.KLog
 import com.cc.core.utils.StrUtils
 import com.cc.core.utils.Utils
+import com.cc.core.wechat.MessageUtils
 import com.cc.core.wechat.invoke.SendMessageAction
-import com.cc.core.wechat.model.ImageMessage
-import com.cc.core.wechat.model.VideoMessage
-import com.cc.core.wechat.model.WeChatMessage
+import com.cc.core.wechat.model.message.ImageMessage
+import com.cc.core.wechat.model.message.VideoMessage
+import com.cc.core.wechat.model.message.WeChatMessage
 
 class SendMessage : Action {
     override fun execute(vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
             return ActionResult.failedResult("No message was provided")
         }
-        val gson = Utils.messageDeserializeGson()
+        val gson = MessageUtils.messageDeserializeGson()
 
         val msg : WeChatMessage
         if (args[0] is WeChatMessage) {

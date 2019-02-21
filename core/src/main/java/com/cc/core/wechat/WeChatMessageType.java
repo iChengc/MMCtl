@@ -1,7 +1,7 @@
 package com.cc.core.wechat;
 
-public class WechatMessageType {
-    private WechatMessageType(){}
+public class WeChatMessageType {
+    private WeChatMessageType(){}
     public static final int UNKNOWN = 0;
     public static final int TEXT = 1; // 普通文本消息
     public static final int IMAGE = 3; // 图片消息

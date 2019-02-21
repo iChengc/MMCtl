@@ -1,10 +1,10 @@
-package com.cc.core.utils;
+package com.cc.core.wechat;
 
-import com.cc.core.wechat.WechatMessageType;
-import com.cc.core.wechat.model.ImageMessage;
-import com.cc.core.wechat.model.TextMessage;
-import com.cc.core.wechat.model.VideoMessage;
-import com.cc.core.wechat.model.WeChatMessage;
+import com.cc.core.wechat.model.message.ImageMessage;
+import com.cc.core.wechat.model.message.TextMessage;
+import com.cc.core.wechat.model.message.UnsupportMessage;
+import com.cc.core.wechat.model.message.VideoMessage;
+import com.cc.core.wechat.model.message.WeChatMessage;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -16,17 +16,17 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 public class MessageTypeAdapter implements JsonDeserializer<WeChatMessage>,
-        JsonSerializer<WeChatMessage> {
+    JsonSerializer<WeChatMessage> {
 
     @Override
     public JsonElement serialize(WeChatMessage object, Type interfaceType,
-                                 JsonSerializationContext context) {
+        JsonSerializationContext context) {
         return context.serialize(object);
     }
 
     @Override
     public WeChatMessage deserialize(JsonElement elem, Type interfaceType,
-                                JsonDeserializationContext context) throws JsonParseException {
+        JsonDeserializationContext context) throws JsonParseException {
         JsonObject wrapper = elem.getAsJsonObject();
 
         final JsonElement messageTypeElem = get(wrapper, "type");
@@ -38,22 +38,26 @@ public class MessageTypeAdapter implements JsonDeserializer<WeChatMessage>,
 
     private JsonElement get(final JsonObject wrapper, String memberName) {
         final JsonElement elem = wrapper.get(memberName);
-        if (elem == null)
+        if (elem == null) {
             throw new JsonParseException(
-                    "no '"
-                            + memberName
-                            + "' member found in what was expected to be an interface wrapper");
+                "no '"
+                    + memberName
+                    + "' member found in what was expected to be an interface wrapper");
+        }
         return elem;
     }
 
     private Type getMessageActualType(int type) {
         switch (type) {
-            case WechatMessageType.IMAGE:
+            case WeChatMessageType.IMAGE:
+            case WeChatMessageType.EMOJI:
                 return ImageMessage.class;
-            case WechatMessageType.VIDEO:
+            case WeChatMessageType.VIDEO:
                 return VideoMessage.class;
-            default:
+            case WeChatMessageType.TEXT:
                 return TextMessage.class;
+            default:
+                return UnsupportMessage.class;
         }
     }
 }

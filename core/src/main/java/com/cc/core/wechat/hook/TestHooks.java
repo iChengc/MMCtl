@@ -86,7 +86,7 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-       /* XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startC2CDownload",
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startC2CDownload",
                 XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
                 new XC_MethodHook() {
                     @Override
@@ -94,7 +94,7 @@ public class TestHooks extends BaseXposedHook {
 
                         KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
                     }
-                });*/
+                });
 
         /**
          * l(int paramInt1, int paramInt2)
@@ -167,7 +167,7 @@ public class TestHooks extends BaseXposedHook {
                         }
                     }
                 });*/
-        XposedHelpers.findAndHookMethod("com.tencent.mm.ap.d", classLoader, "a", long.class, long.class, int.class, Object.class,
+        /*XposedHelpers.findAndHookMethod("com.tencent.mm.ap.d", classLoader, "a", long.class, long.class, int.class, Object.class,
                 int.class, XposedHelpers.findClass("com.tencent.mm.ap.d$a", Wechat.WECHAT_CLASSLOADER), int.class,
 
                 new XC_MethodHook() {
@@ -190,6 +190,6 @@ public class TestHooks extends BaseXposedHook {
                             KLog.e("====+++++==>>>>>>  ", o == null ? "null" :  o.toString());
                         }
                     }
-                });
+                });*/
     }
 }

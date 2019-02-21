@@ -1,8 +1,8 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
-import com.cc.core.wechat.WechatMessageType
+import com.cc.core.wechat.WeChatMessageType
 
-class VideoMessage : BaseMessage(WechatMessageType.VIDEO) {
+class VideoMessage : BaseMessage(WeChatMessageType.VIDEO) {
     private var videoUrl: String? = null
 
     fun getVideoUrl(): String? {

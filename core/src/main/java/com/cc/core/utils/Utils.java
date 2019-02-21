@@ -5,8 +5,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 
-import com.cc.core.ApplicationContext;
-import com.cc.core.wechat.model.WeChatMessage;
+import com.cc.core.wechat.MessageTypeAdapter;
+import com.cc.core.wechat.model.message.WeChatMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -51,10 +51,6 @@ public class Utils {
             }
         }
         return false;
-    }
-
-    public static Gson messageDeserializeGson() {
-        return new GsonBuilder().registerTypeAdapter(WeChatMessage.class, new MessageTypeAdapter()).create();
     }
 
     public static String downloadFile(String url, boolean videoOrImage) {

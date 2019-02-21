@@ -158,9 +158,8 @@ public class Wechat {
                     ConstantsStorage = "com.tencent.mm.storage.ac";
                     WechatStorageCrashPath = "eEe";
 
-                    //TODO: support 7.0.3
-                    commonWechatSdkXmlParserClass = "";
-                    commonWechatSdkXmlParserToMapFunc = "";
+                    commonWechatSdkXmlParserClass = "com.tencent.mm.sdk.platformtools.bs";
+                    commonWechatSdkXmlParserToMapFunc = "z";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -318,8 +317,8 @@ public class Wechat {
             public static String NetSceneUploadMsgVideo = "";
             public static String UploadMsgVideoHandler = "";
             public static int NetSceneUploadMsgImgMaskResId;
-            public static String ModelCdnTranHelper = "";
-            public static String ModelCdnTranHelperGetFileKeyFunc = "";
+            public static String ModelCdnUtil = "";
+            public static String ModelCdnUtilGetFileKeyFunc = "";
 
             static void init(String version) {
                 switch (version) {
@@ -340,8 +339,8 @@ public class Wechat {
                         NetSceneUploadMsgImgMaskResId = 2130838032;
                         NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.f.e";
-                        ModelCdnTranHelper = "com.tencent.mm.modelcdntran.d";
-                        ModelCdnTranHelperGetFileKeyFunc = "a";
+                        ModelCdnUtil = "com.tencent.mm.modelcdntran.d";
+                        ModelCdnUtilGetFileKeyFunc = "a";
                         break;
                     case "7.0.3":
                         GetNetSceneQueueClass = "com.tencent.mm.model.av";
@@ -360,10 +359,8 @@ public class Wechat {
                         NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.g.d";
 
-
-                        //TODO: support 7.0.3
-                        ModelCdnTranHelper = "com.tencent.mm.modelcdntran.d";
-                        ModelCdnTranHelperGetFileKeyFunc = "a";
+                        ModelCdnUtil = "com.tencent.mm.ak.c";
+                        ModelCdnUtilGetFileKeyFunc = "a";
                         break;
                 }
             }
@@ -377,7 +374,7 @@ public class Wechat {
 
             public static String MessageInfoFieldId = "";
             public static String MessageContentFieldId = "";
-            public static String MessageFromFieldId = "";
+            //public static String MessageFromFieldId = "";
             public static String MessageToFieldId = "";
             public static String MessageTypeFieldId = "";
             public static String MessageDatetimeFieldId = "";
@@ -411,8 +408,8 @@ public class Wechat {
                         MessageDatetimeFieldId = "ozl";
 
                         //TODO: support 7.0.3
-                        MessageFromFieldId = "";
-                        MessageServIdFieldId = "";
+                        //MessageFromFieldId = "";
+                        MessageServIdFieldId = "oPR";
                         break;
                 }
             }
