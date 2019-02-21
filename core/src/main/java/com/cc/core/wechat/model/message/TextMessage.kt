@@ -1,8 +1,8 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
-import com.cc.core.wechat.WechatMessageType
+import com.cc.core.wechat.WeChatMessageType
 
-class TextMessage : BaseMessage(WechatMessageType.TEXT) {
+open class TextMessage : BaseMessage(WeChatMessageType.TEXT) {
     private var atUsers : Array<String>? = null
     private var content: String? = null
 

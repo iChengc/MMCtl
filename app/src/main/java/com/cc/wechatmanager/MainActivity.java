@@ -1,5 +1,9 @@
 package com.cc.wechatmanager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,25 +11,24 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.cc.core.actions.ActionResult;
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
-import com.cc.core.data.db.model.User;
 import com.cc.core.log.KLog;
 
 import com.cc.core.utils.StrUtils;
-import com.cc.core.wechat.model.ImageMessage;
-import com.cc.core.wechat.model.TextMessage;
-import com.cc.core.wechat.model.VideoMessage;
+import com.cc.core.wechat.MessageUtils;
+import com.cc.core.wechat.model.message.CardMessage;
+import com.cc.core.wechat.model.message.ImageMessage;
+import com.cc.core.wechat.model.message.TextMessage;
+import com.cc.core.wechat.model.message.VideoMessage;
+import com.cc.core.wechat.model.message.WeChatMessage;
 import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.LoginUserResult;
 
@@ -35,14 +38,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView contactListView;
-
+    RecyclerView contactListView, messageListView;
+    MessageAdapter messageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        messageAdapter = new MessageAdapter();
         contactListView = findViewById(R.id.contactsList);
         contactListView.setLayoutManager(new LinearLayoutManager(this));
+        messageListView = findViewById(R.id.message_list);
+        messageListView.setLayoutManager(new LinearLayoutManager(this));
+        messageListView.setAdapter(messageAdapter);
+
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,12 +169,28 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                TextMessage msg = new TextMessage();
-                msg.setCreateTime(System.currentTimeMillis());
+                CardMessage msg = new CardMessage();
+                msg.setCreateTime(System.currentTimeMillis() / 1000);
                 msg.setTarget(to);
-                msg.setContent(content);
+                msg.setDescription(content);
+                msg.setTitle("我是卡片消息");
+                msg.setThumbUrl("http://g.hiphotos.baidu.com/image/h%3D300/sign=9b698df937f33a87816d061af65d1018/8d5494eef01f3a2963a5db079425bc315d607c8d.jpg");
+                msg.setUrl("http://www.baidu.com");
 
                 Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                        KLog.e("---->>.", "send card Message Result:" + result);
+                    }
+                });
+
+                TextMessage message = new TextMessage();
+                message.setCreateTime(System.currentTimeMillis() / 1000);
+                message.setTarget(to);
+                message.setContent(content);
+
+                Messenger.sendCommand(genCommand("sendMessage", message), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -267,6 +291,12 @@ public class MainActivity extends AppCompatActivity {
                 }, 1000);
             }
         });
+        registerMessageBroadcast();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -280,5 +310,23 @@ public class MainActivity extends AppCompatActivity {
         List<Object> args = new ArrayList<>(Arrays.asList(data));
         c.setArgs(args);
         return c;
+    }
+
+    private void registerMessageBroadcast() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MessageUtils.RECEIVE_MESSAGE_BROADCAST);
+
+        registerReceiver(receiver, filter);
+    }
+
+    private MessageReceiver receiver = new MessageReceiver();
+
+    private class MessageReceiver extends BroadcastReceiver {
+
+        @Override public void onReceive(Context context, Intent intent) {
+            String details = intent.getStringExtra("msg");
+            WeChatMessage msg = MessageUtils.Companion.messageDeserializeGson().fromJson(details, WeChatMessage.class);
+            messageAdapter.addMessage(msg);
+        }
     }
 }

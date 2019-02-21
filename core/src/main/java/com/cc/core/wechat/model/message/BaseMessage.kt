@@ -1,12 +1,13 @@
-package com.cc.core.wechat.model
+package com.cc.core.wechat.model.message
 
-import com.cc.core.wechat.WechatMessageType
+import com.cc.core.wechat.WeChatMessageType
 
 abstract class BaseMessage : WeChatMessage {
     private var target: String? = null
     private var from: String? = null
-    private var type: Int = WechatMessageType.UNKNOWN
+    private var type: Int = WeChatMessageType.UNKNOWN
     private var createTime: Long = System.currentTimeMillis()
+    private var msgServId : String? = null
 
     constructor(type: Int) {
         this.type = type
@@ -43,5 +44,12 @@ abstract class BaseMessage : WeChatMessage {
 
     override fun setCreateTime(createTime: Long) {
         this.createTime = createTime
+    }
+    override fun setMsgServId(servId: String?) {
+        this.msgServId = servId
+    }
+
+    override fun getMsgServId(): String? {
+        return msgServId
     }
 }

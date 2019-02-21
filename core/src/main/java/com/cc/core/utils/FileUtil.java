@@ -45,6 +45,7 @@ public class FileUtil {
     public final static String CACHE_DIR = "cache";
     public final static String LOG_DIR = "logs";
     public final static String IMAGE_CACHE = "img";//存储的文件夹
+    public final static String VIDEO_CACHE = "video";//存储的文件夹
     public final static String PRODUCT_CACHE_DIR = "package";
 
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
@@ -316,6 +317,19 @@ public class FileUtil {
             file = getSubDirectory(IMAGE_CACHE);
         } else {
             file = new File(getInternalCacheDir(), IMAGE_CACHE);
+        }
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return file;
+    }
+
+    public static File getVideoCacheDirectory() {
+        File file;
+        if (hasExternalStoragePermission(ApplicationContext.application())) {
+            file = getSubDirectory(VIDEO_CACHE);
+        } else {
+            file = new File(getInternalCacheDir(), VIDEO_CACHE);
         }
         if (!file.exists()) {
             file.mkdir();
