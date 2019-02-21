@@ -35,7 +35,7 @@ public class MessageHooks extends BaseXposedHook {
                     Object messageInfo = XposedHelpers.getObjectField(param.args[0],
                         Wechat.HookMethodFunctions.Message.MessageInfoFieldId);
 
-                    // KLog.e("message", StrUtils.toJson(messageInfo));
+                    KLog.e("message ===>>>", StrUtils.toJson(messageInfo));
                     int msgType = XposedHelpers.getIntField(messageInfo,
                         Wechat.HookMethodFunctions.Message.MessageTypeFieldId);
 

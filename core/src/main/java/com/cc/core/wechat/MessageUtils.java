@@ -61,25 +61,24 @@ public class MessageUtils {
     public static String downloadVideo(VideoMessage message, String details) {
         Map<String, String> map = HookUtils.Companion.xmlToMap(details, "msg");
 
-        String savePath = new File(FileUtil.getImageCacheDirectory(), MD5.getMD5(details + System.currentTimeMillis()) + ".mp4").getAbsolutePath();
-        long msgId = getMessageIdByServId(message.getMsgServId());
+        String fileName = System.currentTimeMillis() + "";
+        String savePath = new File(FileUtil.getVideoCacheDirectory(), fileName + ".mp4").getAbsolutePath();
         Object fileKey = XposedHelpers.callStaticMethod(XposedHelpers.findClass(ModelCdnUtil, Wechat.WECHAT_CLASSLOADER),
             ModelCdnUtilGetFileKeyFunc,
-                "downimg", message.getCreateTime() / 1000, message.getTarget(), msgId + "");
+                "downvideo", message.getCreateTime(), message.getTarget(), fileName);
         Object request = XposedHelpers.newInstance(XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER));
 
         XposedHelpers.setObjectField(request, "fileKey", fileKey);
-        XposedHelpers.setObjectField(request, "fileid", map.get(".msg.img.$cdnmidimgurl"));
+        XposedHelpers.setObjectField(request, "fileid", map.get(".msg.videomsg.$cdnvideourl"));
         XposedHelpers.setObjectField(request, "savePath", savePath);
-        XposedHelpers.setObjectField(request, "aeskey", map.get(".msg.img.$aeskey"));
-        XposedHelpers.setIntField(request, "fileSize", Integer.valueOf(map.get(".msg.img.$length")));
-        XposedHelpers.setIntField(request, "fileType", 2);
-        XposedHelpers.setIntField(request, "transforTimeoutSeconds", 600);
+        XposedHelpers.setObjectField(request, "aeskey", map.get(".msg.videomsg.$aeskey"));
+        XposedHelpers.setIntField(request, "fileSize", Integer.valueOf(map.get(".msg.videomsg.$length")));
+        XposedHelpers.setIntField(request, "fileType", 4);
+        XposedHelpers.setIntField(request, "transforTimeoutSeconds", 0);
         XposedHelpers.setIntField(request, "queueTimeoutSeconds", 0);
         XposedHelpers.setBooleanField(request, "isAutoStart", true);
         XposedHelpers.setIntField(request, "chatType", StrUtils.isGroupWechatId(message.getTarget()) ? 1 : 0);
-        XposedHelpers.callStaticMethod(XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic", Wechat.WECHAT_CLASSLOADER), "startC2CDownload", request);
-        // localObject = com.tencent.mm.modelcdntran.d.a("downimg", field_createTime, field_talker, field_msgId);
+        XposedHelpers.callStaticMethod(XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic", Wechat.WECHAT_CLASSLOADER), "startVideoStreamingDownload", request, 0);
 
         return savePath;
     }
