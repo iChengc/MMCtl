@@ -5,11 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 
-import com.cc.core.wechat.MessageTypeAdapter;
-import com.cc.core.wechat.model.message.WeChatMessage;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.util.List;
 
@@ -57,7 +52,7 @@ public class Utils {
         if (TextUtils.isEmpty(url)) {
             return null;
         }
-        File file = new File(FileUtil.getExternalCacheDir(), MD5.getMD5(url) + (videoOrImage ? ".mp4" : ".jpg"));
+        File file = new File(videoOrImage ? FileUtil.getVideoCacheDirectory() : FileUtil.getImageCacheDirectory(), MD5.getMD5(url) + (videoOrImage ? ".mp4" : ".jpg"));
         if (file.exists()) {
             return file.getAbsolutePath();
         }

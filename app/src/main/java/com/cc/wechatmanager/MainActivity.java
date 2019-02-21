@@ -24,7 +24,7 @@ import com.cc.core.log.KLog;
 
 import com.cc.core.utils.StrUtils;
 import com.cc.core.wechat.MessageUtils;
-import com.cc.core.wechat.Wechat;
+import com.cc.core.wechat.model.message.CardMessage;
 import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
@@ -169,12 +169,28 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                TextMessage msg = new TextMessage();
-                msg.setCreateTime(System.currentTimeMillis());
+                CardMessage msg = new CardMessage();
+                msg.setCreateTime(System.currentTimeMillis() / 1000);
                 msg.setTarget(to);
-                msg.setContent(content);
+                msg.setDescription(content);
+                msg.setTitle("我是卡片消息");
+                msg.setThumbUrl("http://g.hiphotos.baidu.com/image/h%3D300/sign=9b698df937f33a87816d061af65d1018/8d5494eef01f3a2963a5db079425bc315d607c8d.jpg");
+                msg.setUrl("http://www.baidu.com");
 
                 Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                        KLog.e("---->>.", "send card Message Result:" + result);
+                    }
+                });
+
+                TextMessage message = new TextMessage();
+                message.setCreateTime(System.currentTimeMillis() / 1000);
+                message.setTarget(to);
+                message.setContent(content);
+
+                Messenger.sendCommand(genCommand("sendMessage", message), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -309,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override public void onReceive(Context context, Intent intent) {
             String details = intent.getStringExtra("msg");
-            WeChatMessage msg = MessageUtils.messageDeserializeGson().fromJson(details, WeChatMessage.class);
+            WeChatMessage msg = MessageUtils.Companion.messageDeserializeGson().fromJson(details, WeChatMessage.class);
             messageAdapter.addMessage(msg);
         }
     }

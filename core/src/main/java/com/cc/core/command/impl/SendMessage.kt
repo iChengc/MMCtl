@@ -7,6 +7,7 @@ import com.cc.core.utils.StrUtils
 import com.cc.core.utils.Utils
 import com.cc.core.wechat.MessageUtils
 import com.cc.core.wechat.invoke.SendMessageAction
+import com.cc.core.wechat.model.message.CardMessage
 import com.cc.core.wechat.model.message.ImageMessage
 import com.cc.core.wechat.model.message.VideoMessage
 import com.cc.core.wechat.model.message.WeChatMessage
@@ -24,12 +25,16 @@ class SendMessage : Action {
         } else {
             msg = gson.fromJson(args[0].toString(), WeChatMessage::class.java)
         }
+
         if (msg is ImageMessage) {
             val path = Utils.downloadFile(msg.getImageUrl(), false)
             msg.setImageUrl(path)
         } else if (msg is VideoMessage) {
             val path = Utils.downloadFile(msg.getVideoUrl(), true)
             msg.setVideoUrl(path)
+        } else if (msg is CardMessage) {
+            val path = Utils.downloadFile(msg.getThumbUrl(), false)
+            msg.setThumbUrl(path)
         }
         return Actions.execute(SendMessageAction::class.java, StrUtils.toJson(msg))
     }

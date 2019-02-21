@@ -379,6 +379,9 @@ public class Wechat {
             public static String MessageTypeFieldId = "";
             public static String MessageDatetimeFieldId = "";
             public static String MessageServIdFieldId = "";
+
+            public static String AppMsgLogic = "";
+            public static String AppMsgLogicSendFunc = "";
             public static void init(String version) {
 
                 switch (version) {
@@ -394,6 +397,9 @@ public class Wechat {
                         MessageTypeFieldId = "knu";
                         MessageDatetimeFieldId = "mkk";
                         MessageServIdFieldId = "rMG";
+
+                        AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
+                        AppMsgLogicSendFunc = "a";
                         break;
                     case "7.0.3":
                         MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
@@ -407,9 +413,12 @@ public class Wechat {
                         MessageTypeFieldId = "mxa";
                         MessageDatetimeFieldId = "ozl";
 
-                        //TODO: support 7.0.3
                         //MessageFromFieldId = "";
                         MessageServIdFieldId = "oPR";
+
+                        //TODO: support 7.0.3
+                        AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
+                        AppMsgLogicSendFunc = "a";
                         break;
                 }
             }

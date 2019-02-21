@@ -58,6 +58,7 @@ public class MessageHooks extends BaseXposedHook {
                         content = obj.toString();
                         from = to;
                     }
+
                     long dateTime = XposedHelpers.getLongField(messageInfo,
                         Wechat.HookMethodFunctions.Message.MessageDatetimeFieldId);
 
@@ -76,10 +77,10 @@ public class MessageHooks extends BaseXposedHook {
                             msg.setMsgServId(msgservId);
                             msg.setType(msgType);
                             if (WeChatMessageType.EMOJI == msgType) {
-                                ((ImageMessage) msg).setImageUrl(MessageUtils.getEmojiImageUrl(content));
+                                ((ImageMessage) msg).setImageUrl(MessageUtils.Companion.getEmojiImageUrl(content));
                             } else {
                                 ((ImageMessage) msg).setImageUrl(
-                                    MessageUtils.downloadImage((ImageMessage) msg, content));
+                                    MessageUtils.Companion.downloadImage((ImageMessage) msg, content));
                             }
                             break;
                         case WeChatMessageType.VIDEO:
@@ -88,7 +89,7 @@ public class MessageHooks extends BaseXposedHook {
                             msg.setTarget(to);
                             msg.setCreateTime(dateTime);
                             msg.setMsgServId(msgservId);
-                            ((VideoMessage) msg).setVideoUrl(MessageUtils.downloadVideo((VideoMessage) msg, content));
+                            ((VideoMessage) msg).setVideoUrl(MessageUtils.Companion.downloadVideo((VideoMessage) msg, content));
                             break;
                         case WeChatMessageType.TEXT:
                             msg = new TextMessage();
@@ -104,7 +105,7 @@ public class MessageHooks extends BaseXposedHook {
                             msg.setTarget(to);
                             msg.setCreateTime(dateTime);
                             msg.setMsgServId(msgservId);
-                            MessageUtils.processCardMessage((CardMessage) msg, content);
+                            MessageUtils.Companion.processCardMessage((CardMessage) msg, content);
                             break;
                         default:
                             msg = new UnsupportMessage();
@@ -113,7 +114,7 @@ public class MessageHooks extends BaseXposedHook {
                             msg.setType(msgType);
                     }
                     KLog.e("message", StrUtils.toJson(msg));
-                    MessageUtils.notifyMessageReceived(msg);
+                    MessageUtils.Companion.notifyMessageReceived(msg);
                 }
             });
     }
