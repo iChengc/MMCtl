@@ -57,6 +57,20 @@ task genActions(dependsOn: [mkGenDirs, sourceSets]) {
                 }
         file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
                 withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
+                        writer.write("\t\t\"com.cc.core.actions.shell.impl." + it.name.substring(0,
+                                it.name.lastIndexOf('.java')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
+                    fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.kt").each {
+                        writer.write("\t\t\"com.cc.core.actions.accessibility.impl." + it.name.substring(0,
+                                it.name.lastIndexOf('.kt')) + "\",\n")
+                    }
+                }
+        file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
+                withWriterAppend('UTF-8') { writer ->
                     fileTree('src/main/java/com/cc/core/command/impl').include("*.kt").each {
                         writer.write("\t\t\"com.cc.core.command.impl." + it.name.substring(0,
                                 it.name.lastIndexOf('.kt')) + "\",\n")
