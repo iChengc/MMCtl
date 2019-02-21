@@ -1,5 +1,6 @@
 package com.cc.core.wechat.model.group
 
+<<<<<<< 756ff7e6e23b2476cfd7526e001b58005773acbe
 import com.google.gson.annotations.SerializedName
 
 class GroupInfo {
@@ -63,4 +64,12 @@ class GroupInfo {
     fun getMemberList() : List<GroupMember> ? {
         return memberList
     }
+=======
+class GroupInfo {
+    private var members: Map<String, String>? = null
+    private var groupName : String? = null
+    private var groupWechatId :String? = null
+    private var groupNotice:String?= null
+    private var memberList:String?=null
+>>>>>>> create group
 }

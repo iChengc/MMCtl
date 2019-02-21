@@ -475,6 +475,7 @@ public class Wechat {
             public static String chatroomMembersField = "";
             public static String chatroomMemberGroupNicknameField = "";
             public static String chatroomMemberInviterField = "";
+
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":

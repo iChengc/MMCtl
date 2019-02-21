@@ -3,7 +3,6 @@ package com.cc.core.wechat.invoke
 import android.text.TextUtils
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
-import com.cc.core.log.KLog
 import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat
