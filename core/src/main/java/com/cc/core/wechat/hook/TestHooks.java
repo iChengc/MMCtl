@@ -1,6 +1,7 @@
 package com.cc.core.wechat.hook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.cc.core.log.KLog;
@@ -95,7 +96,15 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
                     }
                 });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.chatroom.c.g", classLoader, String.class, List.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
+                        KLog.e("====++Create group++==>>>>>>  ", param.args[0]
+                                + "  " + param.args[1], new Exception());
+                    }
+                });
         /**
          * l(int paramInt1, int paramInt2)
          *

@@ -139,6 +139,7 @@ public class Wechat {
             NetScene.init(version);
             Message.init(version);
             AddFriend.init(version);
+            Group.init(version);
 
             switch (version) {
                 case "7.0.3":
@@ -460,6 +461,21 @@ public class Wechat {
                         //TODO: support 7.0.3
                         AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
                         AppMsgLogicSendFunc = "a";
+                        break;
+                }
+            }
+        }
+
+        public static class Group {
+            public static String CreateGroupRequest = "";
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
+                        break;
+                    case "7.0.3":
+                        // TODO: 7.0.3 support
+                        CreateGroupRequest = "";
                         break;
                 }
             }

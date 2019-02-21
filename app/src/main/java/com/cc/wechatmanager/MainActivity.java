@@ -42,6 +42,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     RecyclerView contactListView, messageListView;
     MessageAdapter messageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                    }
+                });
                 Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
                     public void onResult(final String result) {
@@ -302,7 +310,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override protected void onDestroy() {
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
     }
@@ -331,7 +340,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class MessageReceiver extends BroadcastReceiver {
 
-        @Override public void onReceive(Context context, Intent intent) {
+        @Override
+        public void onReceive(Context context, Intent intent) {
             String details = intent.getStringExtra("msg");
             WeChatMessage msg = MessageUtils.Companion.messageDeserializeGson().fromJson(details, WeChatMessage.class);
             messageAdapter.addMessage(msg);
