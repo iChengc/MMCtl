@@ -6,14 +6,14 @@ import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.hook.XLogHooks
 
 class HookXLogAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         val hook = Wechat.lookup(XLogHooks::class.java)
         if (hook == null){
-            return ActionResult.failedResult("Can not find XLogHooks!")
+            return ActionResult.failedResult(actionId, "Can not find XLogHooks!")
         }
 
         (hook as XLogHooks).hook(Wechat.WECHAT_CLASSLOADER)
-        return ActionResult.successResult()
+        return ActionResult.successResult(actionId)
     }
 
     override fun key(): String? {

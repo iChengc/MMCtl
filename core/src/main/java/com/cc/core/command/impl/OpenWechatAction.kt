@@ -10,8 +10,8 @@ class OpenWechatAction : Action {
         return "openWechat"
     }
 
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         Wechat.startApp(ApplicationContext.application())
-        return ActionResult.successResult()
+        return ActionResult.successResult(actionId)
     }
 }

@@ -4,7 +4,7 @@ import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 
 class GetUserInfoAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         return null
     }
 

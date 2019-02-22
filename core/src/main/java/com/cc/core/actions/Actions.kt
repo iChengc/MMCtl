@@ -75,40 +75,40 @@ class Actions {
             return actions
         }
 
-        fun execute(clazz: Class<out Action>, vararg args: Any?): ActionResult? {
+        fun execute(clazz: Class<out Action>, id : String, vararg args: Any?): ActionResult? {
             val action = lookup(clazz)
             return if (isWechatAction(action)) {
                 try {
-                    Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, *args)))
+                    Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, id, *args)))
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    ActionResult.failedResult(e)
+                    ActionResult.failedResult(id, e)
                 }
 
             } else {
-                action.execute(*args)
+                action.execute(id, *args)
             }
         }
 
-        fun executeCommand(key: String, vararg args: Any?): String {
+        fun executeCommand(id : String, key: String, vararg args: Any?): String {
             val action = lookup(key)
             return if (isWechatAction(action)) {
                 try {
-                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, *args))))
+                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, id, *args))))
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    StrUtils.toJson(ActionResult.failedResult(e))
+                    StrUtils.toJson(ActionResult.failedResult(id, e))
                 }
 
             } else {
-                StrUtils.toJson(action.execute(*args))
+                StrUtils.toJson(action.execute(id, *args))
             }
         }
 
         fun receivedAction(rawAction: String): ActionResult? {
             val raw = StrUtils.fromJson(rawAction, RawAction::class.java)
             val action = lookup(raw.actionName)
-            return action.execute(*raw.args!!.toTypedArray())
+            return action.execute(raw.actionId, *raw.args!!.toTypedArray())
         }
 
         private fun isWechatAction(action: Action): Boolean {
@@ -117,6 +117,9 @@ class Actions {
     }
 
     class RawAction {
+        @SerializedName("id")
+        var actionId : String = ""
+
         @SerializedName("actionName")
         var actionName: String? = null
 
@@ -131,11 +134,12 @@ class Actions {
 
         companion object {
 
-            fun fromAction(action: Action, vararg args: Any?): RawAction {
+            fun fromAction(action: Action, id: String, vararg args: Any?): RawAction {
                 val a = RawAction()
                 a.actionName = action.key()
-                a.args = mutableListOf()
+                a.actionId = id
 
+                a.args = mutableListOf()
                 for (arg in args) {
                     (a.args as MutableList).add(arg)
                 }

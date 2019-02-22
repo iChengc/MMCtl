@@ -6,7 +6,7 @@ import com.cc.core.wechat.HookUtils
 import de.robv.android.xposed.XposedHelpers
 
 class TestAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         //XposedHelpers.callMethod(HookUtils.getNetscenQueue(), "", )
         return null
     }

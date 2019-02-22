@@ -26,9 +26,9 @@ import java.util.ArrayList
 import java.util.HashMap
 
 class SendMessageAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
-            return ActionResult.failedResult("No message was provided")
+            return ActionResult.failedResult(actionId, "No message was provided")
         }
         val gson = MessageUtils.messageDeserializeGson()
 
@@ -42,10 +42,10 @@ class SendMessageAction : Action {
         } else if (msg is CardMessage) {
           sendCardMessage(msg)
         } else {
-            return ActionResult.failedResult("Not implement " + msg.javaClass.simpleName)
+            return ActionResult.failedResult(actionId, "Not implement " + msg.javaClass.simpleName)
         }
 
-        return ActionResult.successResult()
+        return ActionResult.successResult(actionId)
     }
 
     private fun sendTextMessage(msg: TextMessage) {

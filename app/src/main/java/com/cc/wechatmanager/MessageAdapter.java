@@ -58,8 +58,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if (msg == null) {
             return;
         }
-        messages.add(msg);
-        notifyItemRangeInserted(messages.size() - 1, 1);
+        messages.add(0, msg);
+        notifyItemRangeInserted(0, 1);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

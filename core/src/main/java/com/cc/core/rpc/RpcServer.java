@@ -91,7 +91,7 @@ public class RpcServer {
                     out = client.getOutputStream();
                     ActionResult result;
                     if (TextUtils.isEmpty(sb)) {
-                        result = ActionResult.Companion.failedResult("Empty rpc request");
+                        result = ActionResult.Companion.failedResult("", "Empty rpc request");
                     } else {
                         result = Rpc.invoke(sb);
                     }
@@ -101,7 +101,7 @@ public class RpcServer {
                     KLog.e("Failed to execute RPC", e);
                     if (out != null) {
                         try {
-                            out.write(StrUtils.toJson(ActionResult.Companion.failedResult("failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
+                            out.write(StrUtils.toJson(ActionResult.Companion.failedResult("", "failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
                             out.flush();
                         } catch (Exception ex) {
                             ex.printStackTrace();

@@ -80,7 +80,7 @@ public class DbService {
 
     public ActionResult deliverDbOperation(String raw) {
         if (raw == null) {
-            return ActionResult.Companion.successResult();
+            return ActionResult.Companion.successResult("");
         }
         try {
             KLog.e(">>>>>>deliverDbOperation:" + raw);
@@ -93,16 +93,16 @@ public class DbService {
                 case INSERT:
                     long insert = dao.insertOrReplace(data);
                     if (insert > 0) {
-                        return  ActionResult.Companion.successResult();
+                        return  ActionResult.Companion.successResult("");
                     } else {
-                        return ActionResult.Companion.failedResult("Insert return " + operation);
+                        return ActionResult.Companion.failedResult("", "Insert return " + operation);
                     }
 
             }
-            return ActionResult.Companion.failedResult("Unknown operation:" + operation);
+            return ActionResult.Companion.failedResult("", "Unknown operation:" + operation);
         } catch (Exception e) {
             KLog.e("Failed to deliver DB Operation", e);
-            return ActionResult.Companion.failedResult(e);
+            return ActionResult.Companion.failedResult("", e);
         }
     }
 

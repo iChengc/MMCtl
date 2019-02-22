@@ -16,9 +16,9 @@ class Messenger {
         val result: String
         if (Utils.isEmpty(cmd.getArgs())) {
 
-          result = Actions.executeCommand(cmd.getKey())
+          result = Actions.executeCommand(cmd.getId(), cmd.getKey())
         } else {
-          result = Actions.executeCommand(cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
+          result = Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
         }
         callback.onResult(result)
       }
