@@ -6,9 +6,9 @@ import com.cc.core.utils.Utils
 
 class Messenger {
   companion object {
-    fun sendCommand(cmd: Command?, callback: Callback) {
+    fun <T> sendCommand(cmd: Command?, callback: Callback<T>) {
       if (cmd == null) {
-        callback.onResult(null)
+        callback.onResult(false, "no command was found!", null)
         return
       }
 
@@ -20,7 +20,8 @@ class Messenger {
         } else {
           result = Actions.executeCommand(cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
         }
-        callback.onResult(result)
+
+        callback.result(result)
       }
 
     }
