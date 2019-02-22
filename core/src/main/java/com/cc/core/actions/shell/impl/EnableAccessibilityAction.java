@@ -11,18 +11,18 @@ import com.cc.core.actions.accessibility.WechatAccessibilityService;
 
 public class EnableAccessibilityAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
-        ActionResult result = Actions.Companion.execute(SystemSettingsAction.class, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ACCESSIBILITY_ENABLED, 0);
+    public ActionResult execute(String actiongId, Object... args) {
+        ActionResult result = Actions.Companion.execute(SystemSettingsAction.class, actiongId,  SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ACCESSIBILITY_ENABLED, 0);
         if (!result.isSuccess()) {
             return result;
         }
 
-        result = Actions.Companion.execute(SystemSettingsAction.class, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, getAccessibilityKey());
+        result = Actions.Companion.execute(SystemSettingsAction.class, actiongId, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, getAccessibilityKey());
         if (!result.isSuccess()) {
             return result;
         }
 
-        result = Actions.Companion.execute(SystemSettingsAction.class, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ACCESSIBILITY_ENABLED, 1);
+        result = Actions.Companion.execute(SystemSettingsAction.class, actiongId, SystemSettingsAction.SettingsNameSpace.SECURE, Settings.Secure.ACCESSIBILITY_ENABLED, 1);
 
         return result;
     }

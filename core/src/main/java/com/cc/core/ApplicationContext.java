@@ -50,7 +50,7 @@ public class ApplicationContext {
 
     private static void enableAccessibility() {
         if (!Utils.isStartAccessibilityService(application, WechatAccessibilityService.class.getName())) {
-            KLog.e("Enable accessibility result:" + Actions.Companion.execute(EnableAccessibilityAction.class));
+            KLog.e("Enable accessibility result:" + Actions.Companion.execute(EnableAccessibilityAction.class, "enableAccessibility"));
         }
     }
 

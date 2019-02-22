@@ -6,9 +6,9 @@ import com.cc.core.utils.DeviceUtils;
 
 public class UnlockScreenAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
+    public ActionResult execute(String actionId, Object... args) {
         DeviceUtils.unlockScreen();
-        return ActionResult.Companion.successResult();
+        return ActionResult.Companion.successResult(actionId);
     }
 
     @Override

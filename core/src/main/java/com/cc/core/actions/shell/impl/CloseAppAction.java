@@ -8,12 +8,12 @@ import com.cc.core.shell.ShellUtils;
 
 public class CloseAppAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
+    public ActionResult execute(String actionId, Object... args) {
         try {
             ShellUtils.runShell(true, ShellCommands.genCmd(ShellCommands.STOP_APP_CMD, args));
-            return ActionResult.Companion.successResult();
+            return ActionResult.Companion.successResult(actionId);
         } catch (Exception e) {
-            return ActionResult.Companion.failedResult(e);
+            return ActionResult.Companion.failedResult(actionId, e);
         }
     }
 

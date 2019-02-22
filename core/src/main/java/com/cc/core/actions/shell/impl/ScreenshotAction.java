@@ -9,15 +9,15 @@ import com.cc.core.utils.FileUtil;
 
 public class ScreenshotAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
+    public ActionResult execute(String actionId, Object... args) {
         try {
             String savePath = FileUtil.getExternalCacheDir() + "/" + System.currentTimeMillis() + ".jpg";
             ShellUtils.runShell(true, ShellCommands.genCmd(ShellCommands.SCREENSHOT_CMD, savePath));
-            ActionResult result = ActionResult.Companion.successResult();
+            ActionResult result = ActionResult.Companion.successResult(actionId);
             result.setData(savePath);
             return result;
         } catch (Exception e) {
-            return ActionResult.Companion.failedResult(e);
+            return ActionResult.Companion.failedResult(actionId, e);
         }
     }
 

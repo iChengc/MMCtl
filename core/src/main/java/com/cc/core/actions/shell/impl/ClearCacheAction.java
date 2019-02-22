@@ -6,9 +6,9 @@ import com.cc.core.utils.FileUtil;
 
 public class ClearCacheAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
+    public ActionResult execute(String actionId, Object... args) {
         FileUtil.clearCache();
-        return ActionResult.Companion.successResult();
+        return ActionResult.Companion.successResult(actionId);
     }
 
     @Override

@@ -8,16 +8,16 @@ import com.cc.core.utils.Utils
 import com.cc.core.wechat.Wechat
 
 class CreateGroupAction : AccessibilityAction() {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actiongId : String, vararg args: Any?): ActionResult? {
         /*backToHomePage();
 
         performClick(Wechat.Resources.Search.ADD_FRIEND_SEARCH_INPUT);
         performClick(Wechat.Resources.Search.ADD_FRIEND_SEARCH_MAIN_INPUT);*/
         if (args.size <= 2) {
-            return ActionResult.failedResult("Not enough wechat to create a group")
+            return ActionResult.failedResult(actiongId, "Not enough wechat to create a group")
         }
 
-        val result = Actions.execute(OpenWechatAction::class.java)
+        val result = Actions.execute(OpenWechatAction::class.java, actiongId)
         if (!result!!.isSuccess()) {
             return result
         }
@@ -26,7 +26,7 @@ class CreateGroupAction : AccessibilityAction() {
         performClick(Wechat.Resources.HomePage.PLUS_BTN)
         val nodes = getNodesByIdWithText(Wechat.Resources.HomePage.POP_PLUS_ITEM, "发起群聊", null, 500)
         if (Utils.isEmpty(nodes)) {
-            return ActionResult.failedResult("Can not find create group btn")
+            return ActionResult.failedResult(actiongId, "Can not find create group btn")
         }
         performClick(nodes[0])
         waitForWindowChange(Wechat.Resources.ContactInfo.SELECT_CONTACT_UI)

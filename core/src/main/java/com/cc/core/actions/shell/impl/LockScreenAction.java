@@ -6,13 +6,13 @@ import com.cc.core.utils.DeviceUtils;
 
 public class LockScreenAction implements Action {
     @Override
-    public ActionResult execute(Object... args) {
+    public ActionResult execute(String actiongId, Object... args) {
         try {
             DeviceUtils.lockScreen();
-            return ActionResult.Companion.successResult();
+            return ActionResult.Companion.successResult(actiongId);
         } catch (Exception e) {
             e.printStackTrace();
-            return ActionResult.Companion.failedResult(e);
+            return ActionResult.Companion.failedResult(actiongId, e);
         }
     }
 
