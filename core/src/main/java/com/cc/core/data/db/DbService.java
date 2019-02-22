@@ -61,7 +61,7 @@ public class DbService {
         ActionResult result = Rpc.call(args);
         KLog.e("insertLoginUser result:" + result.toString());
         if (callback != null) {
-            callback.result(StrUtils.toJson(result));
+            callback.onResult(StrUtils.toJson(result));
         }
     }
 

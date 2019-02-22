@@ -1,6 +1,6 @@
 package com.cc.core.actions
 
-open class ActionResult {
+class ActionResult {
     var success: Boolean = false
     var message: String? = null
     var data: Any? = null
