@@ -20,6 +20,8 @@ import com.bumptech.glide.Glide;
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
+import com.cc.core.data.db.model.Friend;
+import com.cc.core.data.db.model.User;
 import com.cc.core.log.KLog;
 
 import com.cc.core.utils.StrUtils;
@@ -29,13 +31,12 @@ import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
-import com.cc.wechatmanager.model.ContactsResult;
-import com.cc.wechatmanager.model.LoginUserResult;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView contactListView, messageListView;
@@ -54,28 +55,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
-                    @Override
-                    public void onResult(final String result) {
+                Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback<User>() {
+                    @Override public void onResult(boolean isSuccess, @Nullable String message,
+                        @Nullable User result) {
 
-                        KLog.e("---->>.", "getLoginUserInfo Result:" + result);
-                        contactListView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                LoginUserResult result1 = StrUtils.fromJson(result, LoginUserResult.class);
-                                if (result1.isSuccess()) {
-                                    View v = findViewById(R.id.wechatInfo);
-                                    TextView tv = v.findViewById(R.id.name);
-                                    tv.setText(result1.getData().getNickname());
-                                    tv = v.findViewById(R.id.wechatId);
-                                    tv.setText(result1.getData().getWechatId());
-                                    ImageView iv = v.findViewById(R.id.avatar);
-                                    Glide.with(MainActivity.this).load(new File(result1.getData().getAvatar())).into(iv);
-                                }
-                            }
-                        });
-
-
+                        KLog.e("---->>.", "getLoginUserInfo Result:" + (result == null ? "null" : StrUtils.toJson(result)));
+                        if (isSuccess) {
+                            View v = findViewById(R.id.wechatInfo);
+                            TextView tv = v.findViewById(R.id.name);
+                            tv.setText(result.getNickname());
+                            tv = v.findViewById(R.id.wechatId);
+                            tv.setText(result.getWechatId());
+                            ImageView iv = v.findViewById(R.id.avatar);
+                            Glide.with(MainActivity.this).load(new File(result.getAvatar())).into(iv);
+                        }
                     }
                 });
                 /*getWindow().getDecorView().postDelayed(new Runnable() {
@@ -112,13 +105,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getContactsBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messenger.Companion.sendCommand(genCommand("getContacts"), new Callback() {
-                    @Override
-                    public void onResult(String result) {
-
-                        KLog.e("---->>.", "addFriend Result:" + result);
-                        ContactsResult contacts = StrUtils.fromJson(result, ContactsResult.class);
-                        final ContactsAdapter adapter = new ContactsAdapter(contacts.getData());
+                Messenger.Companion.sendCommand(genCommand("getContacts"), new Callback<List<Friend>>() {
+                    @Override public void onResult(boolean isSuccess, @Nullable String message,
+                        @Nullable List<Friend> result) {
+                        KLog.e("---->>.", "addFriend Result:" +  (result == null ? "null" : StrUtils.toJson(result)));
+                        final ContactsAdapter adapter = new ContactsAdapter(result);
 
                         contactListView.post(new Runnable() {
                             @Override
@@ -142,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
                 et = findViewById(R.id.addFriendSayHiInput);
                 String sayHi = et.getText().toString();
 
-                Messenger.Companion.sendCommand(genCommand("addFriend", phone, sayHi), new Callback() {
-                    @Override
-                    public void onResult(String result) {
+                Messenger.Companion.sendCommand(genCommand("addFriend", phone, sayHi), new Callback<Object>() {
+                    @Override public void onResult(boolean isSuccess, @Nullable String message,
+                        @Nullable Object result) {
 
-                        KLog.e("---->>.", "addFriend Result:" + result);
+                        KLog.e("---->>.", "addFriend Result:" + message);
                     }
                 });
             }
@@ -177,11 +168,12 @@ public class MainActivity extends AppCompatActivity {
                 msg.setThumbUrl("http://g.hiphotos.baidu.com/image/h%3D300/sign=9b698df937f33a87816d061af65d1018/8d5494eef01f3a2963a5db079425bc315d607c8d.jpg");
                 msg.setUrl("http://www.baidu.com");
 
-                Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
-                    @Override
-                    public void onResult(String result) {
+                Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback<Object>() {
+                    @Override public void onResult(boolean isSuccess, @Nullable String message,
+                        @Nullable Object result) {
 
-                        KLog.e("---->>.", "send card Message Result:" + result);
+
+                        KLog.e("---->>.", "send card Message Result:" + message);
                     }
                 });
 
@@ -190,11 +182,12 @@ public class MainActivity extends AppCompatActivity {
                 message.setTarget(to);
                 message.setContent(content);
 
-                Messenger.Companion.sendCommand(genCommand("sendMessage", message), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("sendMessage", message), new Callback<Object>() {
                     @Override
-                    public void onResult(String result) {
+                    public void onResult(boolean isSuccess, @Nullable String message,
+                        @Nullable Object result) {
 
-                        KLog.e("---->>.", "sendMessage Result:" + result);
+                        KLog.e("---->>.", "sendMessage Result:" + message);
                     }
                 });
             }
@@ -235,11 +228,12 @@ public class MainActivity extends AppCompatActivity {
                         msg.setImageUrl(content);
                         msg.setFrom("denghongxing997955");
 
-                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback<Object>() {
                             @Override
-                            public void onResult(String result) {
+                            public void onResult(boolean isSuccess, @Nullable String message,
+                                @Nullable Object result) {
 
-                                KLog.e("---->>.", "sendMessage Result:" + result);
+                                KLog.e("---->>.", "sendMessage Result:" + message);
                             }
                         });
                     }
@@ -280,11 +274,12 @@ public class MainActivity extends AppCompatActivity {
                         msg.setTarget(to);
                         msg.setVideoUrl(content);
 
-                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback<Object>() {
                             @Override
-                            public void onResult(String result) {
+                            public void onResult(boolean isSuccess, @Nullable String message,
+                                @Nullable Object result) {
 
-                                KLog.e("---->>.", "sendMessage Result:" + result);
+                                KLog.e("---->>.", "sendMessage Result:" + message);
                             }
                         });
                     }
