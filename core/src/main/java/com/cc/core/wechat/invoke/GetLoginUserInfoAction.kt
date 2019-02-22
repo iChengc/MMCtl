@@ -7,7 +7,7 @@ import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.*
 
 class GetLoginUserInfoAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         val userInfo= User()
         userInfo.setWechatId(HookUtils.getLoginUserWechatId())
         userInfo.setAlias(HookUtils.getLoginUserInfo(UserInfoId_Alias).toString())
@@ -17,7 +17,7 @@ class GetLoginUserInfoAction : Action {
         userInfo.setSex(HookUtils.getLoginUserInfo(UserInfoId_Sex, 0) as Int)
         userInfo.setPhone(HookUtils.getLoginUserInfo(UserInfoId_Phone).toString())
         userInfo.setAvatar(HookUtils.Companion.getSelfBigAvatarUrl())
-        return ActionResult.successResult(userInfo)
+        return ActionResult.successResult(actionId, userInfo)
     }
 
     override fun key(): String? {

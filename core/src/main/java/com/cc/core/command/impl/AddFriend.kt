@@ -6,9 +6,9 @@ import com.cc.core.actions.Actions
 import com.cc.core.wechat.invoke.AddFriendAction
 
 class AddFriend : Action {
-  override fun execute(vararg args: Any?): ActionResult? {
+  override fun execute(actionId : String, vararg args: Any?): ActionResult? {
 
-    return Actions.execute(AddFriendAction::class.java, *args)
+    return Actions.execute(AddFriendAction::class.java, actionId, *args)
   }
 
   override fun key(): String? {

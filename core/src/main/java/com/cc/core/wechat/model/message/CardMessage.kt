@@ -7,6 +7,7 @@ class CardMessage : BaseMessage(WeChatMessageType.CARD) {
   private var description: String? = null
   private var thumbUrl: String? = null
   private var url: String? = null
+  private var type: String? = null
 
   fun getTitle(): String? {
     return title
@@ -38,5 +39,13 @@ class CardMessage : BaseMessage(WeChatMessageType.CARD) {
 
   fun setUrl(url: String?) {
     this.url = url
+  }
+
+  fun geType(): String? {
+    return type
+  }
+
+  fun setType(type: String?) {
+    this.type = type
   }
 }

@@ -8,13 +8,13 @@ import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 
 class StartActivityAction : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
-            return ActionResult.failedResult("unknown activity")
+            return ActionResult.failedResult(actionId, "unknown activity")
         }
 
         if (ApplicationContext.forgroundActivity == null) {
-            return ActionResult.failedResult("Wechat does not start")
+            return ActionResult.failedResult(actionId, "Wechat does not start")
         }
 
         val intent = Intent()
@@ -27,7 +27,7 @@ class StartActivityAction : Action {
             intent.putExtras(bundle)
         }
         (ApplicationContext.forgroundActivity as Activity).startActivity(intent)
-        return ActionResult.successResult()
+        return ActionResult.successResult(actionId)
     }
 
     override fun key(): String? {

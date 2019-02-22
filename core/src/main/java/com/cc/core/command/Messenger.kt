@@ -6,9 +6,9 @@ import com.cc.core.utils.Utils
 
 class Messenger {
   companion object {
-    fun <T> sendCommand(cmd: Command?, callback: Callback<T>) {
+    fun sendCommand(cmd: Command?, callback: Callback) {
       if (cmd == null) {
-        callback.onResult(false, "no command was found!", null)
+        callback.onResult(null)
         return
       }
 
@@ -16,12 +16,11 @@ class Messenger {
         val result: String
         if (Utils.isEmpty(cmd.getArgs())) {
 
-          result = Actions.executeCommand(cmd.getKey())
+          result = Actions.executeCommand(cmd.getId(), cmd.getKey())
         } else {
-          result = Actions.executeCommand(cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
+          result = Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
         }
-
-        callback.result(result)
+        callback.onResult(result)
       }
 
     }

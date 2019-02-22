@@ -14,14 +14,14 @@ import java.util.concurrent.TimeUnit
 
 class AddFriendAction : Action {
     private val lock = ArrayBlockingQueue<String>(2)
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
-            return ActionResult.failedResult("No mobile phone ")
+            return ActionResult.failedResult(actionId, "No mobile phone ")
         }
 
         val wechatId = getWechatId(args[0].toString())
         if (TextUtils.isEmpty(wechatId)) {
-            return ActionResult.failedResult("can not find user:" + args[0])
+            return ActionResult.failedResult(actionId, "can not find user:" + args[0])
         }
 
         val sayHi = if (args.size > 1) {
@@ -31,7 +31,7 @@ class AddFriendAction : Action {
         }
         sendRequest(wechatId, sayHi)
 
-        return ActionResult.successResult()
+        return ActionResult.successResult(actionId)
     }
 
     private fun getWechatId(phone: String): String? {

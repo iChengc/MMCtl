@@ -13,9 +13,9 @@ import com.cc.core.wechat.model.message.VideoMessage
 import com.cc.core.wechat.model.message.WeChatMessage
 
 class SendMessage : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         if (args.isEmpty()) {
-            return ActionResult.failedResult("No message was provided")
+            return ActionResult.failedResult(actionId, "No message was provided")
         }
         val gson = MessageUtils.messageDeserializeGson()
 
@@ -36,7 +36,7 @@ class SendMessage : Action {
             val path = Utils.downloadFile(msg.getThumbUrl(), false)
             msg.setThumbUrl(path)
         }
-        return Actions.execute(SendMessageAction::class.java, StrUtils.toJson(msg))
+        return Actions.execute(SendMessageAction::class.java, actionId, StrUtils.toJson(msg))
     }
 
     override fun key(): String? {

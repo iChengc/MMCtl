@@ -6,7 +6,7 @@ interface Action {
      * @param args
      * @return
      */
-    fun execute(vararg args :  Any?): ActionResult?
+    fun execute(actionId : String, vararg args :  Any?): ActionResult?
 
     /**
      * The key of the action

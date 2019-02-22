@@ -17,7 +17,7 @@ class GetContactsAction : Action {
         private const val QUERY_AVATAR_SQL = "select reserved1 from img_flag where username = ? ;"
     }
 
-    override fun execute(vararg args: Any?): ActionResult? {
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         val wechatIds = ArrayList<String>()
         val friends = ArrayList<Friend>()
         HookUtils.executeRawQuery(QUERY_CONTACT_SQL).use { contactCursor ->
@@ -46,7 +46,7 @@ class GetContactsAction : Action {
         }
 
         KLog.e("----->>>>> ${wechatIds}")
-        return ActionResult.successResult(friends)
+        return ActionResult.successResult(actionId, friends)
     }
 
     private fun getAvatarBy(wechatId: String): String {

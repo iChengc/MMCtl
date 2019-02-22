@@ -58,6 +58,7 @@ class MessageUtils {
                 from = to
             }
 
+            KLog.e("message content ===>>>", content)
             val dateTime = XposedHelpers.getLongField(messageInfo,
                     Wechat.HookMethodFunctions.Message.MessageDatetimeFieldId)
 
@@ -270,12 +271,20 @@ class MessageUtils {
             }
 
             message.setDescription(map[".msg.appmsg.des"])
-
             message.setTitle(map[".msg.appmsg.title"])
-
             message.setThumbUrl(map[".msg.appmsg.thumburl"])
-
             message.setUrl(map[".msg.appmsg.url"])
+            message.setType(map[".msg.appmsg.type"])
+
+            if ("8".equals(message.getType())) {
+                message.setDescription("[不支持的卡片消息（${message.getType()}）：文件传输]")
+            } else if ("33".equals(message.getType())) {
+                message.setDescription("[不支持的卡片消息（${message.getType()}）：小程序分享]")
+            } else if ("2001".equals(message.getType())) {
+                message.setDescription("[不支持的卡片消息（${message.getType()}）：红包/收款]")
+            } else if ("2000".equals(message.getType())) {
+                message.setDescription("[不支持的卡片消息（${message.getType()}）：转账]")
+            }
         }
 
         fun getEmojiImageUrl(details: String): String? {

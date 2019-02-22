@@ -7,8 +7,8 @@ class NullAction : Action {
         this.missingKey = missingKey
     }
 
-    override fun execute(vararg args: Any?): ActionResult? {
-        return ActionResult(false, "Could not find implementation for: '$missingKey'")
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
+        return ActionResult(actionId, false, "Could not find implementation for: '$missingKey'")
     }
 
     override fun key(): String? {

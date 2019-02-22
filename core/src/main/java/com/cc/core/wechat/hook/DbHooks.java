@@ -9,7 +9,6 @@ import com.cc.core.xposed.BaseXposedHook;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class DbHooks extends BaseXposedHook {
 
@@ -58,8 +57,7 @@ public class DbHooks extends BaseXposedHook {
                         password.setWechatId(Wechat.LoginWechatId);
                         DbService.getInstance().insertDbPassword(password, new Callback() {
                             @Override
-                            public void onResult(boolean isSuccess, @Nullable String message,
-                                @Nullable Object result) {
+                            public void onResult(String result) {
                                 KLog.d("password has saved");
                             }
                         });

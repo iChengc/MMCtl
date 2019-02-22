@@ -11,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 public class RpcArgs implements Parcelable {
     @SerializedName("time")
     private long time;
+    @SerializedName("id")
+    private String id;
     @SerializedName("type")
     private String type;
     @SerializedName("data")
@@ -20,6 +22,7 @@ public class RpcArgs implements Parcelable {
 
     protected RpcArgs(Parcel in) {
         time = in.readLong();
+        id = in.toString();
         type = in.readString();
         data = in.readString();
     }
@@ -60,6 +63,14 @@ public class RpcArgs implements Parcelable {
         this.data = data;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -68,6 +79,7 @@ public class RpcArgs implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(time);
+        dest.writeString(id);
         dest.writeString(type);
         dest.writeString(data);
     }
@@ -86,6 +98,7 @@ public class RpcArgs implements Parcelable {
         rpcArgs.time = System.currentTimeMillis();
         rpcArgs.type = CallType.EXECUTE_ACTION;
         rpcArgs.data = StrUtils.toJson(action);
+        rpcArgs.id = action.getActionId();
 
         return rpcArgs;
     }
