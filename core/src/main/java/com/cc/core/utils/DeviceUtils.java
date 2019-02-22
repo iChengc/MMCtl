@@ -3,10 +3,7 @@ package com.cc.core.utils;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
-
 import com.cc.core.ApplicationContext;
-import com.cc.core.shell.ShellCommands;
-import com.cc.core.shell.ShellUtils;
 
 public class DeviceUtils {
     private DeviceUtils() {
@@ -35,12 +32,13 @@ public class DeviceUtils {
 
     public static void lockScreen() {
         // 获取电源管理器对象
-        PowerManager pm = (PowerManager) ApplicationContext.application()
+        /*PowerManager pm = (PowerManager) ApplicationContext.application()
                 .getSystemService(Context.POWER_SERVICE);
         boolean screenOn = pm.isScreenOn();
         if (screenOn) {
             ShellUtils.runShell(true, ShellCommands.genCmd(ShellCommands.INPUT_KEY_CMD, "26"));
-        }
+        }*/
+
         /*Class c = Class.forName("android.os.PowerManager");
         PowerManager mPowerManager = (PowerManager) MyApplication.application.getSystemService(Context.POWER_SERVICE);
         for (Method m : c.getDeclaredMethods()) {
