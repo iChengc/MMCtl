@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messenger.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
                     public void onResult(final String result) {
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 /*getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Messenger.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        Messenger.sendCommand(genCommand("wechat:addFriend"), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("wechat:addFriend"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
                                 KLog.e("---->>.", "addFriend Result:" + result);
-                                Messenger.sendCommand(genCommand("wechat:getContacts"), new Callback() {
+                                Messenger.Companion.sendCommand(genCommand("wechat:getContacts"), new Callback() {
                                     @Override
                                     public void onResult(String result) {
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getContactsBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messenger.sendCommand(genCommand("getContacts"), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("getContacts"), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 et = findViewById(R.id.addFriendSayHiInput);
                 String sayHi = et.getText().toString();
 
-                Messenger.sendCommand(genCommand("addFriend", phone, sayHi), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("addFriend", phone, sayHi), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 msg.setThumbUrl("http://g.hiphotos.baidu.com/image/h%3D300/sign=9b698df937f33a87816d061af65d1018/8d5494eef01f3a2963a5db079425bc315d607c8d.jpg");
                 msg.setUrl("http://www.baidu.com");
 
-                Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 message.setTarget(to);
                 message.setContent(content);
 
-                Messenger.sendCommand(genCommand("sendMessage", message), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("sendMessage", message), new Callback() {
                     @Override
                     public void onResult(String result) {
 
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        /*Messenger.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
+                        /*Messenger.Companion.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                         msg.setImageUrl(content);
                         msg.setFrom("denghongxing997955");
 
-                        Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
                             @Override
                             public void onResult(String result) {
 
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        /*Messenger.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
+                        /*Messenger.Companion.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
                             @Override
                             public void onResult(String result) {
 
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                         msg.setTarget(to);
                         msg.setVideoUrl(content);
 
-                        Messenger.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
                             @Override
                             public void onResult(String result) {
 

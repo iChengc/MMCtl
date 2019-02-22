@@ -650,6 +650,7 @@ public class FileUtil {
      */
     public static void clearCache() {
         clearDir(getImageCacheDirectory());
+        clearDir(getVideoCacheDirectory());
         clearDir(getExternalLogDir());
         clearDir(getInternalCacheDir());
         clearDir(getExternalCacheDir());
@@ -666,6 +667,7 @@ public class FileUtil {
         long cacheSize = getImageCacheSize();
         cacheSize += getLogFileCacheSize();
         cacheSize += getSystemCacheSize();
+        cacheSize += getFolderSize(getExternalCacheDir());
         cacheSize += getFolderSize(getExternalCacheDir());
         cacheSize += getTmpCacheSize();
         return calcCacheSizeString(cacheSize);

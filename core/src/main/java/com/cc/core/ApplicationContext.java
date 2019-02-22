@@ -12,22 +12,29 @@ import com.cc.core.data.db.DaoSession;
 import com.cc.core.data.db.DbService;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.Utils;
+import com.cc.core.utils.FileUtil;
 import com.cc.core.wechat.Wechat;
 
 import org.greenrobot.greendao.database.Database;
 
 public class ApplicationContext {
-    public static final String PACKAGE_NAME = "com.cc.wechatmanager";
+    public static String PACKAGE_NAME = "com.cc.wechatmanager";
     private static Application application;
     public static Activity forgroundActivity;
     private static DaoSession session;
 
     public static void setup(Application application) {
-        KLog.setLog2ConsoleEnabled(true);
         init(application);
         //enableAccessibility();
         setupDatabase();
         DbService.getInstance().init();
+
+        // clear cache
+        WorkerHandler.postOnWorkThread(new Runnable() {
+            @Override public void run() {
+                FileUtil.clearCache();
+            }
+        });
     }
 
     public static void init(Application application) {
@@ -36,6 +43,9 @@ public class ApplicationContext {
         WorkerHandler.getInstance().init();
         Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
         KLog.enableLog2Console(KLog.POLICY_MASK);
+        if (application != null) {
+            PACKAGE_NAME = application.getPackageName();
+        }
     }
 
     private static void enableAccessibility() {
