@@ -1,4 +1,4 @@
-package com.cc.core.wechat.hook.tool;
+package com.cc.core.wechat.hook;
 
 import com.cc.core.command.Callback;
 import com.cc.core.data.db.DbService;

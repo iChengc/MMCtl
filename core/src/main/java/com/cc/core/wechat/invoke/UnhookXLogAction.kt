@@ -7,9 +7,10 @@ import com.cc.core.wechat.hook.tool.XLogHooks
 
 class UnhookXLogAction : Action {
     override fun execute(actionId : String, vararg args: Any?): ActionResult? {
-        val hook = Wechat.lookup(XLogHooks::class.java)
+        var hook = Wechat.lookup(XLogHooks::class.java)
         if (hook == null){
-            return ActionResult.failedResult(actionId, "Can not find XLogHooks!")
+            hook = XLogHooks()
+            Wechat.addHook(hook)
         }
 
         (hook as XLogHooks).unhook()

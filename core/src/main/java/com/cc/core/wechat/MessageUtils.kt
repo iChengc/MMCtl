@@ -8,14 +8,13 @@ import com.cc.core.utils.MD5
 import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.ModelCdnUtil
 import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.ModelCdnUtilGetFileKeyFunc
-import com.cc.core.wechat.hook.CdnLogicHooks
+import com.cc.core.wechat.hook.tool.CdnLogicHooks
 import com.cc.core.wechat.model.message.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import de.robv.android.xposed.XposedHelpers
 import java.io.File
 import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 

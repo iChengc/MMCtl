@@ -1,4 +1,4 @@
-package com.cc.core.wechat.hook;
+package com.cc.core.wechat.hook.tool;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
@@ -11,8 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class CdnLogicHooks extends BaseXposedHook {
     private static Map<String, CdnDownloadFinishListener> mCdnDownloadListeners = new HashMap<>();
+    private static XC_MethodHook.Unhook downLoadEndHook, c2cDownloadCompletedHook;
     @Override public void hook(@NotNull ClassLoader classLoader) {
-        hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onDownloadToEnd", String.class, int.class, int.class,
+        downLoadEndHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onDownloadToEnd", String.class, int.class, int.class,
             new XC_MethodHook() {
                 @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     CdnDownloadFinishListener listner = mCdnDownloadListeners.remove(param.args[0].toString());
@@ -22,7 +23,7 @@ public class CdnLogicHooks extends BaseXposedHook {
                 }
             });
 
-        hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onC2CDownloadCompleted", String.class, findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadResult", Wechat.WECHAT_CLASSLOADER),
+        c2cDownloadCompletedHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onC2CDownloadCompleted", String.class, findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadResult", Wechat.WECHAT_CLASSLOADER),
             new XC_MethodHook() {
                 @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     KLog.e("onC2CDownloadCompleted =====>>>>>>>", param.args[0] + "=====" + StrUtils.toJson(param.args[1]));
@@ -35,7 +36,22 @@ public class CdnLogicHooks extends BaseXposedHook {
     }
 
     public static void registerDownloadListeners(String fileKey, CdnDownloadFinishListener listener) {
+        ensureHooked();
         mCdnDownloadListeners.put(fileKey, listener);
+    }
+
+    private synchronized static void ensureHooked() {
+        if (downLoadEndHook != null && c2cDownloadCompletedHook != null) {
+            return;
+        } else if (downLoadEndHook == null && c2cDownloadCompletedHook != null) {
+            c2cDownloadCompletedHook.unhook();
+            c2cDownloadCompletedHook = null;
+        } else if (downLoadEndHook != null && c2cDownloadCompletedHook == null) {
+            downLoadEndHook.unhook();
+            downLoadEndHook = null;
+        }
+
+        new CdnLogicHooks().hook(Wechat.WECHAT_CLASSLOADER);
     }
 
     public interface CdnDownloadFinishListener {

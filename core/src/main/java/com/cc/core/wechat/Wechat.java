@@ -79,7 +79,11 @@ public class Wechat {
 
     private static void addHook(String className) throws Exception {
         Class hook = Class.forName(className);
-        hooks.add((BaseXposedHook) hook.newInstance());
+        addHook((BaseXposedHook) hook.newInstance());
+    }
+
+    public static void addHook(BaseXposedHook hook) throws Exception {
+        hooks.add(hook);
     }
 
     public static <T extends BaseXposedHook> BaseXposedHook lookup(Class<T> clazz) {
