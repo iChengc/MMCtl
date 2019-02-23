@@ -6,8 +6,8 @@ import com.cc.core.actions.Actions
 import com.cc.core.wechat.invoke.CreateGroupAction
 
 class CreateGroup : Action {
-    override fun execute(vararg args: Any?): ActionResult? {
-        return Actions.execute(CreateGroupAction::class.java, *args)
+    override fun execute(actionId : String, vararg args: Any?): ActionResult? {
+        return Actions.execute(CreateGroupAction::class.java, actionId, *args)
     }
 
     override fun key(): String? {
