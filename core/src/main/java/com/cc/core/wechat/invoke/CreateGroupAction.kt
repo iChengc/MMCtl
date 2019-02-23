@@ -19,6 +19,7 @@ class CreateGroupAction : Action {
         members.addAll(args.asList())
 
         var request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.Group.CreateGroupRequest, Wechat.WECHAT_CLASSLOADER), "", members)
+
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(119) { response->
             try {
