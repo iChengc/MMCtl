@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class CreateGroupAction : Action {
     private val lock = ArrayBlockingQueue<String>(1)
+
     override fun execute(actionId : String, vararg args: Any?): ActionResult? {
         val members = ArrayList<Any?>()
         members.addAll(args.asList())
