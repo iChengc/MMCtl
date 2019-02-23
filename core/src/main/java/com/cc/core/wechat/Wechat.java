@@ -475,7 +475,7 @@ public class Wechat {
                         break;
                     case "7.0.3":
                         // TODO: 7.0.3 support
-                        CreateGroupRequest = "";
+                        CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
                         break;
                 }
             }
