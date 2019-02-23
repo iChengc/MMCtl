@@ -48,6 +48,8 @@ public class RpcServer {
                     Socket client = server.accept();
                     executor.submit(responseClient(client));
                 }
+            } catch (java.net.BindException e) {
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
                 KLog.e("RpcServer", "Start server socket error! Try to reconnect", e);

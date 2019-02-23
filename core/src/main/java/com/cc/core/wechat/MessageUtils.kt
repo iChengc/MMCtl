@@ -274,16 +274,18 @@ class MessageUtils {
             message.setTitle(map[".msg.appmsg.title"])
             message.setThumbUrl(map[".msg.appmsg.thumburl"])
             message.setUrl(map[".msg.appmsg.url"])
-            message.setType(map[".msg.appmsg.type"])
+            message.setCardType(map[".msg.appmsg.type"])
 
-            if ("8".equals(message.getType())) {
-                message.setDescription("[不支持的卡片消息（${message.getType()}）：文件传输]")
-            } else if ("33".equals(message.getType())) {
-                message.setDescription("[不支持的卡片消息（${message.getType()}）：小程序分享]")
-            } else if ("2001".equals(message.getType())) {
-                message.setDescription("[不支持的卡片消息（${message.getType()}）：红包/收款]")
-            } else if ("2000".equals(message.getType())) {
-                message.setDescription("[不支持的卡片消息（${message.getType()}）：转账]")
+            if ("8".equals(message.getCardType())) {
+                message.setDescription("[不支持的卡片消息（${message.getCardType()}）：斗图表情]")
+            }else if ("6".equals(message.getCardType())) {
+                message.setDescription("[不支持的卡片消息（${message.getCardType()}）：文件传输]")
+            } else if ("33".equals(message.getCardType())) {
+                message.setDescription("[不支持的卡片消息（${message.getCardType()}）：小程序分享]")
+            } else if ("2001".equals(message.getCardType())) {
+                message.setDescription("[不支持的卡片消息（${message.getCardType()}）：红包/收款]")
+            } else if ("2000".equals(message.getCardType())) {
+                message.setDescription("[不支持的卡片消息（${message.getCardType()}）：转账]")
             }
         }
 
