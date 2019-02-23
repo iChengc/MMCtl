@@ -70,9 +70,9 @@ class HookUtils {
         fun getLoginUserRegionCode(): String {
             val countryCode = getLoginUserInfo(UserInfoId_CountryCode) as String
             val provinceCode = getLoginUserInfo(UserInfoId_ProvinceCode) as String
-            val cityCode = getLoginUserInfo(UserInfoId_CityCode) as Int
+            val cityCode = getLoginUserInfo(UserInfoId_CityCode)
 
-            return encodeRegionCode(countryCode, provinceCode, String.format("%d", cityCode) )
+            return encodeRegionCode(countryCode, provinceCode, cityCode.toString())
         }
 
         private fun encodeRegionCode(countryCode: String, provinceCode: String, cityCode: String): String {

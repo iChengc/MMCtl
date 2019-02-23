@@ -1,4 +1,4 @@
-package com.cc.core.wechat.hook;
+package com.cc.core.wechat.hook.tool;
 
 import com.cc.core.command.Callback;
 import com.cc.core.data.db.DbService;
@@ -55,12 +55,12 @@ public class DbHooks extends BaseXposedHook {
                         password.setPassword(new String(passwordBuffer));
                         password.setPath(path);
                         password.setWechatId(Wechat.LoginWechatId);
-                        DbService.getInstance().insertDbPassword(password, new Callback() {
+                        /*DbService.getInstance().insertDbPassword(password, new Callback() {
                             @Override
                             public void onResult(String result) {
                                 KLog.d("password has saved");
                             }
-                        });
+                        });*/
                         KLog.e("XPosed", "----- path: " + path + ", decrypt sql: " + sql);
                     }
                 });

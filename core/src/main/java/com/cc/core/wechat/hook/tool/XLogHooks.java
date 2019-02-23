@@ -1,4 +1,4 @@
-package com.cc.core.wechat.hook;
+package com.cc.core.wechat.hook.tool;
 
 import android.util.Log;
 
