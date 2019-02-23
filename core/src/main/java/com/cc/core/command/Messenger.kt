@@ -5,24 +5,25 @@ import com.cc.core.actions.Actions
 import com.cc.core.utils.Utils
 
 class Messenger {
-  companion object {
-    fun sendCommand(cmd: Command?, callback: Callback) {
-      if (cmd == null) {
-        callback.onResult(null)
-        return
-      }
+    companion object {
+        fun sendCommand(cmd: Command?, callback: Callback?) {
+            if (cmd == null) {
+                callback!!.onResult(null)
+                return
+            }
 
-      WorkerHandler.postOnWorkThread {
-        val result: String
-        if (Utils.isEmpty(cmd.getArgs())) {
+            WorkerHandler.postOnWorkThread {
+                val result: String
+                if (Utils.isEmpty(cmd.getArgs())) {
 
-          result = Actions.executeCommand(cmd.getId(), cmd.getKey())
-        } else {
-          result = Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
+                    result = Actions.executeCommand(cmd.getId(), cmd.getKey())
+                } else {
+                    result = Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
+                }
+                callback!!.onResult(result)
+
+            }
+
         }
-        callback.onResult(result)
-      }
-
     }
-  }
 }
