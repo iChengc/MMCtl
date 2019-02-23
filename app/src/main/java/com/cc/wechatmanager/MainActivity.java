@@ -32,6 +32,8 @@ import com.cc.core.wechat.model.message.WeChatMessage;
 import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.LoginUserResult;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -292,6 +294,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         registerMessageBroadcast();
+        Messenger.Companion.sendCommand(genCommand("initDelayHooks"), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+
+            }
+        });
     }
 
     @Override protected void onDestroy() {

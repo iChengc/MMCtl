@@ -36,13 +36,15 @@ public class CdnLogicHooks extends BaseXposedHook {
     }
 
     public static void registerDownloadListeners(String fileKey, CdnDownloadFinishListener listener) {
-        ensureHooked();
+        if (!ensureHooked()) {
+            return;
+        }
         mCdnDownloadListeners.put(fileKey, listener);
     }
 
-    private synchronized static void ensureHooked() {
+    private synchronized static boolean ensureHooked() {
         if (downLoadEndHook != null && c2cDownloadCompletedHook != null) {
-            return;
+            return true;
         } else if (downLoadEndHook == null && c2cDownloadCompletedHook != null) {
             c2cDownloadCompletedHook.unhook();
             c2cDownloadCompletedHook = null;
@@ -51,7 +53,7 @@ public class CdnLogicHooks extends BaseXposedHook {
             downLoadEndHook = null;
         }
 
-        new CdnLogicHooks().hook(Wechat.WECHAT_CLASSLOADER);
+        return false;
     }
 
     public interface CdnDownloadFinishListener {
