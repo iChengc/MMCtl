@@ -1,6 +1,6 @@
 package com.cc.wechatmanager.model;
 
-import com.cc.core.data.db.model.User;
+import com.cc.core.wechat.model.user.User;
 
 public class LoginUserResult extends CommandResult<User> {
 }

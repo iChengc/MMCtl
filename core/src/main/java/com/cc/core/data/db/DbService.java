@@ -7,11 +7,11 @@ import com.cc.core.WorkerHandler;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.command.Callback;
 import com.cc.core.data.db.model.DBPassword;
-import com.cc.core.data.db.model.User;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
 import com.cc.core.rpc.RpcArgs;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.model.user.User;
 
 import org.greenrobot.greendao.AbstractDao;
 
