@@ -325,6 +325,9 @@ public class Wechat {
             public static String ModelCdnUtil = "";
             public static String ModelCdnUtilGetFileKeyFunc = "";
 
+            public static String NetSceneResponseBodyKey = ""; // 参照 7.0.3: com.tencent.mm.ah.v
+            public static String NetSceneResponseStringBooleanValueKey = ""; // // 参照 7.0.3: com.tencent.mm.protocal.protobuf.brj
+
             static void init(String version) {
                 switch (version) {
                     case "6.7.2":
@@ -346,6 +349,9 @@ public class Wechat {
                         UploadMsgVideoHandler = "com.tencent.mm.sdk.f.e";
                         ModelCdnUtil = "com.tencent.mm.modelcdntran.d";
                         ModelCdnUtilGetFileKeyFunc = "a";
+
+                        NetSceneResponseBodyKey= "dVG";
+                        NetSceneResponseStringBooleanValueKey = "sVc";
                         break;
                     case "7.0.3":
                         GetNetSceneQueueClass = "com.tencent.mm.model.av";
@@ -366,39 +372,36 @@ public class Wechat {
 
                         ModelCdnUtil = "com.tencent.mm.ak.c";
                         ModelCdnUtilGetFileKeyFunc = "a";
+
+                        NetSceneResponseBodyKey= "feW";
+                        NetSceneResponseStringBooleanValueKey = "wiP";
                         break;
                 }
             }
         }
 
         public static class AddFriend {
-            public static String FriendDetailsResponseKey = "";
             public static String FriendDetailsKey = "";
             public static String RelationType = "";
             public static String WechatId = "";
             public static String DecriptyWechatId = "";
-            public static String WechatIdValue = "";
             public static String AntispamTicket = "";
 
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
-                        FriendDetailsResponseKey = "dVG";
                         FriendDetailsKey = "dUj";
                         RelationType = "eWZ";
                         WechatId = "sgh";
                         DecriptyWechatId = "sgx";
                         AntispamTicket = "sqc";
-                        WechatIdValue = "sVc";
                         break;
                     case "7.0.3":
-                        FriendDetailsResponseKey = "feW";
                         FriendDetailsKey = "fdy";
                         RelationType = "gfi";
                         WechatId = "vqP";
                         DecriptyWechatId = "vrl";
                         AntispamTicket = "vAm";
-                        WechatIdValue = "wiP";
                         break;
                 }
             }
