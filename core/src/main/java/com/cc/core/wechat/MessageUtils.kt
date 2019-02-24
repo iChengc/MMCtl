@@ -1,6 +1,7 @@
 package com.cc.core.wechat
 
 import android.content.Intent
+import android.text.TextUtils
 import com.cc.core.ApplicationContext
 import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
@@ -27,11 +28,11 @@ class MessageUtils {
         private val lock = ArrayBlockingQueue<String>(1)
         private val executorService = Executors.newFixedThreadPool(5)
 
-        fun receiveNewMessage(messageInfo : Object) {
+        fun receiveNewMessage(messageInfo: Object) {
             executorService.submit { processNewMessage(messageInfo) }
         }
 
-        private fun processNewMessage(messageInfo : Object) {
+        private fun processNewMessage(messageInfo: Object) {
             KLog.e("message ===>>>", StrUtils.toJson(messageInfo))
             val msgType = XposedHelpers.getIntField(messageInfo,
                     Wechat.Hook.Message.MessageTypeFieldId)
@@ -107,11 +108,13 @@ class MessageUtils {
                 }
                 else -> {
                     msg = UnsupportMessage()
+                    msg.setMessageDetails(content)
+                    msg.setContent("[不支持的消息格式]")
+                    msg.setType(msgType)
                     msg.setFrom(from)
                     msg.setTarget(to)
-                    msg.setContent("[不支持的消息格式]")
-                    msg.setMessageDetails(content)
-                    msg.setType(msgType)
+                    msg.setCreateTime(dateTime)
+                    msg.setMsgServId(msgservId)
                 }
             }
             KLog.e("message", StrUtils.toJson(msg))
@@ -279,7 +282,7 @@ class MessageUtils {
 
             if ("8".equals(message.getCardType())) {
                 message.setDescription("[不支持的卡片消息（${message.getCardType()}）：斗图表情]")
-            }else if ("6".equals(message.getCardType())) {
+            } else if ("6".equals(message.getCardType())) {
                 message.setDescription("[不支持的卡片消息（${message.getCardType()}）：文件传输]")
             } else if ("33".equals(message.getCardType())) {
                 message.setDescription("[不支持的卡片消息（${message.getCardType()}）：小程序分享]")
@@ -309,6 +312,74 @@ class MessageUtils {
                 }
             })
             lock.poll(30, TimeUnit.SECONDS)
+        }
+
+        /**
+         * <sysmsg type="sysmsgtemplate">
+        <sysmsgtemplate>
+        <content_template type="tmpl_type_profile">
+        <plain><![CDATA[]]></plain>
+        <template><![CDATA["$username$"试图撤回一条消息“$remark$”]]></template>
+        <link_list>
+        <link name="username" type="link_profile">
+        <memberlist>
+        <member>
+        <username><![CDATA[wxid_w4y2nc022m0g22]]></username>
+        <nickname><![CDATA[wxfake]]></nickname>
+        </member>
+        </memberlist>
+        </link>
+        <link name="remark" type="link_plain">
+        <plain><![CDATA[被我阻止了，哈哈]]></plain>
+        </link>
+        </link_list>
+        </content_template>
+        </sysmsgtemplate>
+        </sysmsg>
+         */
+
+        fun avoidMessageRevoke(messageDetails: Any) {
+            val contentObj = XposedHelpers.getObjectField(messageDetails,
+                    Wechat.Hook.Message.MessageContentFieldId)
+            val msgContent = XposedHelpers.getObjectField(contentObj, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey)
+            val nickName = isRevokeMessage(msgContent as String)
+
+            var content = """
+                $nickName 试图撤回一条消息, 被我阻止了，哈哈!!
+            """.trimIndent()
+            XposedHelpers.setIntField(messageDetails, Wechat.Hook.Message.MessageTypeFieldId, WeChatMessageType.GROUP_OPERATION)
+            XposedHelpers.setObjectField(contentObj, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey, content)
+        }
+
+        /**
+         * <sysmsg type="revokemsg">
+        <revokemsg>
+        <session>
+        11249221992@chatroom
+        </session>
+        <msgid>
+        1060587575
+        </msgid>
+        <newmsgid>
+        2783623623504511865
+        </newmsgid>
+        <replacemsg>
+        <![CDATA["wxfake" 撤回了一条消息]]>
+        </replacemsg>
+        </revokemsg>
+        </sysmsg>
+         */
+        fun isRevokeMessage(content: String): String? {
+            if (TextUtils.isEmpty(content)) {
+                return null
+            }
+            val map = HookUtils.xmlToMap(content, "revokemsg")
+            if (map.isEmpty()) {
+                return null
+            }
+            KLog.e("=====>>>>>", map.toString())
+            val content = map[".revokemsg.replacemsg"] ?: return null
+            return content.split("\"".toRegex())[1]
         }
     }
 }

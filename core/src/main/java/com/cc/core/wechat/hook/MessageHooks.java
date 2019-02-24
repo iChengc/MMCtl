@@ -1,6 +1,7 @@
 package com.cc.core.wechat.hook;
 
 import com.cc.core.wechat.MessageUtils;
+import com.cc.core.wechat.WeChatMessageType;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
@@ -26,6 +27,19 @@ public class MessageHooks extends BaseXposedHook {
                         Object messageInfo = XposedHelpers.getObjectField(param.args[0],
                                 Wechat.Hook.Message.MessageInfoFieldId);
                         MessageUtils.Companion.receiveNewMessage(messageInfo);
+                    }
+
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Object messageInfo = XposedHelpers.getObjectField(param.args[0],
+                                Wechat.Hook.Message.MessageInfoFieldId);
+                        int msgType = XposedHelpers.getIntField(messageInfo,
+                                Wechat.Hook.Message.MessageTypeFieldId);
+                        if (msgType != WeChatMessageType.CANCELABLE_GROUP_OPERATION) {
+                            return;
+                        }
+
+                        MessageUtils.Companion.avoidMessageRevoke(messageInfo);
                     }
                 });
     }
