@@ -38,6 +38,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView contactListView, messageListView;
@@ -62,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResult(String result) {
 
+                        KLog.e("---->>.", "createGroup Result:" + result);
                     }
                 });
-                Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
+                /*Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
                     public void onResult(final String result) {
 
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                });
+                });*/
                 /*getWindow().getDecorView().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -324,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
     private Command genCommand(String key, Object... data) {
         Command c = new Command();
         c.setKey(key);
+        c.setId(UUID.randomUUID().toString());
         List<Object> args = new ArrayList<>(Arrays.asList(data));
         c.setArgs(args);
         return c;

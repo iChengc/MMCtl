@@ -479,6 +479,7 @@ public class Wechat {
                     case "7.0.3":
                         // TODO: 7.0.3 support
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
+                        CreateGroupWechatIdField = "uUb";
                         break;
                 }
             }

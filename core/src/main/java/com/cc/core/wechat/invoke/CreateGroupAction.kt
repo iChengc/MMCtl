@@ -10,6 +10,7 @@ import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.hook.RemoteRespHooks
 import de.robv.android.xposed.XposedHelpers
 import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.TimeUnit
 
 class CreateGroupAction : Action {
     private val lock = ArrayBlockingQueue<String>(1)
@@ -20,15 +21,20 @@ class CreateGroupAction : Action {
         var request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.Group.CreateGroupRequest, Wechat.WECHAT_CLASSLOADER), "", members)
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(119) { response->
-            var groupWechatId = XposedHelpers.getObjectField(response, Wechat.Hook.Group.CreateGroupRequest) as String
-            lock.offer(groupWechatId)
+            try {
+                var groupWechatId = XposedHelpers.getObjectField(response, Wechat.Hook.Group.CreateGroupWechatIdField) as String
+                lock.offer(groupWechatId)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                lock.offer("""${e.javaClass.name}:${e.message}""")
+            }
         }
 
-        val groupWecharId = lock.poll()
+        val groupWecharId = lock.poll(30, TimeUnit.SECONDS)
         return if (TextUtils.isEmpty(groupWecharId)) {
             ActionResult.failedResult(actionId, "")
         } else if (!StrUtils.isGroupWechatId(groupWecharId)) {
-            ActionResult.Companion.failedResult(actionId, groupWecharId)
+            ActionResult.failedResult(actionId, groupWecharId)
         } else {
             ActionResult.successResult(actionId, groupWecharId)
         }
