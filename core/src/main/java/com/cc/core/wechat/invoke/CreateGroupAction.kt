@@ -22,7 +22,9 @@ class CreateGroupAction : Action {
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(119) { response->
             try {
-                var groupWechatId = XposedHelpers.getObjectField(response, Wechat.Hook.Group.CreateGroupWechatIdField) as String
+                var groupWechatId = XposedHelpers.getObjectField(response, Wechat.Hook.Group.CreateGroupWechatIdField)
+                groupWechatId = XposedHelpers.getObjectField(groupWechatId, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
+
                 lock.offer(groupWechatId)
             } catch (e: Throwable) {
                 e.printStackTrace()
