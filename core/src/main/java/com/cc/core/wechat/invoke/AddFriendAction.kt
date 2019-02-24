@@ -40,12 +40,12 @@ class AddFriendAction : Action {
 
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
-            val friendResponse = XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.FriendDetailsResponseKey)
-            val friendDetails = XposedHelpers.getObjectField(friendResponse, Wechat.Hook.AddFriend.FriendDetailsKey)
+
+            val friendDetails = XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.FriendDetailsKey)
             var wechatId: String
             if (XposedHelpers.getIntField(friendDetails, Wechat.Hook.AddFriend.RelationType) == 1) {
                 val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.WechatId)
-                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.AddFriend.WechatIdValue) as String
+                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
                 if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
                     val sb = StringBuilder(wechatId)
                     sb.insert(4, "_")
@@ -53,7 +53,7 @@ class AddFriendAction : Action {
                 }
             } else {
                 val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.DecriptyWechatId)
-                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.AddFriend.WechatIdValue) as String
+                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
             }
 
             if (TextUtils.isEmpty(wechatId)) {
