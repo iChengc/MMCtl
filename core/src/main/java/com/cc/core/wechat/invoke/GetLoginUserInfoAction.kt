@@ -2,9 +2,8 @@ package com.cc.core.wechat.invoke
 
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
-import com.cc.core.wechat.model.user.User
 import com.cc.core.wechat.HookUtils
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.*
+import com.cc.core.wechat.Wechat.Hook.Account.*
 
 class GetLoginUserInfoAction : Action {
     override fun execute(actionId : String, vararg args: Any?): ActionResult? {

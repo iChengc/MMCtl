@@ -23,7 +23,7 @@ public class XLogHooks extends BaseXposedHook {
 
     public void hook(ClassLoader classLoader) {
         if (logVerboseUnhook == null) {
-            logVerboseUnhook = findAndHookMethod(Wechat.HookMethodFunctions.LOGGER, classLoader, "v", String.class, String.class, Object[].class, new XC_MethodHook() {
+            logVerboseUnhook = findAndHookMethod(Wechat.Hook.LOGGER, classLoader, "v", String.class, String.class, Object[].class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     log(Log.VERBOSE, param.args);
@@ -32,7 +32,7 @@ public class XLogHooks extends BaseXposedHook {
         }
 
         if (logDebugUnhook == null) {
-            logDebugUnhook = findAndHookMethod(Wechat.HookMethodFunctions.LOGGER, classLoader, "d", String.class, String.class, Object[].class, new XC_MethodHook() {
+            logDebugUnhook = findAndHookMethod(Wechat.Hook.LOGGER, classLoader, "d", String.class, String.class, Object[].class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     log(Log.DEBUG, param.args);
@@ -41,7 +41,7 @@ public class XLogHooks extends BaseXposedHook {
         }
 
         if (logInfoUnhook == null) {
-            logInfoUnhook = findAndHookMethod(Wechat.HookMethodFunctions.LOGGER, classLoader, "i", String.class, String.class, Object[].class, new XC_MethodHook() {
+            logInfoUnhook = findAndHookMethod(Wechat.Hook.LOGGER, classLoader, "i", String.class, String.class, Object[].class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     log(Log.INFO, param.args);
@@ -50,7 +50,7 @@ public class XLogHooks extends BaseXposedHook {
         }
 
         if (logWarnUnhook == null) {
-            logWarnUnhook = findAndHookMethod(Wechat.HookMethodFunctions.LOGGER, classLoader, "w", String.class, String.class, Object[].class, new XC_MethodHook() {
+            logWarnUnhook = findAndHookMethod(Wechat.Hook.LOGGER, classLoader, "w", String.class, String.class, Object[].class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     log(Log.WARN, param.args);
@@ -59,7 +59,7 @@ public class XLogHooks extends BaseXposedHook {
         }
 
         if (logErrorUnhook == null) {
-            logErrorUnhook = findAndHookMethod(Wechat.HookMethodFunctions.LOGGER, classLoader, "e", String.class, String.class, Object[].class, new XC_MethodHook() {
+            logErrorUnhook = findAndHookMethod(Wechat.Hook.LOGGER, classLoader, "e", String.class, String.class, Object[].class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     log(Log.ERROR, param.args);

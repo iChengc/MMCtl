@@ -23,24 +23,24 @@ public class UploadCrashLogHooks extends BaseXposedHook {
     @Override
     public void hook(final ClassLoader classLoader) {
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashLogClass,
+                Wechat.Hook.UploadCrashLogClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashLogFunc,
+                Wechat.Hook.UploadCrashLogFunc,
                 String.class,
                 String.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        String path = (String) getStaticObjectField(classLoader.loadClass(Wechat.HookMethodFunctions.ConstantsStorage), Wechat.HookMethodFunctions.WechatStorageCrashPath);
+                        String path = (String) getStaticObjectField(classLoader.loadClass(Wechat.Hook.ConstantsStorage), Wechat.Hook.WechatStorageCrashPath);
                         String crashLogFile = path + "crash/" + param.args[0] + "." + param.args[1] + ".crashlog";
                         // 删除crash日志文件，禁止上报
                         FileUtil.deleteFile(crashLogFile);
                     }
                 });
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashWXRecoveryUploadServiceClass,
+                Wechat.Hook.UploadCrashWXRecoveryUploadServiceClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashWXRecoveryUploadServicePushDataFunc,
+                Wechat.Hook.UploadCrashWXRecoveryUploadServicePushDataFunc,
                 JSONArray.class,
                 String.class,
                 new XC_MethodHook() {
@@ -52,9 +52,9 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                     }
                 });
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashLogEnumClass,
+                Wechat.Hook.UploadCrashLogEnumClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashLogEnumFunc,
+                Wechat.Hook.UploadCrashLogEnumFunc,
                 String.class,
                 Callable.class,
                 new XC_MethodHook() {
@@ -69,9 +69,9 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                 });
 
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashCrashUploaderServiceClass,
+                Wechat.Hook.UploadCrashCrashUploaderServiceClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashCrashUploaderServiceOnHandleIntentFunc,
+                Wechat.Hook.UploadCrashCrashUploaderServiceOnHandleIntentFunc,
                 Intent.class,
                 new XC_MethodHook() {
                     @Override
@@ -82,10 +82,10 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                     }
                 });
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashTraceRouteClass,
+                Wechat.Hook.UploadCrashTraceRouteClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashTraceRouteFunc,
-                findClass(Wechat.HookMethodFunctions.UploadCrashTraceRouteClass, classLoader),
+                Wechat.Hook.UploadCrashTraceRouteFunc,
+                findClass(Wechat.Hook.UploadCrashTraceRouteClass, classLoader),
                 String.class,
                 byte[].class,
                 new XC_MethodReplacement() {
@@ -96,9 +96,9 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                     }
                 });
         hookMethod(
-                Wechat.HookMethodFunctions.UploadCrashStackReportUploaderClass,
+                Wechat.Hook.UploadCrashStackReportUploaderClass,
                 classLoader,
-                Wechat.HookMethodFunctions.UploadCrashStackReportUploaderFunc,
+                Wechat.Hook.UploadCrashStackReportUploaderFunc,
                 byte[].class,
                 String.class,
                 String.class,
@@ -112,14 +112,14 @@ public class UploadCrashLogHooks extends BaseXposedHook {
                     }
                 });
         hookMethod(
-                Wechat.HookMethodFunctions.SaveAnrWatchDogClass,
+                Wechat.Hook.SaveAnrWatchDogClass,
                 classLoader,
-                Wechat.HookMethodFunctions.SaveAnrWatchDogSetHandlerFunc,
-                findClass(Wechat.HookMethodFunctions.SaveAnrWatchDogHandlerClass, classLoader),
+                Wechat.Hook.SaveAnrWatchDogSetHandlerFunc,
+                findClass(Wechat.Hook.SaveAnrWatchDogHandlerClass, classLoader),
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable {
-                        if (param.args[0] != null && !param.args[0].getClass().getName().equals(Wechat.HookMethodFunctions.MMCrashReporter)) {
+                        if (param.args[0] != null && !param.args[0].getClass().getName().equals(Wechat.Hook.MMCrashReporter)) {
                             KLog.d(TAG, "set anr watch handler: " + param.args[0]);
                         }
 

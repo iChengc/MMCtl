@@ -8,12 +8,10 @@ import com.cc.core.utils.StrUtils;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
-import java.lang.reflect.Field;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 
-import static com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.NetSceneRemoteRespClass;
+import static com.cc.core.wechat.Wechat.Hook.NetScene.NetSceneRemoteRespClass;
 
 public class RemoteRespHooks extends BaseXposedHook {
     private static SparseArray<OnResponseListener> responseListeners = new SparseArray<>();
@@ -37,7 +35,7 @@ public class RemoteRespHooks extends BaseXposedHook {
                                 OnResponseListener l = responseListeners.get(type);
                                 if (l != null) {
                                     responseListeners.remove(type);
-                                    l.onResponse(StrUtils.toJson(param.thisObject));
+                                    l.onResponse(param.thisObject);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -64,7 +62,7 @@ public class RemoteRespHooks extends BaseXposedHook {
                                 OnResponseListener l = responseListeners.get(type);
                                 if (l != null) {
                                     responseListeners.remove(type);
-                                    l.onResponse(StrUtils.toJson(param.thisObject));
+                                    l.onResponse(param.thisObject);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -81,6 +79,6 @@ public class RemoteRespHooks extends BaseXposedHook {
     }
 
     public interface OnResponseListener {
-        void onResponse(String response);
+        void onResponse(Object response);
     }
 }

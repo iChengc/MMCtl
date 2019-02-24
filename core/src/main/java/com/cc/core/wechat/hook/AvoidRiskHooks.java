@@ -307,9 +307,9 @@ public class AvoidRiskHooks extends BaseXposedHook {
     private void hideLibs(ClassLoader classLoader) {
         // AccessibilityClickCount, 这个是在某些特定条件下才会启用，从目前的观察结果看Nexus 5上面似乎始终不会启用，但依然hook住以防万一
         // 从已经看到的代码猜测这个功能是跟反赌博相关
-        /*findAndHookMethod(Wechat.HookMethodFunctions.AEDHLPClass,
+        /*findAndHookMethod(Wechat.Hook.AEDHLPClass,
                 classLoader,
-                Wechat.HookMethodFunctions.AEDHLPGetAccessibilityClickCountFunc,
+                Wechat.Hook.AEDHLPGetAccessibilityClickCountFunc,
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
@@ -318,9 +318,9 @@ public class AvoidRiskHooks extends BaseXposedHook {
                 });
 
         // Process loaded files
-        findAndHookMethod(Wechat.HookMethodFunctions.NormsgSourceImplClass,
+        findAndHookMethod(Wechat.Hook.NormsgSourceImplClass,
                classLoader,
-                Wechat.HookMethodFunctions.NormsgSourceImplGetEnabledAccessibilityServicesFunc,
+                Wechat.Hook.NormsgSourceImplGetEnabledAccessibilityServicesFunc,
                 boolean.class,
                 new XC_MethodHook() {
                     @Override

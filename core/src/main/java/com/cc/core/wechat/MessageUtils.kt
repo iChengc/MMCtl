@@ -6,8 +6,8 @@ import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.MD5
 import com.cc.core.utils.StrUtils
-import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.ModelCdnUtil
-import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.ModelCdnUtilGetFileKeyFunc
+import com.cc.core.wechat.Wechat.Hook.NetScene.ModelCdnUtil
+import com.cc.core.wechat.Wechat.Hook.NetScene.ModelCdnUtilGetFileKeyFunc
 import com.cc.core.wechat.hook.tool.CdnLogicHooks
 import com.cc.core.wechat.model.message.*
 import com.google.gson.Gson
@@ -34,16 +34,16 @@ class MessageUtils {
         private fun processNewMessage(messageInfo : Object) {
             KLog.e("message ===>>>", StrUtils.toJson(messageInfo))
             val msgType = XposedHelpers.getIntField(messageInfo,
-                    Wechat.HookMethodFunctions.Message.MessageTypeFieldId)
+                    Wechat.Hook.Message.MessageTypeFieldId)
 
             var obj: Any? = XposedHelpers.getObjectField(messageInfo,
-                    Wechat.HookMethodFunctions.Message.MessageToFieldId)
+                    Wechat.Hook.Message.MessageToFieldId)
             val to = obj?.toString() ?: ""
 
             val from: String
             var content: String
             obj = XposedHelpers.getObjectField(messageInfo,
-                    Wechat.HookMethodFunctions.Message.MessageContentFieldId)
+                    Wechat.Hook.Message.MessageContentFieldId)
             if (StrUtils.isGroupWechatId(to)) {
                 val info = obj?.toString()?.split(":".toRegex(), 2)?.toTypedArray()
                         ?: arrayOf("", "")
@@ -59,10 +59,10 @@ class MessageUtils {
 
             KLog.e("message content ===>>>", content)
             val dateTime = XposedHelpers.getLongField(messageInfo,
-                    Wechat.HookMethodFunctions.Message.MessageDatetimeFieldId)
+                    Wechat.Hook.Message.MessageDatetimeFieldId)
 
             obj = XposedHelpers.getObjectField(messageInfo,
-                    Wechat.HookMethodFunctions.Message.MessageServIdFieldId)
+                    Wechat.Hook.Message.MessageServIdFieldId)
             val msgservId = obj?.toString() ?: ""
 
             val msg: WeChatMessage
