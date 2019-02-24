@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         KLog.e("---->>.", "createGroup Result:" + result);
                     }
                 });*/
+
                 /*Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
                     public void onResult(final String result) {
