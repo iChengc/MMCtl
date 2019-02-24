@@ -2,8 +2,7 @@ package com.cc.core.wechat
 
 import android.database.Cursor
 import android.text.TextUtils
-import com.cc.core.data.db.model.Friend
-import com.cc.core.log.KLog
+import com.cc.core.wechat.model.user.Friend
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.Wechat.HookMethodFunctions.*
@@ -113,11 +112,11 @@ class HookUtils {
             return avatar
         }
 
-        fun getContactByWechatId(wechatId: String): Friend? {
+        fun getContactByWechatId(wechatId: String): com.cc.core.wechat.model.user.Friend? {
             val j = callMethod(getContactManager(), Wechat.HookMethodFunctions.Account.GetContactInfoFunc, wechatId)
             return if (j == null) {
                 null
-            } else StrUtils.fromJson(StrUtils.toJson(j), Friend::class.java)
+            } else StrUtils.fromJson(StrUtils.toJson(j), com.cc.core.wechat.model.user.Friend::class.java)
         }
 
         fun enqueueNetScene(request: Any, type: Int) {
