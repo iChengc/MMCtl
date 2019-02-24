@@ -1,8 +1,12 @@
 package com.cc.core.wechat.model.user;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
 
+@Entity
 public class User {
-
+    @Id
     private String wechatId;
     // 微信号
     private String alias;
@@ -13,7 +17,23 @@ public class User {
     private int sex;
     private String avatar;
     private String phone;
-
+    @Generated(hash = 521102074)
+    public User(String wechatId, String alias, String qr, String nickname,
+            String signature, String regionCode, int sex, String avatar,
+            String phone) {
+        this.wechatId = wechatId;
+        this.alias = alias;
+        this.qr = qr;
+        this.nickname = nickname;
+        this.signature = signature;
+        this.regionCode = regionCode;
+        this.sex = sex;
+        this.avatar = avatar;
+        this.phone = phone;
+    }
+    @Generated(hash = 586692638)
+    public User() {
+    }
     public String getAlias() {
         return this.alias;
     }

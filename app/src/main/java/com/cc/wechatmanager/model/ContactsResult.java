@@ -1,6 +1,6 @@
 package com.cc.wechatmanager.model;
 
-import com.cc.core.wechat.model.user.Friend;
+import com.cc.core.data.db.model.Friend;
 
 import java.util.List;
 
