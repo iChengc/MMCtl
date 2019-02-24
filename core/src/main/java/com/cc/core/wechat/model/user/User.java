@@ -1,4 +1,4 @@
-package com.cc.core.data.db.model;
+package com.cc.core.wechat.model.user;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
