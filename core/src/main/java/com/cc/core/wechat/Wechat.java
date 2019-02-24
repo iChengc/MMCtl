@@ -469,17 +469,31 @@ public class Wechat {
         public static class Group {
             public static String CreateGroupRequest = "";
             public static String CreateGroupWechatIdField = "";
+
+            public static String GetGroupInfoFunc = "";
+            public static String groupParseChatroomDataFunc = "";
+            public static String chatroomMembersField = "";
+            public static String chatroomMemberGroupNicknameField = "";
+            public static String chatroomMemberInviterField = "";
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
-
                         CreateGroupWechatIdField = "bQz";
+                        GetGroupInfoFunc = "ii";
+                        groupParseChatroomDataFunc = "cnZ";
+                        chatroomMembersField = "dYH";
+                        chatroomMemberGroupNicknameField = "dkZ";
+                        chatroomMemberInviterField = "dlb";
                         break;
                     case "7.0.3":
-                        // TODO: 7.0.3 support
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
                         CreateGroupWechatIdField = "uUb";
+                        GetGroupInfoFunc = "nB";
+                        groupParseChatroomDataFunc = "dmq";
+                        chatroomMembersField = "fhZ";
+                        chatroomMemberGroupNicknameField = "ebH";
+                        chatroomMemberInviterField = "ebJ";
                         break;
                 }
             }

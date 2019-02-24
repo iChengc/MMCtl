@@ -59,13 +59,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("getGroupInfo", "4828574009@chatroom", "14870919873@chatroom"), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                        KLog.e("---->>.", "getGroupInfo Result:" + result);
+                    }
+                });
+                /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
                     @Override
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "createGroup Result:" + result);
                     }
-                });
+                });*/
                 /*Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
                     public void onResult(final String result) {
