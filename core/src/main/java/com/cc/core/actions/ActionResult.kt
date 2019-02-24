@@ -1,9 +1,15 @@
 package com.cc.core.actions
 
+import com.google.gson.annotations.SerializedName
+
 class ActionResult {
+	@SerializedName("success")
     var success: Boolean = false
+	@SerializedName("message")
     var message: String? = null
+	@SerializedName("id")
     var actionId: String = ""
+	@SerializedName("data")
     var data: Any? = null
 
     private constructor()
