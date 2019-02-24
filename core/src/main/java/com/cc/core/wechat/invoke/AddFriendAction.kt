@@ -7,7 +7,6 @@ import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.hook.RemoteRespHooks
 import de.robv.android.xposed.XposedHelpers
-import org.json.JSONObject
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.TimeUnit
 
@@ -40,10 +39,10 @@ class AddFriendAction : Action {
 
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
-
+            val friendDetails = XposedHelpers.getObjectField(response, Wechat.Hook.NetScene.NetSceneCmdResponseBodyKey)
             var wechatId: String
-            if (XposedHelpers.getIntField(response, Wechat.Hook.AddFriend.RelationType) == 1) {
-                val wechatIdBody = XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.WechatId)
+            if (XposedHelpers.getIntField(friendDetails, Wechat.Hook.AddFriend.RelationType) == 1) {
+                val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.WechatId)
                 wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
                 if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
                     val sb = StringBuilder(wechatId)
@@ -51,14 +50,14 @@ class AddFriendAction : Action {
                     wechatId = sb.toString()
                 }
             } else {
-                val wechatIdBody = XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.DecriptyWechatId)
+                val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.DecriptyWechatId)
                 wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
             }
 
             if (TextUtils.isEmpty(wechatId)) {
                 lock.offer(wechatId)
             } else {
-                verifyUser(wechatId, XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.AntispamTicket) as String)
+                verifyUser(wechatId, XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.AntispamTicket) as String)
             }
 
             /*if ("6.7.2".equals(Wechat.WechatVersion)) {

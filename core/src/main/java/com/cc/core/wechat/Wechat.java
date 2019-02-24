@@ -325,8 +325,8 @@ public class Wechat {
             public static String ModelCdnUtil = "";
             public static String ModelCdnUtilGetFileKeyFunc = "";
 
-            public static String NetSceneResponseCmdBodyKey = ""; // 参照 7.0.3: com.tencent.mm.ah.v
-            public static String NetSceneResponseBodyKey = ""; // 参照 7.0.3: com.tencent.mm.ah.b$c
+            public static String NetSceneResponseBodyKey = ""; // 参照 7.0.3: com.tencent.mm.ah.v
+            public static String NetSceneCmdResponseBodyKey = ""; // 参照 7.0.3: com.tencent.mm.ah.b$c
             public static String NetSceneResponseStringBooleanValueKey = ""; // // 参照 7.0.3: com.tencent.mm.protocal.protobuf.brj
 
             static void init(String version) {
@@ -351,8 +351,8 @@ public class Wechat {
                         ModelCdnUtil = "com.tencent.mm.modelcdntran.d";
                         ModelCdnUtilGetFileKeyFunc = "a";
 
-                        NetSceneResponseCmdBodyKey = "dVG";
-                        NetSceneResponseBodyKey = "dUj";
+                        NetSceneResponseBodyKey = "dVG";
+                        NetSceneCmdResponseBodyKey = "dUj";
                         NetSceneResponseStringBooleanValueKey = "sVc";
                         break;
                     case "7.0.3":
@@ -375,8 +375,8 @@ public class Wechat {
                         ModelCdnUtil = "com.tencent.mm.ak.c";
                         ModelCdnUtilGetFileKeyFunc = "a";
 
-                        NetSceneResponseCmdBodyKey = "feW";
-                        NetSceneResponseBodyKey = "fdy";
+                        NetSceneResponseBodyKey = "feW";
+                        NetSceneCmdResponseBodyKey = "fdy";
                         NetSceneResponseStringBooleanValueKey = "wiP";
                         break;
                 }
