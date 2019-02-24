@@ -17,10 +17,10 @@ class CreateGroupAction : Action {
         val members = ArrayList<Any?>()
         members.addAll(args.asList())
 
-        var request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.Group.CreateGroupRequest, Wechat.WECHAT_CLASSLOADER), "", members)
+        var request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.Group.CreateGroupRequest, Wechat.WECHAT_CLASSLOADER), "", members)
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(119) { response->
-            var groupWechatId = XposedHelpers.getObjectField(response, Wechat.HookMethodFunctions.Group.CreateGroupRequest) as String
+            var groupWechatId = XposedHelpers.getObjectField(response, Wechat.Hook.Group.CreateGroupRequest) as String
             lock.offer(groupWechatId)
         }
 

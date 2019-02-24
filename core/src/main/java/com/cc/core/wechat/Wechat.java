@@ -468,10 +468,13 @@ public class Wechat {
 
         public static class Group {
             public static String CreateGroupRequest = "";
+            public static String CreateGroupWechatIdField = "";
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
+
+                        CreateGroupWechatIdField = "bQz";
                         break;
                     case "7.0.3":
                         // TODO: 7.0.3 support
