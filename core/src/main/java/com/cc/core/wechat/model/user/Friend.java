@@ -16,7 +16,7 @@ public class Friend {
     @SerializedName(value = "remark", alternate = "field_conRemark")
     private String remark;
     @SerializedName("sex")
-    private int sex;
+    private String sex;
     @SerializedName("avatar")
     private String avatar;
     @SerializedName("signature")
@@ -60,11 +60,11 @@ public class Friend {
         return avatar;
     }
 
-    public int getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
