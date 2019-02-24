@@ -3,7 +3,6 @@ package com.cc.core.wechat.invoke
 import android.text.TextUtils
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
-import com.cc.core.log.KLog
 import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.hook.RemoteRespHooks
@@ -35,13 +34,35 @@ class AddFriendAction : Action {
     }
 
     private fun getWechatId(phone: String): String? {
-        val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.SearchFriendNetSceneClass, Wechat.WECHAT_CLASSLOADER)
+        val request = XposedHelpers.findClass(Wechat.Hook.NetScene.SearchFriendNetSceneClass, Wechat.WECHAT_CLASSLOADER)
                 .getConstructor(String::class.java, Int::class.javaPrimitiveType)
                 .newInstance(phone, 0)
 
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
-            if ("6.7.2".equals(Wechat.WechatVersion)) {
+            val friendResponse = XposedHelpers.getObjectField(response, Wechat.Hook.AddFriend.FriendDetailsResponseKey)
+            val friendDetails = XposedHelpers.getObjectField(friendResponse, Wechat.Hook.AddFriend.FriendDetailsKey)
+            var wechatId: String
+            if (XposedHelpers.getIntField(friendDetails, Wechat.Hook.AddFriend.RelationType) == 1) {
+                val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.WechatId)
+                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.AddFriend.WechatIdValue) as String
+                if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
+                    val sb = StringBuilder(wechatId)
+                    sb.insert(4, "_")
+                    wechatId = sb.toString()
+                }
+            } else {
+                val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.DecriptyWechatId)
+                wechatId = XposedHelpers.getObjectField(wechatIdBody, Wechat.Hook.AddFriend.WechatIdValue) as String
+            }
+
+            if (TextUtils.isEmpty(wechatId)) {
+                lock.offer(wechatId)
+            } else {
+                verifyUser(wechatId, XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.AntispamTicket) as String)
+            }
+
+            /*if ("6.7.2".equals(Wechat.WechatVersion)) {
                 val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
                 var wechatId: String
                 if (jsonObject.optInt("eWZ") == 1) {
@@ -79,7 +100,7 @@ class AddFriendAction : Action {
                 } else {
                     verifyUser(wechatId, jsonObject.optString("vAm"))
                 }
-            }
+            }*/
         }
         return lock.poll(30, TimeUnit.SECONDS)
     }
@@ -101,9 +122,9 @@ class AddFriendAction : Action {
         val args3 = ArrayList<String>()
         args3.add(antispamTicket)
 
-        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
+        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
                 1, args, args2, args3, "", "", null, "", "")
-        /*val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
+        /*val request = XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
                 .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
                         String::class.java, Map::class.java, String::class.java, String::class.java)
                 .newInstance(1, args, args2, args3, "", "", null, "", "")*/
@@ -122,9 +143,9 @@ class AddFriendAction : Action {
         val mapArgs = HashMap<String?, Int>()
         mapArgs[wechatId] = 0
 
-        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
+        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
                 2, args, args2, null, sayHi, "", mapArgs, null, "")
-        /*val request = XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
+        /*val request = XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
                 .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
                         String::class.java, Map::class.java, String::class.java, String::class.java)
                 .newInstance(2, args, args2, null, sayHi, "", mapArgs, null, "")*/

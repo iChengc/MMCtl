@@ -9,9 +9,9 @@ import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.HookUtils
 import com.cc.core.wechat.MessageUtils
 import com.cc.core.wechat.Wechat
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Message.AppMsgLogic
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Message.AppMsgLogicSendFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.*
+import com.cc.core.wechat.Wechat.Hook.Message.AppMsgLogic
+import com.cc.core.wechat.Wechat.Hook.Message.AppMsgLogicSendFunc
+import com.cc.core.wechat.Wechat.Hook.NetScene.*
 import com.cc.core.wechat.model.message.CardMessage
 import com.cc.core.wechat.model.message.ImageMessage
 import com.cc.core.wechat.model.message.TextMessage
@@ -58,7 +58,7 @@ class SendMessageAction : Action {
             messageAttributes = HashMap()
             messageAttributes["atuserlist"] = "<![CDATA[" + StrUtils.join(msg.getAtUsers()!!.asIterable(), ",") + "]]>"
         }
-        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.HookMethodFunctions.NetScene.NetSceneSendMsgClass, Wechat.WECHAT_CLASSLOADER),
+        val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.NetScene.NetSceneSendMsgClass, Wechat.WECHAT_CLASSLOADER),
                 msg.getTarget(), msg.getContent(), messageType, flag, messageAttributes)
         HookUtils.enqueueNetScene(request, 0)
     }

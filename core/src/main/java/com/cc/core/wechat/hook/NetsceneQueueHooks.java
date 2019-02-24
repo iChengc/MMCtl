@@ -1,14 +1,9 @@
 package com.cc.core.wechat.hook;
 
 import com.cc.core.log.KLog;
-import com.cc.core.utils.StrUtils;
 import com.cc.core.xposed.BaseXposedHook;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.*;
+import static com.cc.core.wechat.Wechat.Hook.NetScene.*;
 
 import de.robv.android.xposed.XC_MethodHook;
 

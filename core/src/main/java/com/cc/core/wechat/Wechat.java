@@ -70,7 +70,7 @@ public class Wechat {
             }
             WechatVersion = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
 
-            HookMethodFunctions.init(WechatVersion);
+            Hook.init(WechatVersion);
             Resources.init(WechatVersion);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,7 +105,7 @@ public class Wechat {
         context.startActivity(intent);
     }
 
-    public static class HookMethodFunctions {
+    public static class Hook {
 
         public static String KernelClass = "";
         public static String LOGGER = "";
@@ -138,6 +138,7 @@ public class Wechat {
             Account.init(version);
             NetScene.init(version);
             Message.init(version);
+            AddFriend.init(version);
 
             switch (version) {
                 case "7.0.3":
@@ -365,6 +366,39 @@ public class Wechat {
 
                         ModelCdnUtil = "com.tencent.mm.ak.c";
                         ModelCdnUtilGetFileKeyFunc = "a";
+                        break;
+                }
+            }
+        }
+
+        public static class AddFriend {
+            public static String FriendDetailsResponseKey = "";
+            public static String FriendDetailsKey = "";
+            public static String RelationType = "";
+            public static String WechatId = "";
+            public static String DecriptyWechatId = "";
+            public static String WechatIdValue = "";
+            public static String AntispamTicket = "";
+
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        FriendDetailsResponseKey = "dVG";
+                        FriendDetailsKey = "dUj";
+                        RelationType = "eWZ";
+                        WechatId = "sgh";
+                        DecriptyWechatId = "sgx";
+                        AntispamTicket = "sqc";
+                        WechatIdValue = "sVc";
+                        break;
+                    case "7.0.3":
+                        FriendDetailsResponseKey = "feW";
+                        FriendDetailsKey = "fdy";
+                        RelationType = "gfi";
+                        WechatId = "vqP";
+                        DecriptyWechatId = "vrl";
+                        AntispamTicket = "vAm";
+                        WechatIdValue = "wiP";
                         break;
                 }
             }

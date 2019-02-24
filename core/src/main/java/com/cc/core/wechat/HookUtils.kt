@@ -2,28 +2,27 @@ package com.cc.core.wechat
 
 import android.database.Cursor
 import android.text.TextUtils
-import com.cc.core.wechat.model.user.Friend
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.StrUtils
-import com.cc.core.wechat.Wechat.HookMethodFunctions.*
+import com.cc.core.wechat.Wechat.Hook.*
 
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.ConfigStorageGetFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.AccountStorage
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetContactManagerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetConversationManagerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetConfigManagerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetGroupManagerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.GetMsgInfoManagerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.RegionCodeDecoderClass
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_CityCode
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_CountryCode
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_ProvinceCode
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Account.UserInfoId_WechatId
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBExecSqlFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DBRawQueryFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.DbHelperField
-import com.cc.core.wechat.Wechat.HookMethodFunctions.Sqlite.GetDBHelerFunc
-import com.cc.core.wechat.Wechat.HookMethodFunctions.NetScene.*
+import com.cc.core.wechat.Wechat.Hook.Account.ConfigStorageGetFunc
+import com.cc.core.wechat.Wechat.Hook.Account.AccountStorage
+import com.cc.core.wechat.Wechat.Hook.Account.GetContactManagerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.GetConversationManagerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.GetConfigManagerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.GetGroupManagerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.GetMsgInfoManagerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.RegionCodeDecoderClass
+import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_CityCode
+import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_CountryCode
+import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_ProvinceCode
+import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_WechatId
+import com.cc.core.wechat.Wechat.Hook.Sqlite.DBExecSqlFunc
+import com.cc.core.wechat.Wechat.Hook.Sqlite.DBRawQueryFunc
+import com.cc.core.wechat.Wechat.Hook.Sqlite.DbHelperField
+import com.cc.core.wechat.Wechat.Hook.Sqlite.GetDBHelerFunc
+import com.cc.core.wechat.Wechat.Hook.NetScene.*
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findClass
@@ -75,7 +74,7 @@ class HookUtils {
         }
 
         private fun encodeRegionCode(countryCode: String, provinceCode: String, cityCode: String): String {
-            return callStaticMethod(findClass(RegionCodeDecoderClass, Wechat.WECHAT_CLASSLOADER), Wechat.HookMethodFunctions.Account.RegionCodeDecoderEncodeFunc, countryCode, provinceCode, cityCode) as String
+            return callStaticMethod(findClass(RegionCodeDecoderClass, Wechat.WECHAT_CLASSLOADER), Wechat.Hook.Account.RegionCodeDecoderEncodeFunc, countryCode, provinceCode, cityCode) as String
         }
 
 
@@ -113,7 +112,7 @@ class HookUtils {
         }
 
         fun getContactByWechatId(wechatId: String): com.cc.core.wechat.model.user.Friend? {
-            val j = callMethod(getContactManager(), Wechat.HookMethodFunctions.Account.GetContactInfoFunc, wechatId)
+            val j = callMethod(getContactManager(), Wechat.Hook.Account.GetContactInfoFunc, wechatId)
             return if (j == null) {
                 null
             } else StrUtils.fromJson(StrUtils.toJson(j), com.cc.core.wechat.model.user.Friend::class.java)
