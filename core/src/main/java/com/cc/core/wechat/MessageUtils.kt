@@ -321,7 +321,6 @@ class MessageUtils {
 
 
         }
-
         /**
          * <sysmsg type="sysmsgtemplate">
         <sysmsgtemplate>
