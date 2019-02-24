@@ -1,4 +1,4 @@
-package com.cc.core.wechat.hook.tool;
+package com.cc.core.wechat.hook;
 
 import com.cc.core.log.KLog;
 import com.cc.core.wechat.Wechat;
