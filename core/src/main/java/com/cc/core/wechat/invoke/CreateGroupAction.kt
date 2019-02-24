@@ -27,6 +27,7 @@ class CreateGroupAction : Action {
             try {
                 val resp = XposedHelpers.getObjectField(response, Wechat.Hook.NetScene.NetSceneCmdResponseBodyKey)
                 var groupWechatId = XposedHelpers.getObjectField(resp, Wechat.Hook.Group.CreateGroupWechatIdField)
+
                 groupWechatId = XposedHelpers.getObjectField(groupWechatId, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey) as String
 
                 lock.offer(groupWechatId)
