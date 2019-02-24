@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'org.greenrobot.greendao'
+// apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
@@ -31,13 +31,13 @@ android {
 
 
 
-greendao {
+/*greendao {
     schemaVersion 1 //数据库版本号
     daoPackage 'com.cc.core.data.db' //设置DaoMaster、DaoSession、Dao包名
     //targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
     //targetGenDirTest：设置生成单元测试目录
     //generateTests：设置自动生成单元测试用例
-}
+}*/
 
 task mkGenDirs {
     doFirst {
@@ -120,7 +120,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'org.greenrobot:greendao:3.2.2'
+    //compile 'org.greenrobot:greendao:3.2.2'
     compile 'com.google.code.gson:gson:2.8.5'
     provided 'de.robv.android.xposed:api:82'
     provided 'de.robv.android.xposed:api:82:sources'

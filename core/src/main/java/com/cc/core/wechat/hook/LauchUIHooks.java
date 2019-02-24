@@ -1,6 +1,5 @@
 package com.cc.core.wechat.hook;
 
-import com.cc.core.data.db.model.User;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
