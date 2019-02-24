@@ -13,55 +13,55 @@ class GroupMember {
     @SerializedName("invitedBy")
     private var invitedBy: String? = null
     @SerializedName("sex")
-    private var sex: Int = 0
+    private var sex: String = "0"
     @SerializedName("avatar")
-    private var avatar : String? = null
+    private var avatar: String? = null
 
-    fun setWechatId(wechatId:String?) {
+    fun setWechatId(wechatId: String?) {
         this.wechatId = wechatId
     }
 
-    fun getWechatId() : String? {
+    fun getWechatId(): String? {
         return wechatId
     }
 
-    fun setGroupNickName(groupNickName:String?) {
+    fun setGroupNickName(groupNickName: String?) {
         this.groupNickName = groupNickName
     }
 
-    fun getGroupNickName() : String? {
+    fun getGroupNickName(): String? {
         return groupNickName
     }
 
-    fun setDisplayNickName(groupDisplayName:String?) {
+    fun setDisplayNickName(groupDisplayName: String?) {
         this.groupDisplayName = groupDisplayName
     }
 
-    fun getDisplayNickName() : String? {
+    fun getDisplayNickName(): String? {
         return groupDisplayName
     }
 
-    fun setInvitedBy(invitedBy:String?) {
+    fun setInvitedBy(invitedBy: String?) {
         this.invitedBy = invitedBy
     }
 
-    fun getInvitedBy() : String? {
+    fun getInvitedBy(): String? {
         return invitedBy
     }
 
-    fun setSex(sex:Int) {
+    fun setSex(sex: String) {
         this.sex = sex
     }
 
-    fun getSex() : Int {
+    fun getSex(): String {
         return sex
     }
 
-    fun setAvatar(avatar:String?) {
+    fun setAvatar(avatar: String?) {
         this.avatar = avatar
     }
 
-    fun getAvatar() : String? {
+    fun getAvatar(): String? {
         return avatar
     }
 }

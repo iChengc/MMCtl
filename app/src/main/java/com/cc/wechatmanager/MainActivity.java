@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Messenger.Companion.sendCommand(genCommand("getGroupInfo", "4828574009@chatroom", "14870919873@chatroom"), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("getGroupInfo", "4828574009@chatroom", "15321919790@chatroom", "14870919873@chatroom"), new Callback() {
                     @Override
                     public void onResult(String result) {
 
