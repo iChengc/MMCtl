@@ -3,31 +3,12 @@ package com.cc.core.wechat
 import android.database.Cursor
 import android.text.TextUtils
 import com.cc.core.utils.FileUtil
-import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.Wechat.Hook.*
-
-import com.cc.core.wechat.Wechat.Hook.Account.ConfigStorageGetFunc
-import com.cc.core.wechat.Wechat.Hook.Account.AccountStorage
-import com.cc.core.wechat.Wechat.Hook.Account.GetContactManagerFunc
-import com.cc.core.wechat.Wechat.Hook.Account.GetConversationManagerFunc
-import com.cc.core.wechat.Wechat.Hook.Account.GetConfigManagerFunc
-import com.cc.core.wechat.Wechat.Hook.Account.GetGroupManagerFunc
-import com.cc.core.wechat.Wechat.Hook.Account.GetMsgInfoManagerFunc
-import com.cc.core.wechat.Wechat.Hook.Account.RegionCodeDecoderClass
-import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_CityCode
-import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_CountryCode
-import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_ProvinceCode
-import com.cc.core.wechat.Wechat.Hook.Account.UserInfoId_WechatId
-import com.cc.core.wechat.Wechat.Hook.Sqlite.DBExecSqlFunc
-import com.cc.core.wechat.Wechat.Hook.Sqlite.DBRawQueryFunc
-import com.cc.core.wechat.Wechat.Hook.Sqlite.DbHelperField
-import com.cc.core.wechat.Wechat.Hook.Sqlite.GetDBHelerFunc
+import com.cc.core.wechat.Wechat.Hook.Account.*
 import com.cc.core.wechat.Wechat.Hook.NetScene.*
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.findClass
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import java.util.HashMap
+import com.cc.core.wechat.Wechat.Hook.Sqlite.*
+import de.robv.android.xposed.XposedHelpers.*
+import java.util.*
 
 class HookUtils {
     companion object {
@@ -109,13 +90,6 @@ class HookUtils {
             }
 
             return avatar
-        }
-
-        fun getContactByWechatId(wechatId: String): com.cc.core.wechat.model.user.Friend? {
-            val j = callMethod(getContactManager(), Wechat.Hook.Account.GetContactInfoFunc, wechatId)
-            return if (j == null) {
-                null
-            } else StrUtils.fromJson(StrUtils.toJson(j), com.cc.core.wechat.model.user.Friend::class.java)
         }
 
         fun enqueueNetScene(request: Any, type: Int) {
