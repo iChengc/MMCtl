@@ -321,6 +321,7 @@ class MessageUtils {
 
 
         }
+
         /**
          * <sysmsg type="sysmsgtemplate">
         <sysmsgtemplate>
@@ -346,6 +347,7 @@ class MessageUtils {
          */
 
         fun avoidMessageRevoke(messageDetails: Any) : Boolean {
+
             val contentObj = XposedHelpers.getObjectField(messageDetails,
                     Wechat.Hook.Message.MessageContentFieldId)
             val msgContent = XposedHelpers.getObjectField(contentObj, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey)
