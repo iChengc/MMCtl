@@ -107,6 +107,8 @@ class MessageUtils {
                 }
                 else -> {
                     msg = UnsupportMessage()
+                    msg.setFrom(from)
+                    msg.setTarget(to)
                     msg.setContent("[不支持的消息格式]")
                     msg.setMessageDetails(content)
                     msg.setType(msgType)
