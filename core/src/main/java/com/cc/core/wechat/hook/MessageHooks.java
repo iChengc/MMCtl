@@ -39,7 +39,7 @@ public class MessageHooks extends BaseXposedHook {
                             return;
                         }
 
-                        MessageUtils.Companion.avoidMessageRevoke(messageInfo);
+                        MessageUtils.Companion.processOperationMessage(messageInfo);
                     }
                 });
     }

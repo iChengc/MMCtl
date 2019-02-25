@@ -314,6 +314,14 @@ class MessageUtils {
             lock.poll(30, TimeUnit.SECONDS)
         }
 
+        fun processOperationMessage(messageDetails: Any) {
+            if (avoidMessageRevoke(messageDetails)) {
+                return
+            }
+
+
+        }
+
         /**
          * <sysmsg type="sysmsgtemplate">
         <sysmsgtemplate>
@@ -338,17 +346,21 @@ class MessageUtils {
         </sysmsg>
          */
 
-        fun avoidMessageRevoke(messageDetails: Any) {
+        fun avoidMessageRevoke(messageDetails: Any) : Boolean {
             val contentObj = XposedHelpers.getObjectField(messageDetails,
                     Wechat.Hook.Message.MessageContentFieldId)
             val msgContent = XposedHelpers.getObjectField(contentObj, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey)
             val nickName = isRevokeMessage(msgContent as String)
+            if (TextUtils.isEmpty(nickName)) {
+                return false
+            }
 
             var content = """
                 $nickName 试图撤回一条消息, 被我阻止了，哈哈!!
             """.trimIndent()
             XposedHelpers.setIntField(messageDetails, Wechat.Hook.Message.MessageTypeFieldId, WeChatMessageType.GROUP_OPERATION)
             XposedHelpers.setObjectField(contentObj, Wechat.Hook.NetScene.NetSceneResponseStringBooleanValueKey, content)
+            return true
         }
 
         /**
