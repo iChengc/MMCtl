@@ -105,6 +105,15 @@ public class TestHooks extends BaseXposedHook {
                                 + "  " + param.args[1], new Exception());
                     }
                 });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.z", classLoader, int.class, String.class, boolean.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++Create group++==>>>>>>  ", param.args[0]
+                                + "  " + param.args[1], new Exception());
+                    }
+                });
         /**
          * l(int paramInt1, int paramInt2)
          *
