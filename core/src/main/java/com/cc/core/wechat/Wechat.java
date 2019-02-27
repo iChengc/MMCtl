@@ -109,26 +109,24 @@ public class Wechat {
 
         public static String KernelClass = "";
         public static String LOGGER = "";
-        public static String UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
-        public static String UploadCrashLogFunc = "fV";
-        public static String UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
-        public static String UploadCrashWXRecoveryUploadServicePushDataFunc = "pushData";
-        public static String UploadCrashLogEnumClass = "com.tencent.mm.plugin.report.service.h";
+        public static String UploadCrashLogClass = "";
+        public static String UploadCrashLogFunc = "";
+        public static String UploadCrashWXRecoveryUploadServiceClass = "";
+        public static String UploadCrashWXRecoveryUploadServicePushDataFunc = "";
+        public static String UploadCrashLogEnumClass = "";
         public static String UploadCrashLogEnumFunc = "a";
-        public static String UploadCrashCrashUploaderServiceClass = "com.tencent.mm.crash.CrashUploaderService";
-        public static String UploadCrashCrashUploaderServiceOnHandleIntentFunc = "onHandleIntent";
-        public static String UploadCrashTraceRouteClass = "com.tencent.mm.plugin.traceroute.b.a.f";
-        public static String UploadCrashTraceRouteFunc = "a";
-        public static String UploadCrashStackReportUploaderClass = "com.tencent.mm.platformtools.ae";
-        public static String UploadCrashStackReportUploaderFunc = "a";
-        public static String SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
-        public static String SaveAnrWatchDogSetHandlerFunc = "a";
-        public static String SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
-        public static String MMCrashReporter = "com.tencent.mm.app.k";
-        public static String ConstantsStorage = "com.tencent.mm.storage.ac";
-        public static String WechatStorageCrashPath = "dFK";
-
-
+        public static String UploadCrashCrashUploaderServiceClass = "";
+        public static String UploadCrashCrashUploaderServiceOnHandleIntentFunc = "";
+        public static String UploadCrashTraceRouteClass = "";
+        public static String UploadCrashTraceRouteFunc = "";
+        public static String UploadCrashStackReportUploaderClass = "";
+        public static String UploadCrashStackReportUploaderFunc = "";
+        public static String SaveAnrWatchDogClass = "";
+        public static String SaveAnrWatchDogSetHandlerFunc = "";
+        public static String SaveAnrWatchDogHandlerClass = "";
+        public static String MMCrashReporter = "";
+        public static String ConstantsStorage = "";
+        public static String WechatStorageCrashPath = "";
 
         public static String commonWechatSdkXmlParserClass = "";
         public static String commonWechatSdkXmlParserToMapFunc = "";
@@ -140,6 +138,7 @@ public class Wechat {
             Message.init(version);
             AddFriend.init(version);
             Group.init(version);
+            Sns.init(version);
 
             switch (version) {
                 case "7.0.3":
@@ -287,7 +286,7 @@ public class Wechat {
             public static String DBExecSqlFunc = "";
             public static String DbHelperField = "";
 
-            public static void init(String version) {
+            static void init(String version) {
                 switch (version) {
                     case "6.7.2":
                         GetDBHelerFunc = "Dg";
@@ -424,6 +423,7 @@ public class Wechat {
 
             public static String AppMsgLogic = "";
             public static String AppMsgLogicSendFunc = "";
+
             public static void init(String version) {
 
                 switch (version) {
@@ -497,6 +497,25 @@ public class Wechat {
                         chatroomMemberInviterField = "ebJ";
                         break;
                 }
+            }
+        }
+
+        public static class Sns {
+            public static String SnsUploadPackHelper = "";
+
+            public static String SnsSetDescriptionFun = "";
+            public static void init(String version) {
+                switch (version) {
+                    case "6.7.2":
+                        SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        SnsSetDescriptionFun = "MI";
+                        break;
+                    case "7.0.3":
+                        SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        SnsSetDescriptionFun = "WU";
+                        break;
+                }
+
             }
         }
     }

@@ -3,6 +3,7 @@ package com.cc.core.wechat.hook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
@@ -105,15 +106,60 @@ public class TestHooks extends BaseXposedHook {
                                 + "  " + param.args[1], new Exception());
                     }
                 });
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.z", classLoader, int.class, String.class, boolean.class, int.class,
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.ax", classLoader, int.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
-                        KLog.e("====++Create group++==>>>>>>  ", param.args[0]
-                                + "  " + param.args[1], new Exception());
+                        KLog.e("====++Create group++==>>>>>>  ", param.args[0] + "", new Exception());
                     }
                 });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.ax", classLoader, "commit",
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ax.commit++==>>>>>>  ", StrUtils.toJson(param.thisObject), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.storage.s", classLoader, "a",
+                XposedHelpers.findClass("com.tencent.mm.plugin.sns.data.h", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++MicroMsg.snsMediaStorage++==>>>>>>  ", StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
+                int.class, int.class, findClass("org.c.d.i", Wechat.WECHAT_CLASSLOADER),
+                String.class, List.class, findClass("com.tencent.mm.protocal.c.atd", Wechat.WECHAT_CLASSLOADER), int.class,
+                boolean.class, List.class, findClass("com.tencent.mm.pointers.PInt", Wechat.WECHAT_CLASSLOADER),
+                String.class, int.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====++ ag ++==>>>>>>  ", StrUtils.toJson(o));
+                        }
+
+                        KLog.e("======", new Exception());
+                    }
+                });
+       /* XposedHelpers.findAndHookConstructor("com.tencent.mm.sdk.platformtools.an", classLoader, Thread.class, Handler.class,
+                Runnable.class, Object.class, findClass("com.tencent.mm.sdk.platformtools.an$a", classLoader),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++Create group++==>>>>>>  ", StrUtils.toJson(param.args[3])
+                                + "  " + param.args[1], new Exception());
+                    }
+                });*/
         /**
          * l(int paramInt1, int paramInt2)
          *
