@@ -1,41 +1,101 @@
 package com.cc.core.wechat
 
 import com.cc.core.wechat.model.sns.SnsInfo
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.findClass
-import de.robv.android.xposed.XposedHelpers.newInstance
+import de.robv.android.xposed.XposedHelpers
+import de.robv.android.xposed.XposedHelpers.*
+import java.util.*
 
 class SnsUtils {
     companion object {
-        //region image
-        //02-28 16:25:12.263 7490-7490/? E/>>>> UploadPackHelper#WU <<<<<: [ (SnsUploadPackHelperHooks.java:209)#beforeHookedMethod ] 贯彻落实
-        //02-28 16:25:12.263 7490-7490/? E/>>>> UploadPackHelper#a <<<<<: [ (SnsUploadPackHelperHooks.java:281)#beforeHookedMethod ] {"bsZ":0.0,"qFe":0,"qFg":0,"score":0,"vQW":0,"vQX":0,"vgc":-1000.0,"vgd":-1000.0}
-        // {"eGp":"由度空间","gfk":"上海市","qFc":"上海市浦东新区宁桥路600号","vQU":"qqmap_3472697279383746309","bsZ":0.0,"qFe":1,"qFg":0,"score":0,"vQW":0,"vQX":0,"vgc":121.611015,"vgd":31.253334}
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#ar <<<<<: [ (SnsUploadPackHelperHooks.java:287)#beforeHookedMethod ] []
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#Co <<<<<: [ (SnsUploadPackHelperHooks.java:362)#beforeHookedMethod ] 0
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#Cp <<<<<: [ (SnsUploadPackHelperHooks.java:368)#beforeHookedMethod ] 0
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#Cr <<<<<: [ (SnsUploadPackHelperHooks.java:380)#beforeHookedMethod ] 0
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#Cq <<<<<: [ (SnsUploadPackHelperHooks.java:374)#beforeHookedMethod ] 0
-        //02-28 16:25:12.273 7490-7490/? E/>>>> UploadPackHelper#f <<<<<: [ (SnsUploadPackHelperHooks.java:320)#beforeHookedMethod ] null : null : null : 1 : 0
-        //02-28 16:25:12.293 7490-7490/? E/>>>> UploadPackHelper#de <<<<<: [ (SnsUploadPackHelperHooks.java:293)#beforeHookedMethod ] ["xnhjcc"]
-        //02-28 16:25:12.293 7490-7490/? E/>>>> UploadPackHelper#setSessionId <<<<<: [ (SnsUploadPackHelperHooks.java:344)#beforeHookedMethod ]
-        //02-28 16:25:12.303 7490-7490/? E/>>>> UploadPackHelper#df <<<<<: [ (SnsUploadPackHelperHooks.java:299)#beforeHookedMethod ] [{"desc":"贯彻落实","path":"/storage/emulated/0/DCIM/Camera/IMG_20181024_174216.jpg","qbf":"","qbg":"","qbh":"","thumbPath":"","cCt":-1,"fileSize":0,"filterId":0,"height":-1,"qbd":0,"qbe":0,"qbi":false,"type":2,"width":-1}]
-        //endregion
 
-        fun generateSnsUploadPackHelper(snsInfo : SnsInfo) : Any {
-            var sns : Any? = null
-            sns = when(snsInfo.getType()) {
-                0->{
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER),  2)
+        fun generateSnsUploadPackHelper(snsInfo: SnsInfo): Any? {
+            var sns: Any? = when (snsInfo.getType()) {
+                SnsInfo.TEXT_TYPE -> {
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 2)
                 }
-                else-> {
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER),  1)
+                SnsInfo.VIDEO_TYPE-> {
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 15)
+                }
+                SnsInfo.CARD_TYPE-> {
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 3)
+                }
+                else -> {
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 1)
                 }
             }
 
-            callMethod(sns, Wechat.Hook.Sns.SnsSetDescriptionFun, snsInfo.getDescription())
+            setTextSns(sns, snsInfo)
 
-            return Any()
+            when (snsInfo.getType()) {
+                SnsInfo.IMAGE_TYPE -> {
+                    setImageSns(sns, snsInfo)
+                }
+                SnsInfo.VIDEO_TYPE -> {
+                    setVideoSns(sns, snsInfo)
+                }
+                SnsInfo.CARD_TYPE -> {
+                    setCardSns(sns, snsInfo)
+                }
+                else -> {
+                    return sns
+                }
+            }
+
+            return sns
+        }
+
+        private fun setTextSns(sns: Any?, snsInfo: SnsInfo) {
+            if (sns == null) {
+                return
+            }
+            callMethod(sns, Wechat.Hook.Sns.SnsSetDescriptionFun, snsInfo.getDescription())
+            callMethod(sns, Wechat.Hook.Sns.SnsSetShareTypeFun, 0)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetWatcherTypeFun, 0)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetSyncQQZoneFun, 0)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetIsPrivateFun, 0)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetWatchersFun, ArrayList<String>())
+            callMethod(sns, Wechat.Hook.Sns.SnsSetAtUsersFun, LinkedList<Any>())
+            callMethod(sns, Wechat.Hook.Sns.SnsSetSessionIdFun, "")
+            callMethod(sns, Wechat.Hook.Sns.SnsSetLocationFun, newInstance(findClass(Wechat.Hook.Sns.LocationClass, Wechat.WECHAT_CLASSLOADER)))
+        }
+
+        private fun setImageSns(sns: Any?, snsInfo: SnsInfo) {
+            if (sns == null) {
+                return
+            }
+
+            callMethod(sns, Wechat.Hook.Sns.SnsSetUrlFun, "", null, null, 0, 0)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetMediaInfoFun, genMediaList(snsInfo.getMedias(), snsInfo.getDescription()))
+        }
+
+        private fun setVideoSns(sns: Any?, snsInfo: SnsInfo) {
+            callMethod(sns, Wechat.Hook.Sns.SnsSetVideoInfoFun, "/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/video/videoCompressTmp/video_send_preprocess_tmp_1551376714007.mp4",
+                    "/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/video/videoCompressTmpThumb/video_send_preprocess_thumb_1551376762312.jpg",
+                    snsInfo.getDescription(), "4f4de48085c93716a8b8d6742f3812da")
+        }
+
+        private fun setCardSns(sns: Any?, snsInfo: SnsInfo) {
+        }
+
+        fun uploadSns() {
+            val aw = newInstance(XposedHelpers.findClass(Wechat.Hook.Sns.UploadManager, Wechat.WECHAT_CLASSLOADER))
+            callMethod(aw, Wechat.Hook.Sns.UploadFun)
+        }
+
+        private fun genMediaList(medias: ArrayList<String>?, desc: String?): Any {
+            val mediasStorage = LinkedList<Any>()
+            if (medias == null) return mediasStorage
+            for (m in medias) {
+                val data = newInstance(findClass("com.tencent.mm.plugin.sns.data.h", Wechat.WECHAT_CLASSLOADER), m, 2)
+                setObjectField(data, "desc", desc)
+                mediasStorage.add(data)
+            }
+            return mediasStorage
+            /*val picWidget = newInstance(findClass("", Wechat.WECHAT_CLASSLOADER), null)
+            val bundle = Bundle()
+            bundle.putStringArrayList("sns_kemdia_path_list", medias)
+            callMethod(picWidget, "F", bundle)
+            return picWidget*/
         }
 
         //region share

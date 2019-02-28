@@ -22,72 +22,72 @@ public class SnsUploadPackHelperHooks extends BaseXposedHook {
             hookMethod(n, classLoader, "MI", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MI <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MI <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MJ", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MJ <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MJ <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MK", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MK <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MK <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "ML", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#ML <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#ML <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MM", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MM <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MM <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MN", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MN <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MN <<<<<",StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MO", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MO <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MO <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MP", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MP <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MP <<<<<",StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MQ", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MQ <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MQ <<<<<",StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "MR", String.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e(">>>> UploadPackHelper#MR <<<<<", param.args[0].toString());
+                    KLog.e(">>>> UploadPackHelper#MR <<<<<", StrUtils.toJson(param.args[0]));
                 }
             });
             hookMethod(n, classLoader, "X", String.class, String.class, String.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        KLog.e(">>>> UploadPackHelper#X <<<<<", param.args[0].toString()
+                        KLog.e(">>>> UploadPackHelper#X <<<<<", param.args[0]
                             + " : "
-                            + param.args[1].toString()
+                            + param.args[1]
                             + " : "
-                            + param.args[2].toString());
+                            + param.args[2]);
                     }
                 });
             hookMethod(n, classLoader, "a", findClass("com.tencent.mm.protocal.c.atd", classLoader),
@@ -151,7 +151,7 @@ public class SnsUploadPackHelperHooks extends BaseXposedHook {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         KLog.e(">>>> UploadPackHelper#q <<<<<",
                             param.args[0] + " : " + param.args[1]
-                                + " : " + param.args[2] + " : " + param.args[3]);
+                                + " : " + param.args[2] + " : " + param.args[3], new Exception());
                     }
                 });
             hookMethod(n, classLoader, "setSessionId", String.class, new XC_MethodHook() {

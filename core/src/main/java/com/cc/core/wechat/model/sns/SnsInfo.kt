@@ -1,6 +1,12 @@
 package com.cc.core.wechat.model.sns
 
 class SnsInfo {
+    companion object {
+        val TEXT_TYPE = 0
+        val IMAGE_TYPE = 1
+        val VIDEO_TYPE = 2
+        val CARD_TYPE = 3
+    }
     private var description:String? = null
     private var medias : ArrayList<String>? = null
     private var type : Int = 0

@@ -515,6 +515,11 @@ public class Wechat {
          */
         public static class Sns {
             public static String SnsUploadPackHelper = "";
+            public static String LocationClass = "";
+            public static String PicWidget = "";
+            public static String UploadManager = "";
+
+            public static String UploadFun = "";
 
             public static String SnsSetDescriptionFun = "";
             public static String SnsSetLocationFun = "";
@@ -538,28 +543,38 @@ public class Wechat {
                 switch (version) {
                     case "6.7.2":
                         SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        LocationClass = "com.tencent.mm.protocal.c.atd";
+                        PicWidget = "com.tencent.mm.plugin.sns.ui.ag";
+                        UploadManager = "com.tencent.mm.plugin.sns.model.aw";
+
+                        UploadFun = "byo";
 
                         SnsSetDescriptionFun = "MI";
                         SnsSetLocationFun = "a";
-                        SnsSetAtUsersFun = "ar";
-                        SnsSetIsPrivateFun = "Co";
-                        SnsSetWatcherTypeFun = "Cr";
-                        SnsSetSyncQQZoneFun = "Cp";
-                        SnsSetShareTypeFun = "Cq";
+                        SnsSetAtUsersFun = "ah";
+                        SnsSetIsPrivateFun = "xh";
+                        SnsSetWatcherTypeFun = "xk";
+                        SnsSetSyncQQZoneFun = "xi";
+                        SnsSetShareTypeFun = "xj";
                         SnsSetUrlFun = "f";
-                        SnsSetWatchersFun = "de";
+                        SnsSetWatchersFun = "ct";
                         SnsSetSessionIdFun = "setSessionId";
-                        SnsSetMediaInfoFun = "df";
-                        SnsSetVideoInfoFun = "s";
-                        SnsSetAppIdFun = "Xa";
-                        SnsSetAppNameFun = "Xb";
+                        SnsSetMediaInfoFun = "cu";
+                        SnsSetVideoInfoFun = "q";
+                        SnsSetAppIdFun = "MQ";
+                        SnsSetAppNameFun = "MR";
 
-                        SnsSetShareUrlFun = "WX";
+                        SnsSetShareUrlFun = "ML";
                         SnsSetShareUrl2Fun = "WY";
-                        SnsSetShareTitleFun = "WZ";
+                        SnsSetShareTitleFun = "MM";
                         break;
                     case "7.0.3":
                         SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        LocationClass = "com.tencent.mm.protocal.protobuf.axc";
+                        PicWidget = "com.tencent.mm.plugin.sns.ui.ag";
+                        UploadManager = "com.tencent.mm.plugin.sns.model.aw";
+
+                        UploadFun = "cih";
 
                         SnsSetDescriptionFun = "WU";
                         SnsSetLocationFun = "a";

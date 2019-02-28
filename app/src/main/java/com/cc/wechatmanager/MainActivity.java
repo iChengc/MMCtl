@@ -10,18 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
-
 import com.cc.core.utils.StrUtils;
 import com.cc.core.wechat.MessageUtils;
 import com.cc.core.wechat.model.message.CardMessage;
@@ -29,12 +24,11 @@ import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
+import com.cc.core.wechat.model.sns.SnsInfo;
 import com.cc.wechatmanager.model.ContactsResult;
-import com.cc.wechatmanager.model.LoginUserResult;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Messenger.Companion.sendCommand(genCommand("getGroupInfo", "4828574009@chatroom", "15321919790@chatroom", "14870919873@chatroom"), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("uploadSns", genVideoSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
 
-                        KLog.e("---->>.", "getGroupInfo Result:" + result);
+                        KLog.e("---->>.", "uploadImageSns Result:" + result);
                     }
                 });
                 /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
@@ -318,6 +312,39 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private SnsInfo genTextSnsInfo() {
+        SnsInfo snsInfo = new SnsInfo();
+        snsInfo.setDescription("Hello Wechat!!");
+        snsInfo.setType(SnsInfo.Companion.getTEXT_TYPE());
+        return snsInfo;
+    }
+
+    private SnsInfo genVideoSnsInfo() {
+        SnsInfo snsInfo = new SnsInfo();
+        snsInfo.setDescription("Hello Wechat!!");
+        snsInfo.setType(SnsInfo.Companion.getVIDEO_TYPE());
+        return snsInfo;
+    }
+
+    private SnsInfo genImageSnsInfo() {
+        SnsInfo snsInfo = new SnsInfo();
+        snsInfo.setDescription("Hello Wechat!!");
+        snsInfo.setType(SnsInfo.Companion.getIMAGE_TYPE());
+        snsInfo.setMedias(genMedias());
+        return snsInfo;
+    }
+
+    private ArrayList<String> genMedias()  {
+        ArrayList<String> medias = new ArrayList<>();
+        medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1551376220&di=6a41bd2c22bb7f0e3fd772c4f059b1c9&src=http://wynews.zjol.com.cn/pic/0/13/62/36/13623698_728500.jpg");
+        medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1551376220&di=3c6c0c16498be280fabfc0ea845766dd&src=http://img1.cache.netease.com/catchpic/0/06/06F2EA2ED8ABCF9ACC81075B0EBC59E8.jpg");
+        medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1551376220&di=bb82e98a6fe065e2b948aa796f4ee552&src=http://img3.yxlady.com/yl/UploadFiles_5361/20121018/20121018130555357.jpg");
+
+        medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551386251722&di=1887f2eb90274f81d54043c5c5646c47&imgtype=0&src=http%3A%2F%2Fpic.962.net%2Fup%2F2017-7%2F20177201510397806.jpg");
+        medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551386251721&di=bbd3e14fe1aa902143601aacf055ab69&imgtype=0&src=http%3A%2F%2Fimg.11665.com%2Fimg01_p%2Fi1%2F16873022720357622%2FT1BESzXqdhXXXXXXXX_%2521%25210-item_pic.jpg");
+        return medias;
     }
 
     @Override
