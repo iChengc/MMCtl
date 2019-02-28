@@ -8,7 +8,7 @@ import de.robv.android.xposed.XposedHelpers
 
 class SendSnsAction : Action {
     override fun execute(actionId: String, vararg args: Any?): ActionResult? {
-        val uploadPackHelper = SnsUtils.genarateSnsUploadPackHelper(SnsInfo())
+        val uploadPackHelper = SnsUtils.generateSnsUploadPackHelper(SnsInfo())
         XposedHelpers.callMethod(uploadPackHelper, "commit")
         return ActionResult.successResult(actionId)
     }

@@ -134,7 +134,7 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
+        /*XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
                 int.class, int.class, findClass("org.c.d.i", Wechat.WECHAT_CLASSLOADER),
                 String.class, List.class, findClass("com.tencent.mm.protocal.c.atd", Wechat.WECHAT_CLASSLOADER), int.class,
                 boolean.class, List.class, findClass("com.tencent.mm.pointers.PInt", Wechat.WECHAT_CLASSLOADER),
@@ -149,7 +149,9 @@ public class TestHooks extends BaseXposedHook {
 
                         KLog.e("======", new Exception());
                     }
-                });
+                });*/
+
+
        /* XposedHelpers.findAndHookConstructor("com.tencent.mm.sdk.platformtools.an", classLoader, Thread.class, Handler.class,
                 Runnable.class, Object.class, findClass("com.tencent.mm.sdk.platformtools.an$a", classLoader),
                 new XC_MethodHook() {

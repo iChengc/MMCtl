@@ -500,19 +500,85 @@ public class Wechat {
             }
         }
 
+        /**
+         * WU
+         * a 
+         * ar
+         * Co
+         * Cp
+         * Cr
+         * Cq
+         * f 
+         * de
+         * se
+         * df
+         */
         public static class Sns {
             public static String SnsUploadPackHelper = "";
 
             public static String SnsSetDescriptionFun = "";
+            public static String SnsSetLocationFun = "";
+            public static String SnsSetAtUsersFun = "";
+            public static String SnsSetIsPrivateFun = "";
+            public static String SnsSetWatcherTypeFun = ""; // 1不给谁看
+            public static String SnsSetSyncQQZoneFun = ""; // 4
+            public static String SnsSetShareTypeFun = "";
+            public static String SnsSetUrlFun = "";
+            public static String SnsSetWatchersFun = "";
+            public static String SnsSetSessionIdFun = "";
+            public static String SnsSetMediaInfoFun = "";
+            public static String SnsSetVideoInfoFun = "";
+            public static String SnsSetAppIdFun = "";
+            public static String SnsSetAppNameFun = "";
+
+            public static String SnsSetShareUrlFun = "";
+            public static String SnsSetShareUrl2Fun = "";
+            public static String SnsSetShareTitleFun = "";
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
                         SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+
                         SnsSetDescriptionFun = "MI";
+                        SnsSetLocationFun = "a";
+                        SnsSetAtUsersFun = "ar";
+                        SnsSetIsPrivateFun = "Co";
+                        SnsSetWatcherTypeFun = "Cr";
+                        SnsSetSyncQQZoneFun = "Cp";
+                        SnsSetShareTypeFun = "Cq";
+                        SnsSetUrlFun = "f";
+                        SnsSetWatchersFun = "de";
+                        SnsSetSessionIdFun = "setSessionId";
+                        SnsSetMediaInfoFun = "df";
+                        SnsSetVideoInfoFun = "s";
+                        SnsSetAppIdFun = "Xa";
+                        SnsSetAppNameFun = "Xb";
+
+                        SnsSetShareUrlFun = "WX";
+                        SnsSetShareUrl2Fun = "WY";
+                        SnsSetShareTitleFun = "WZ";
                         break;
                     case "7.0.3":
                         SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+
                         SnsSetDescriptionFun = "WU";
+                        SnsSetLocationFun = "a";
+                        SnsSetAtUsersFun = "ar";
+                        SnsSetIsPrivateFun = "Co";
+                        SnsSetWatcherTypeFun = "Cr";
+                        SnsSetSyncQQZoneFun = "Cp";
+                        SnsSetShareTypeFun = "Cq";
+                        SnsSetUrlFun = "f";
+                        SnsSetWatchersFun = "de";
+                        SnsSetSessionIdFun = "setSessionId";
+                        SnsSetMediaInfoFun = "df";
+                        SnsSetVideoInfoFun = "s";
+                        SnsSetAppIdFun = "Xa";
+                        SnsSetAppNameFun = "Xb";
+
+                        SnsSetShareUrlFun = "WX";
+                        SnsSetShareUrl2Fun = "WY";
+                        SnsSetShareTitleFun = "WZ";
                         break;
                 }
 
