@@ -113,23 +113,27 @@ class HookUtils {
         }
 
         fun deleteUpdatedAPkFile() {
-            var wechatPath: File? = XposedHelpers.callStaticMethod(findClass("com.tencent.mm.compatible.util.h", Wechat.WECHAT_CLASSLOADER), "getExternalStorageDirectory"/*ehM*/) as File
-            if (wechatPath == null) {
-                KLog.e("AndroidUpdateHook", "External storage directory is empty")
-                return
-            }
-            wechatPath = File(wechatPath, "tencent/MicroMsg")
-            if (!wechatPath.isDirectory) {
-                KLog.e("AndroidUpdateHook", "path [" + wechatPath.absolutePath + "] is not a directory")
-            }
+            try {
+                var wechatPath: File? = XposedHelpers.callStaticMethod(findClass("com.tencent.mm.compatible.util.h", Wechat.WECHAT_CLASSLOADER), "getExternalStorageDirectory"/*ehM*/) as File
+                if (wechatPath == null) {
+                    KLog.e("AndroidUpdateHook", "External storage directory is empty")
+                    return
+                }
+                wechatPath = File(wechatPath, "tencent/MicroMsg")
+                if (!wechatPath.isDirectory) {
+                    KLog.e("AndroidUpdateHook", "path [" + wechatPath.absolutePath + "] is not a directory")
+                }
 
-            for (f in wechatPath.listFiles()!!) {
-                if (f.isFile) {
-                    if (StrUtils.stringNotNull(f.name).toString().contains(".apk")) {
-                        KLog.i("AndroidUpdateHook", "delete update apk file:" + f.name)
-                        f.delete()
+                for (f in wechatPath.listFiles()!!) {
+                    if (f.isFile) {
+                        if (StrUtils.stringNotNull(f.name).toString().contains(".apk")) {
+                            KLog.i("AndroidUpdateHook", "delete update apk file:" + f.name)
+                            f.delete()
+                        }
                     }
                 }
+            } catch (e : Throwable) {
+                KLog.e("AndroidUpdateHook", "deleteUpdatedAPkFile failed " + e.localizedMessage)
             }
         }
     }
