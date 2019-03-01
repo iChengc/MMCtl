@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cc.core.ApplicationContext;
+import com.cc.core.WorkerHandler;
+import com.cc.core.actions.Actions;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
+import com.cc.core.wechat.invoke.InitDelayHooksAction;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.util.ArrayList;
@@ -60,6 +63,12 @@ public class Wechat {
         }
         Rpc.asRpcServer();
         XposedBridge.log("---->>结束hook微信主进程");
+        WorkerHandler.postOnWorkThreadDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Actions.Companion.execute(InitDelayHooksAction.class, "");
+            }
+        }, 10000);
     }
 
     public static void initEnvironment(String packageName) {
