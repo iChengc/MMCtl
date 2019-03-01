@@ -29,6 +29,7 @@ import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
+import com.cc.wechatmanager.model.CommandResult;
 import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.LoginUserResult;
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResult(final String result) {
 
                         KLog.e("---->>.", "getLoginUserInfo Result:" + result);
+                        if (!checkResult(result)) return;
                         contactListView.post(new Runnable() {
                             @Override
                             public void run() {
@@ -80,34 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-                /*getWindow().getDecorView().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Messenger.Companion.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
-                            @Override
-                            public void onResult(String result) {
-
-                                KLog.e("---->>.", "Result:" + result);
-
-                            }
-                        });
-                        Messenger.Companion.sendCommand(genCommand("wechat:addFriend"), new Callback() {
-                            @Override
-                            public void onResult(String result) {
-
-                                KLog.e("---->>.", "addFriend Result:" + result);
-                                Messenger.Companion.sendCommand(genCommand("wechat:getContacts"), new Callback() {
-                                    @Override
-                                    public void onResult(String result) {
-
-                                        KLog.e("---->>.", "Result:" + result);
-
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }, 1000);*/
             }
         });
 
@@ -119,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "addFriend Result:" + result);
+
+                        if (!checkResult(result)) return;
+
                         ContactsResult contacts = StrUtils.fromJson(result, ContactsResult.class);
                         final ContactsAdapter adapter = new ContactsAdapter(contacts.getData());
 
@@ -149,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "addFriend Result:" + result);
+
+                        if (!checkResult(result)) return;
                     }
                 });
             }
@@ -171,22 +150,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                CardMessage msg = new CardMessage();
-                msg.setCreateTime(System.currentTimeMillis() / 1000);
-                msg.setTarget(to);
-                msg.setDescription(content);
-                msg.setTitle("我是卡片消息");
-                msg.setThumbUrl("http://g.hiphotos.baidu.com/image/h%3D300/sign=9b698df937f33a87816d061af65d1018/8d5494eef01f3a2963a5db079425bc315d607c8d.jpg");
-                msg.setUrl("http://www.baidu.com");
-
-                Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
-                    @Override
-                    public void onResult(String result) {
-
-                        KLog.e("---->>.", "send card Message Result:" + result);
-                    }
-                });
-
                 TextMessage message = new TextMessage();
                 message.setCreateTime(System.currentTimeMillis() / 1000);
                 message.setTarget(to);
@@ -197,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "sendMessage Result:" + result);
+                        if (!checkResult(result)) return;
                     }
                 });
             }
@@ -242,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResult(String result) {
 
                                 KLog.e("---->>.", "sendMessage Result:" + result);
+                                if (!checkResult(result)) return;
                             }
                         });
                     }
@@ -287,12 +252,82 @@ public class MainActivity extends AppCompatActivity {
                             public void onResult(String result) {
 
                                 KLog.e("---->>.", "sendMessage Result:" + result);
+                                if (!checkResult(result)) return;
                             }
                         });
                     }
                 }, 1000);
             }
         });
+
+
+        findViewById(R.id.sendCardMsgBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWindow().getDecorView().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*Messenger.Companion.sendCommand(genCommand("wechat:HookXLog"), new Callback() {
+                            @Override
+                            public void onResult(String result) {
+
+                                KLog.e("---->>.", "Result:" + result);
+
+                            }
+                        });*/
+                        EditText tv = findViewById(R.id.sendCardMsg_title_input);
+                        String title = tv.getText().toString();
+                        if (TextUtils.isEmpty(title)) {
+                            Toast.makeText(MainActivity.this, "请输入标题", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        tv = findViewById(R.id.sendCardMsg_to_input);
+                        String to = tv.getText().toString();
+                        if (TextUtils.isEmpty(to)) {
+                            Toast.makeText(MainActivity.this, "请输入接收者", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        tv = findViewById(R.id.sendCardMsg_description_input);
+                        String content = tv.getText().toString();
+                        if (TextUtils.isEmpty(content)) {
+                            Toast.makeText(MainActivity.this, "请输入描述内容", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        tv = findViewById(R.id.sendCardMsg_thumb_input);
+                        String thumbUrl = tv.getText().toString();
+
+                        tv = findViewById(R.id.sendCardMsg_url_input);
+                        String url = tv.getText().toString();
+                        if (TextUtils.isEmpty(url)) {
+                            Toast.makeText(MainActivity.this, "请输入Url", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        CardMessage msg = new CardMessage();
+                        msg.setCreateTime(System.currentTimeMillis() / 1000);
+                        msg.setTarget(to);
+                        msg.setDescription(content);
+                        msg.setTitle(title);
+                        msg.setThumbUrl(thumbUrl);
+                        msg.setUrl(url);
+
+                        Messenger.Companion.sendCommand(genCommand("sendMessage", msg), new Callback() {
+                            @Override
+                            public void onResult(String result) {
+
+                                KLog.e("---->>.", "send card Message Result:" + result);
+                                if (!checkResult(result)) return;
+                            }
+                        });
+                    }
+                }, 1000);
+            }
+        });
+
+
         registerMessageBroadcast();
         Messenger.Companion.sendCommand(genCommand("initDelayHooks"), new Callback() {
             @Override
@@ -336,5 +371,19 @@ public class MainActivity extends AppCompatActivity {
             WeChatMessage msg = MessageUtils.Companion.messageDeserializeGson().fromJson(details, WeChatMessage.class);
             messageAdapter.addMessage(msg);
         }
+    }
+
+    private boolean checkResult(String result) {
+        CommandResult result1 = StrUtils.fromJson(result, CommandResult.class);
+        if (result1.isSuccess()) {
+            return true;
+        }
+
+        showToast("失败：" + result1.getMessage());
+        return false;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
