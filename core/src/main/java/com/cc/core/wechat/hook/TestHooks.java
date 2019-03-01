@@ -10,6 +10,7 @@ import com.cc.core.utils.StrUtils;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,16 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
                     }
                 });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startHttpMultiSocketDownloadTask",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++startHttpMultiSocketDownloadTask++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
         XposedHelpers.findAndHookConstructor("com.tencent.mm.chatroom.c.g", classLoader, String.class, List.class,
                 new XC_MethodHook() {
                     @Override
@@ -131,6 +142,21 @@ public class TestHooks extends BaseXposedHook {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
                         KLog.e("====++MicroMsg.snsMediaStorage++==>>>>>>  ", StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ VoiceLogic ++==>>>>>>  ", StrUtils.toJson(param.args[0]) + "  " + param.args[1], new Exception());
+                    }
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        KLog.e("====++ VoiceLogic result ++==>>>>>>  ", StrUtils.toJson(param.getResult()) + "  " + (param.getResult() == null ? "false" : new File(param.getResult().toString()).exists()), new Exception());
+
                     }
                 });
 

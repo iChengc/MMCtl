@@ -421,6 +421,9 @@ public class Wechat {
             public static String MessageDatetimeFieldId = "";
             public static String MessageServIdFieldId = "";
 
+            public static String MessageVoiceLogicClass = "";
+            public static String MessageVoiceLogicGetVoiceFullPathFunc = "";
+
             public static String AppMsgLogic = "";
             public static String AppMsgLogicSendFunc = "";
 
@@ -440,6 +443,9 @@ public class Wechat {
                         MessageDatetimeFieldId = "mkk";
                         MessageServIdFieldId = "rMG";
 
+                        MessageVoiceLogicClass = "com.tencent.mm.modelvoice.q";
+                        MessageVoiceLogicGetVoiceFullPathFunc = "P";
+
                         AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
                         AppMsgLogicSendFunc = "a";
                         break;
@@ -454,6 +460,9 @@ public class Wechat {
                         MessageToFieldId = "uUu";
                         MessageTypeFieldId = "mxa";
                         MessageDatetimeFieldId = "ozl";
+
+                        MessageVoiceLogicClass = "com.tencent.mm.modelvoice.q";
+                        MessageVoiceLogicGetVoiceFullPathFunc = "T";
 
                         //MessageFromFieldId = "";
                         MessageServIdFieldId = "oPR";

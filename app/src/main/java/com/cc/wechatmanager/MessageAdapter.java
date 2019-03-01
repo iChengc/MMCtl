@@ -14,6 +14,7 @@ import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.UnsupportMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
+import com.cc.core.wechat.model.message.VoiceMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
 import java.io.File;
 import java.util.ArrayList;
@@ -86,6 +87,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     break;
                 case WeChatMessageType.VIDEO:
                     contentView.setText("视频消息：\n" + ((VideoMessage) msg).getVideoUrl());
+                    break;
+                case WeChatMessageType.VOICE:
+                    contentView.setText("语音消息：\n" + ((VoiceMessage) msg).getVoiceUrl());
                     break;
                 case WeChatMessageType.IMAGE:
                     contentView.setText("图片消息：");
