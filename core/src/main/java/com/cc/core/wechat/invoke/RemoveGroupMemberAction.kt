@@ -26,7 +26,7 @@ class RemoveGroupMemberAction : Action {
 
         val groupWechatId = args[0] as String
         if (!checkIsGroupOwner(StrUtils.stringNotNull(groupWechatId).toString())) {
-            ActionResult.failedResult(actionId, "You is not owner of group $groupWechatId")
+            return ActionResult.failedResult(actionId, "You is not owner of group $groupWechatId")
         }
 
         val chatRoomService = XposedHelpers.callStaticMethod(XposedHelpers.findClass(Wechat.Hook.Group.RoomServiceFactoryClass, Wechat.WECHAT_CLASSLOADER),

@@ -18,6 +18,7 @@ import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.utils.Utils;
 import com.cc.core.wechat.MessageUtils;
 import com.cc.core.wechat.model.message.CardMessage;
 import com.cc.core.wechat.model.message.ImageMessage;
@@ -25,6 +26,7 @@ import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
 import com.cc.core.wechat.model.sns.SnsInfo;
+import com.cc.wechatmanager.model.CommandResult;
 import com.cc.wechatmanager.model.ContactsResult;
 
 import org.jetbrains.annotations.Nullable;
@@ -318,11 +320,19 @@ public class MainActivity extends AppCompatActivity {
     static boolean bool = false;
     private void addGroupMember() {
         ArrayList<String> members = new ArrayList<>();
-        members.add("xnhjcc");
-        Messenger.Companion.sendCommand(genCommand(bool ? "addGroupMember" : "removeGroupMember", "15252923516@chatroom", members), new Callback() {
+        members.add("wxid_w4y2nc022m0g22");
+        Messenger.Companion.sendCommand(genCommand(bool ? "addGroupMember" : "removeGroupMember", "11456227155@chatroom", members), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
                 KLog.e("---->>.", "addGroupMember Result:" + result);
+                CommandResult result1 = StrUtils.fromJson(result, CommandResult.class);
+                if (result1 == null) {
+                    return;
+                }
+
+                if (!result1.isSuccess()) {
+                    Utils.showToast(result1.getMessage());
+                }
             }
         });
         bool = !bool;
