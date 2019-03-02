@@ -26,15 +26,16 @@ public class ApplicationContext {
         });
     }
 
-    public static void init(Application application) {
+    public static boolean init(Application application) {
         KLog.e(">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
         ApplicationContext.application = application;
         WorkerHandler.getInstance().init();
-        Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
         KLog.enableLog2Console(KLog.POLICY_MASK);
         if (application != null) {
             PACKAGE_NAME = application.getPackageName();
         }
+
+        return Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
     }
 
     public static Application application() {

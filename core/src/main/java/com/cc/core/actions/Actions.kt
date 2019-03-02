@@ -80,13 +80,18 @@ class Actions {
             return if (isWechatAction(action)) {
                 try {
                     Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, id, *args)))
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     e.printStackTrace()
                     ActionResult.failedResult(id, e)
                 }
 
             } else {
-                action.execute(id, *args)
+                try {
+                    action.execute(id, *args)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                    ActionResult.failedResult(id, e)
+                }
             }
         }
 

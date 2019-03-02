@@ -160,6 +160,33 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
+        XposedHelpers.findAndHookMethod("com.tencent.mm.chatroom.a", classLoader, "a", String.class, List.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ add group member ++==>>>>>>  ", StrUtils.toJson(param.args[0]) + "  " + param.args[1] + "  " + param.args[2], new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.chatroom.a", classLoader, "a", String.class, List.class, String.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ add group member ++==>>>>>>  ", StrUtils.toJson(param.args[0]) + "  " + param.args[1] + "  " + param.args[2], new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.roomsdk.a.b", classLoader, "Xr", String.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ add group member ++==>>>>>>  ", StrUtils.toJson(param.args[0]) + "  " + param.getResult().getClass().getName());
+                    }
+                });
+
         /*XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
                 int.class, int.class, findClass("org.c.d.i", Wechat.WECHAT_CLASSLOADER),
                 String.class, List.class, findClass("com.tencent.mm.protocal.c.atd", Wechat.WECHAT_CLASSLOADER), int.class,

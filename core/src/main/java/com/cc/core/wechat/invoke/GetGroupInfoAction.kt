@@ -36,13 +36,13 @@ class GetGroupInfoAction : Action {
     private fun getGroupInfo(groupWechatId: String): GroupInfo? {
         val raw = XposedHelpers.callMethod(HookUtils.getGroupManager(), Wechat.Hook.Group.GetGroupInfoFunc, groupWechatId)
                 ?: return null
-        callMethod(raw, groupParseChatroomDataFunc)
+        callMethod(raw, GroupParseChatroomDataFunc)
 
         KLog.e("======>>>>> getGroupInfo", StrUtils.toJson(raw))
         val groupInfo = StrUtils.fromJson<GroupInfo>(StrUtils.toJson(raw), GroupInfo::class.java)
                 ?: return null
 
-        var members = getObjectField(raw, chatroomMembersField) ?: return groupInfo
+        var members = getObjectField(raw, ChatroomMembersField) ?: return groupInfo
         members = members as Map<*, *>
         var groupMembers = ArrayList<GroupMember>()
         for (key in members.keys) {
@@ -50,11 +50,11 @@ class GetGroupInfoAction : Action {
             groupUser.setWechatId(key as String)
 
             val value = members[key]
-            val groupNickname = getObjectField(value, chatroomMemberGroupNicknameField)
+            val groupNickname = getObjectField(value, ChatroomMemberGroupNicknameField)
             if (groupNickname != null) {
                 groupUser.setGroupNickName(groupNickname as String)
             }
-            val invitedBy = getObjectField(value, chatroomMemberInviterField)
+            val invitedBy = getObjectField(value, ChatroomMemberInviterField)
             if (invitedBy != null) {
                 groupUser.setInvitedBy(invitedBy as String)
             }

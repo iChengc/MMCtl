@@ -9,10 +9,13 @@ import com.cc.core.WorkerHandler;
 import com.cc.core.actions.Actions;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
+import com.cc.core.utils.Utils;
 import com.cc.core.wechat.invoke.InitDelayHooksAction;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
@@ -29,16 +32,17 @@ public class Wechat {
     public static String LoginWechatId;
     public static String WechatVersion;
 
+    private static String[] SupportVersion = new String[] {
+            "6.7.2",
+            "7.0.3"
+    };
+
     private void Wechat() {
     }
 
     static {
         loadHooks();
     }
-
-    public static ClassLoader WECHAT_CLASSLOADER;
-    public static String DB_PATH;
-    public static String DB_PASSWORD;
 
     private static void loadHooks() {
         try {
@@ -50,6 +54,10 @@ public class Wechat {
         }
     }
 
+    public static ClassLoader WECHAT_CLASSLOADER;
+    public static String DB_PATH;
+    public static String DB_PASSWORD;
+
     public static void start(XC_LoadPackage.LoadPackageParam lpparam) {
         if (ApplicationContext.application() != null) {
             KLog.e(">>>>已经Hook微信，无需再hook");
@@ -57,7 +65,10 @@ public class Wechat {
         }
         XposedBridge.log(">>开始hook微信主进程");
         WECHAT_CLASSLOADER = lpparam.classLoader;
-        ApplicationContext.init(AndroidAppHelper.currentApplication());
+        if (!ApplicationContext.init(AndroidAppHelper.currentApplication())) {
+            Utils.showToast("微信版本不支持，暂支持版本：" + SupportVersion.toString());
+            return;
+        }
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
         }
@@ -71,19 +82,24 @@ public class Wechat {
         }, 10000);
     }
 
-    public static void initEnvironment(String packageName) {
+    public static boolean initEnvironment(String packageName) {
         try {
             Context context = ApplicationContext.application();
             if (context == null) {
                 context = (Context) callMethod(callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread", new Object[0]), "getSystemContext", new Object[0]);
             }
             WechatVersion = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+            if (!Arrays.asList(Wechat.SupportVersion).contains(WechatVersion)) {
+                KLog.e("not support wechat version:" + WechatVersion);
+                return false;
+            }
 
             Hook.init(WechatVersion);
             Resources.init(WechatVersion);
         } catch (Exception e) {
-            e.printStackTrace();
+            KLog.e("init environment error", e);
         }
+        return true;
     }
 
     private static void addHook(String className) throws Exception {
@@ -489,10 +505,15 @@ public class Wechat {
             public static String CreateGroupWechatIdField = "";
 
             public static String GetGroupInfoFunc = "";
-            public static String groupParseChatroomDataFunc = "";
-            public static String chatroomMembersField = "";
-            public static String chatroomMemberGroupNicknameField = "";
-            public static String chatroomMemberInviterField = "";
+            public static String GroupParseChatroomDataFunc = "";
+            public static String ChatroomMembersField = "";
+            public static String ChatroomMemberGroupNicknameField = "";
+            public static String ChatroomMemberInviterField = "";
+
+            public static String RoomServiceFactoryClass = "";
+            public static String RoomServiceFactoryGetRoomService = "";
+            public static String RoomServiceGetRequest = "";
+            public static String SendAddMemberRequest = "";
 
             public static void init(String version) {
                 switch (version) {
@@ -500,19 +521,27 @@ public class Wechat {
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
                         CreateGroupWechatIdField = "bQz";
                         GetGroupInfoFunc = "ii";
-                        groupParseChatroomDataFunc = "cnZ";
-                        chatroomMembersField = "dYH";
-                        chatroomMemberGroupNicknameField = "dkZ";
-                        chatroomMemberInviterField = "dlb";
+                        GroupParseChatroomDataFunc = "cnZ";
+                        ChatroomMembersField = "dYH";
+                        ChatroomMemberGroupNicknameField = "dkZ";
+                        ChatroomMemberInviterField = "dlb";
+                        RoomServiceFactoryClass = "com.tencent.mm.roomsdk.a.b";
+                        RoomServiceFactoryGetRoomService = "Xr";
+                        RoomServiceGetRequest = "a";
+                        SendAddMemberRequest = "cjP";
                         break;
                     case "7.0.3":
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
                         CreateGroupWechatIdField = "uUb";
                         GetGroupInfoFunc = "nB";
-                        groupParseChatroomDataFunc = "dmq";
-                        chatroomMembersField = "fhZ";
-                        chatroomMemberGroupNicknameField = "ebH";
-                        chatroomMemberInviterField = "ebJ";
+                        GroupParseChatroomDataFunc = "dmq";
+                        ChatroomMembersField = "fhZ";
+                        ChatroomMemberGroupNicknameField = "ebH";
+                        ChatroomMemberInviterField = "ebJ";
+                        RoomServiceFactoryClass = "com.tencent.mm.roomsdk.a.b";
+                        RoomServiceFactoryGetRoomService = "akv";
+                        RoomServiceGetRequest = "a";
+                        SendAddMemberRequest = "dhu";
                         break;
                 }
             }

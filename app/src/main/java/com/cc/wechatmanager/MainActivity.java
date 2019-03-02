@@ -53,13 +53,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Messenger.Companion.sendCommand(genCommand("uploadSns", genVideoSnsInfo()), new Callback() {
+                /*Messenger.Companion.sendCommand(genCommand("uploadSns", genVideoSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "uploadImageSns Result:" + result);
                     }
-                });
+                });*/
+                addGroupMember();
                 /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
                     @Override
                     public void onResult(String result) {
@@ -312,6 +313,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    static boolean bool = false;
+    private void addGroupMember() {
+        ArrayList<String> members = new ArrayList<>();
+        members.add("xnhjcc");
+        Messenger.Companion.sendCommand(genCommand(bool ? "addGroupMember" : "removeGroupMember", "15252923516@chatroom", members), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+                KLog.e("---->>.", "addGroupMember Result:" + result);
+            }
+        });
+        bool = !bool;
     }
 
     private SnsInfo genTextSnsInfo() {
