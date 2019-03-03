@@ -55,14 +55,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
+                /*Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "uploadImageSns Result:" + result);
                         Utils.showToast(result);
                     }
-                });
+                });*/
+                updateRemark();
                 //addGroupMember();
                 /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
                     @Override
@@ -385,6 +386,16 @@ public class MainActivity extends AppCompatActivity {
         medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551386251722&di=1887f2eb90274f81d54043c5c5646c47&imgtype=0&src=http%3A%2F%2Fpic.962.net%2Fup%2F2017-7%2F20177201510397806.jpg");
         medias.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551386251721&di=bbd3e14fe1aa902143601aacf055ab69&imgtype=0&src=http%3A%2F%2Fimg.11665.com%2Fimg01_p%2Fi1%2F16873022720357622%2FT1BESzXqdhXXXXXXXX_%2521%25210-item_pic.jpg");
         return medias;
+    }
+
+    private void updateRemark() {
+        Messenger.Companion.sendCommand(genCommand("updateFriendRemark", "wxid_ma5kf46xhg5d22", "ce_shi"), new Callback() {
+            @Override
+            public void onResult(String result) {
+
+                KLog.e("---->>.", "sendMessage Result:" + result);
+            }
+        });
     }
 
     @Override

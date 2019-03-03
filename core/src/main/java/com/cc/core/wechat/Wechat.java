@@ -261,6 +261,8 @@ public class Wechat {
              * 32 - 微信团队
              */
             public static String AccountStorage = "";
+            public static String ContactStorageLogic = "";
+            public static String ContactStorageLogicUpdateRemark = "";
             public static String GetContactManagerFunc = "";
             public static String GetGroupManagerFunc = "";
             public static String GetConfigManagerFunc = "";
@@ -287,6 +289,8 @@ public class Wechat {
                 switch (version) {
                     case "7.0.3":
                         AccountStorage = "com.tencent.mm.model.c";
+                        ContactStorageLogic = "com.tencent.mm.model.s";
+                        ContactStorageLogicUpdateRemark = "b";
                         GetContactManagerFunc = "VI";
                         GetGroupManagerFunc = "VR";
                         GetConfigManagerFunc = "PO";
@@ -299,6 +303,8 @@ public class Wechat {
                         break;
                     case "6.7.2":
                         AccountStorage = "com.tencent.mm.model.c";
+                        ContactStorageLogic = "com.tencent.mm.model.s";
+                        ContactStorageLogicUpdateRemark = "b";
                         GetContactManagerFunc = "EO";
                         GetGroupManagerFunc = "EX";
                         GetConfigManagerFunc = "CQ";

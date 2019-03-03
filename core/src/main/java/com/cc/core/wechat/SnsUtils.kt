@@ -90,7 +90,8 @@ class SnsUtils {
         }
 
         private fun setCardSns(sns: Any?, snsInfo: SnsInfo) {
-            callMethod(sns, Wechat.Hook.Sns.SnsSetSessionIdFun, callStaticMethod(findClass(SnsGetSessionIdUtil, Wechat.WECHAT_CLASSLOADER), SnsGetSessionIdFun,"msg_" + StrUtils.stringNotNull(snsInfo.getUrl()).hashCode()))
+            // SessionId@msg_-1049477600#66650946219
+            callMethod(sns, Wechat.Hook.Sns.SnsSetSessionIdFun, callStaticMethod(findClass(SnsGetSessionIdUtil, Wechat.WECHAT_CLASSLOADER), SnsGetSessionIdFun,"msg_" + Math.abs(StrUtils.stringNotNull(snsInfo.getUrl()).hashCode())))
 
             callMethod(sns, Wechat.Hook.Sns.SnsSetShareTypeFun, 1)
             callMethod(sns, Wechat.Hook.Sns.SnsSetUrlFun, snsInfo.getUrl(), snsInfo.getUrl(), "", 1, 0)

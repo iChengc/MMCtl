@@ -166,6 +166,27 @@ public class TestHooks extends BaseXposedHook {
                         }
                     }
                 });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.av.a", classLoader, List.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++ remark ++==>>>>>>  ", StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.storage.aj", classLoader, "a",
+                String.class, XposedHelpers.findClass("com.tencent.mm.storage.ad", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object f : param.args) {
+                            KLog.e("======>>>>>> ContactStorage ", StrUtils.toJson(f));
+                        }
+                        KLog.e("======>>>>>> ContactStorage ", new Exception());
+                    }
+                });
 
         /*XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
                 new XC_MethodHook() {
