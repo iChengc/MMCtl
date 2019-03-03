@@ -69,18 +69,18 @@ public class TestHooks extends BaseXposedHook {
         });
         XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.j", classLoader,
                 Context.class, List.class, Intent.class, String.class, int.class, XposedHelpers.findClass("com.tencent.mm.pluginsdk.model.j$a", Wechat.WECHAT_CLASSLOADER),
-        new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                for (Object f : param.args) {
-                    KLog.e("======>>>>>>  ", f == null ? "null" : f.toString());
-                }
-                KLog.e("======>>>>>>  ", new Exception());
-            }
-        });
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        for (Object f : param.args) {
+                            KLog.e("======>>>>>>  ", f == null ? "null" : f.toString());
+                        }
+                        KLog.e("======>>>>>>  ", new Exception());
+                    }
+                });
 
         XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startVideoStreamingDownload",
-                 XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -145,7 +145,29 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-        XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.mmsight.model.CaptureMMProxy", classLoader, "getAccVideoPathInMM",
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        KLog.e("====++CaptureMMProxy.getAccVideoPathInMM++==>>>>>>  ", new Exception());
+
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "b",
+                XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER),
+                int.class, String.class, XposedHelpers.findClass("com.tencent.mm.protocal.c.brk", Wechat.WECHAT_CLASSLOADER), int.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object f : param.args) {
+                            KLog.e("======>>>>>> sns comment ", StrUtils.toJson(f));
+                        }
+                    }
+                });
+
+        /*XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -187,7 +209,17 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-        /*XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
+        XposedHelpers.findAndHookMethod("com.tencent.mm.vfs.d", classLoader, "adF", String.class,
+                new XC_MethodHook() {
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        KLog.e("====++ getMd5 ++==>>>>>>  ", StrUtils.toJson(param.getResult()) + "  " + param.args[0]);
+
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.ui.ag", classLoader, "a",
                 int.class, int.class, findClass("org.c.d.i", Wechat.WECHAT_CLASSLOADER),
                 String.class, List.class, findClass("com.tencent.mm.protocal.c.atd", Wechat.WECHAT_CLASSLOADER), int.class,
                 boolean.class, List.class, findClass("com.tencent.mm.pointers.PInt", Wechat.WECHAT_CLASSLOADER),

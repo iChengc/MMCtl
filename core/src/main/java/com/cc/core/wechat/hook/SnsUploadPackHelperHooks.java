@@ -196,6 +196,12 @@ public class SnsUploadPackHelperHooks extends BaseXposedHook {
                     KLog.e(">>>> UploadPackHelper#xk <<<<<", param.args[0].toString());
                 }
             });
+            hookMethod(n, classLoader, "b", byte[].class, String .class, String.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    KLog.e(">>>> UploadPackHelper#b <<<<<", param.args[1].toString() + "   " + param.args[2].toString());
+                }
+            });
 
         }
         //endregion 6.7.2

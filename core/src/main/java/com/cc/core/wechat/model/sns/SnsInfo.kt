@@ -7,31 +7,50 @@ class SnsInfo {
         val VIDEO_TYPE = 2
         val CARD_TYPE = 3
     }
-    private var description:String? = null
-    private var medias : ArrayList<String>? = null
-    private var type : Int = 0
 
-    fun getType() : Int {
-        return type
+    private var description: String? = null
+    private var medias: ArrayList<String>? = null
+    private var snsType: Int = 0
+    private var url : String? = null
+    private var shareTitle: String? = null
+
+    fun getSnsType(): Int {
+        return snsType
     }
 
-    fun setType(type:Int) {
-        this.type = type
+    fun setSnsType(type: Int) {
+        this.snsType = type
     }
 
-    fun getDescription() : String? {
+    fun getDescription(): String? {
         return description
     }
 
-    fun setDescription(desc:String?) {
+    fun setDescription(desc: String?) {
         this.description = desc
     }
 
-    fun getMedias() : ArrayList<String>? {
+    fun getMedias(): ArrayList<String>? {
         return medias
     }
 
-    fun setMedias(media:ArrayList<String>?) {
+    fun setMedias(media: ArrayList<String>?) {
         this.medias = media
+    }
+
+    fun getUrl() : String? {
+        return url
+    }
+
+    fun setUrl(url : String?) {
+        this.url = url
+    }
+
+    fun getShareTitle() : String? {
+        return shareTitle
+    }
+
+    fun setShareTitle(title : String?) {
+        this.shareTitle = title
     }
 }

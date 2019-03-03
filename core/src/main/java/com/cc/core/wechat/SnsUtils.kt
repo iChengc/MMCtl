@@ -1,5 +1,9 @@
 package com.cc.core.wechat
 
+import com.cc.core.utils.ImageUtil
+import com.cc.core.utils.StrUtils
+import com.cc.core.wechat.Wechat.Hook.Sns.SnsGetSessionIdFun
+import com.cc.core.wechat.Wechat.Hook.Sns.SnsGetSessionIdUtil
 import com.cc.core.wechat.model.sns.SnsInfo
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.*
@@ -9,7 +13,7 @@ class SnsUtils {
     companion object {
 
         fun generateSnsUploadPackHelper(snsInfo: SnsInfo): Any? {
-            var sns: Any? = when (snsInfo.getType()) {
+            var sns: Any? = when (snsInfo.getSnsType()) {
                 SnsInfo.TEXT_TYPE -> {
                     newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 2)
                 }
@@ -26,7 +30,7 @@ class SnsUtils {
 
             setTextSns(sns, snsInfo)
 
-            when (snsInfo.getType()) {
+            when (snsInfo.getSnsType()) {
                 SnsInfo.IMAGE_TYPE -> {
                     setImageSns(sns, snsInfo)
                 }
@@ -68,13 +72,37 @@ class SnsUtils {
             callMethod(sns, Wechat.Hook.Sns.SnsSetMediaInfoFun, genMediaList(snsInfo.getMedias(), snsInfo.getDescription()))
         }
 
-        private fun setVideoSns(sns: Any?, snsInfo: SnsInfo) {
-            callMethod(sns, Wechat.Hook.Sns.SnsSetVideoInfoFun, "/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/video/videoCompressTmp/video_send_preprocess_tmp_1551376714007.mp4",
+        private fun setVideoSns(sns: Any?, snsInfo: SnsInfo) : Boolean {
+            if (snsInfo.getMedias() == null || snsInfo.getMedias()!!.isEmpty()) {
+                return false
+            }
+            val videoPath = snsInfo.getMedias()!![0]
+            val caverPath = ImageUtil.getVideoPathCover(videoPath) ?: return false
+
+            val md5 = HookUtils.getFileMd5(videoPath) ?: return false
+
+            callMethod(sns, Wechat.Hook.Sns.SnsSetVideoInfoFun, videoPath, caverPath, snsInfo.getDescription(), md5)
+
+            /*callMethod(sns, Wechat.Hook.Sns.SnsSetVideoInfoFun, "/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/video/videoCompressTmp/video_send_preprocess_tmp_1551376714007.mp4",
                     "/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/video/videoCompressTmpThumb/video_send_preprocess_thumb_1551376762312.jpg",
-                    snsInfo.getDescription(), "4f4de48085c93716a8b8d6742f3812da")
+                    snsInfo.getDescription(), "4f4de48085c93716a8b8d6742f3812da")*/
+            return true
         }
 
         private fun setCardSns(sns: Any?, snsInfo: SnsInfo) {
+            callMethod(sns, Wechat.Hook.Sns.SnsSetSessionIdFun, callStaticMethod(findClass(SnsGetSessionIdUtil, Wechat.WECHAT_CLASSLOADER), SnsGetSessionIdFun,"msg_" + StrUtils.stringNotNull(snsInfo.getUrl()).hashCode()))
+
+            callMethod(sns, Wechat.Hook.Sns.SnsSetShareTypeFun, 1)
+            callMethod(sns, Wechat.Hook.Sns.SnsSetUrlFun, snsInfo.getUrl(), snsInfo.getUrl(), "", 1, 0)
+            if (!(snsInfo.getMedias() == null || snsInfo.getMedias()!!.isEmpty())) {
+                val thumb = ImageUtil.fileToWxThumb(snsInfo.getMedias()!![0])
+                if (thumb != null) {
+                    callMethod(sns, Wechat.Hook.Sns.SnsSetShareThumbFun, thumb, "", "")
+                }
+            }
+            callMethod(sns, Wechat.Hook.Sns.SnsSetShareUrlFun, snsInfo.getUrl())
+            callMethod(sns, Wechat.Hook.Sns.SnsSetShareUrl2Fun, snsInfo.getUrl())
+            callMethod(sns, Wechat.Hook.Sns.SnsSetShareTitleFun, snsInfo.getShareTitle())
         }
 
         fun uploadSns() {

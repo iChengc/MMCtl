@@ -55,14 +55,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                /*Messenger.Companion.sendCommand(genCommand("uploadSns", genVideoSnsInfo()), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "uploadImageSns Result:" + result);
+                        Utils.showToast(result);
                     }
-                });*/
-                addGroupMember();
+                });
+                //addGroupMember();
                 /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
                     @Override
                     public void onResult(String result) {
@@ -341,22 +342,37 @@ public class MainActivity extends AppCompatActivity {
     private SnsInfo genTextSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription("Hello Wechat!!");
-        snsInfo.setType(SnsInfo.Companion.getTEXT_TYPE());
+        snsInfo.setSnsType(SnsInfo.Companion.getTEXT_TYPE());
         return snsInfo;
     }
 
     private SnsInfo genVideoSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
-        snsInfo.setDescription("Hello Wechat!!");
-        snsInfo.setType(SnsInfo.Companion.getVIDEO_TYPE());
+        snsInfo.setDescription("");
+        snsInfo.setSnsType(SnsInfo.Companion.getVIDEO_TYPE());
+        ArrayList<String> medias = new ArrayList<>();
+        medias.add("/mnt/sdcard/23.mp4");
+        snsInfo.setMedias(medias);
         return snsInfo;
     }
 
     private SnsInfo genImageSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription("Hello Wechat!!");
-        snsInfo.setType(SnsInfo.Companion.getIMAGE_TYPE());
+        snsInfo.setSnsType(SnsInfo.Companion.getIMAGE_TYPE());
         snsInfo.setMedias(genMedias());
+        return snsInfo;
+    }
+
+    private SnsInfo genCardSnsInfo() {
+        SnsInfo snsInfo = new SnsInfo();
+        snsInfo.setShareTitle("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
+        snsInfo.setDescription("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
+        snsInfo.setSnsType(SnsInfo.Companion.getCARD_TYPE());
+        snsInfo.setUrl("https://mbd.baidu.com/newspage/data/landingsuper?context=%7B%22nid%22%3A%22news_9762242423668539096%22%7D&n_type=0&p_from=1");
+        ArrayList<String> medias = new ArrayList<>();
+        medias.add("http://b.hiphotos.baidu.com/image/pic/item/11385343fbf2b2114a65cd70c48065380cd78e41.jpg");
+        snsInfo.setMedias(medias);
         return snsInfo;
     }
 

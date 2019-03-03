@@ -32,7 +32,7 @@ public class Wechat {
     public static String LoginWechatId;
     public static String WechatVersion;
 
-    private static String[] SupportVersion = new String[] {
+    public static String[] SupportVersion = new String[] {
             "6.7.2",
             "7.0.3"
     };
@@ -65,14 +65,13 @@ public class Wechat {
         }
         XposedBridge.log(">>开始hook微信主进程");
         WECHAT_CLASSLOADER = lpparam.classLoader;
+        Rpc.asRpcServer();
         if (!ApplicationContext.init(AndroidAppHelper.currentApplication())) {
-            Utils.showToast("微信版本不支持，暂支持版本：" + SupportVersion.toString());
             return;
         }
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
         }
-        Rpc.asRpcServer();
         XposedBridge.log("---->>结束hook微信主进程");
         WorkerHandler.postOnWorkThreadDelayed(new Runnable() {
             @Override
@@ -156,6 +155,9 @@ public class Wechat {
         public static String commonWechatSdkXmlParserClass = "";
         public static String commonWechatSdkXmlParserToMapFunc = "";
 
+        public static String GetFileMd5Uitls = "";
+        public static String GetFileMd5Func = "";
+
         public static void init(String version) {
             Sqlite.init(version);
             Account.init(version);
@@ -190,6 +192,9 @@ public class Wechat {
 
                     commonWechatSdkXmlParserClass = "com.tencent.mm.sdk.platformtools.bs";
                     commonWechatSdkXmlParserToMapFunc = "z";
+
+                    GetFileMd5Uitls = "com.tencent.mm.vfs.e";
+                    GetFileMd5Func = "arz";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -215,6 +220,9 @@ public class Wechat {
 
                     commonWechatSdkXmlParserClass = "com.tencent.mm.sdk.platformtools.bm";
                     commonWechatSdkXmlParserToMapFunc = "r";
+
+                    GetFileMd5Uitls = "com.tencent.mm.vfs.d";
+                    GetFileMd5Func = "adF";
                     break;
             }
         }
@@ -580,8 +588,11 @@ public class Wechat {
             public static String SnsSetSessionIdFun = "";
             public static String SnsSetMediaInfoFun = "";
             public static String SnsSetVideoInfoFun = "";
+            public static String SnsSetShareThumbFun = "";
             public static String SnsSetAppIdFun = "";
             public static String SnsSetAppNameFun = "";
+            public static String SnsGetSessionIdUtil = "";
+            public static String SnsGetSessionIdFun = "";
 
             public static String SnsSetShareUrlFun = "";
             public static String SnsSetShareUrl2Fun = "";
@@ -610,10 +621,13 @@ public class Wechat {
                         SnsSetVideoInfoFun = "q";
                         SnsSetAppIdFun = "MQ";
                         SnsSetAppNameFun = "MR";
+                        SnsSetShareThumbFun = "b";
+                        SnsGetSessionIdUtil = "com.tencent.mm.model.u";
+                        SnsGetSessionIdFun = "ie";
 
                         SnsSetShareUrlFun = "ML";
-                        SnsSetShareUrl2Fun = "WY";
-                        SnsSetShareTitleFun = "MM";
+                        SnsSetShareUrl2Fun = "MM";
+                        SnsSetShareTitleFun = "MN";
                         break;
                     case "7.0.3":
                         SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
@@ -637,6 +651,9 @@ public class Wechat {
                         SnsSetVideoInfoFun = "s";
                         SnsSetAppIdFun = "Xa";
                         SnsSetAppNameFun = "Xb";
+                        SnsSetShareThumbFun = "b";
+                        SnsGetSessionIdUtil = "com.tencent.mm.model.u";
+                        SnsGetSessionIdFun = "nx";
 
                         SnsSetShareUrlFun = "WX";
                         SnsSetShareUrl2Fun = "WY";

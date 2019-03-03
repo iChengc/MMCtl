@@ -38,8 +38,11 @@ public class AvoidUpdateHooks extends BaseXposedHook {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 if (param.thisObject instanceof Activity) {
                     Activity activity = (Activity) param.thisObject;
-                    activity.finish();
-                    Toast.makeText(ApplicationContext.application(), "更新已被禁止", Toast.LENGTH_SHORT).show();
+                    Intent i = activity.getIntent();
+                    if (i.hasExtra("update_type_key")) {
+                        activity.finish();
+                        Toast.makeText(ApplicationContext.application(), "更新已被禁止", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

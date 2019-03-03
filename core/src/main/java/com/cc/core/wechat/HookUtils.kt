@@ -132,9 +132,16 @@ class HookUtils {
                         }
                     }
                 }
-            } catch (e : Throwable) {
+            } catch (e: Throwable) {
                 KLog.e("AndroidUpdateHook", "deleteUpdatedAPkFile failed " + e.localizedMessage)
             }
+        }
+
+        fun getFileMd5(filePath: String?): String? {
+            val md5 = callStaticMethod(findClass(GetFileMd5Uitls, Wechat.WECHAT_CLASSLOADER), GetFileMd5Func, filePath)
+                    ?: return null
+
+            return md5 as String
         }
     }
 }
