@@ -121,6 +121,15 @@ class MessageUtils {
                     msg.setMsgServId(msgservId)
                     MessageUtils.processVoiceMessage(msg)
                 }
+                WeChatMessageType.VOIP -> {
+                    /*msg = VoipMessage()
+                    msg.setFrom(from)
+                    msg.setTarget(to)
+                    msg.setCreateTime(dateTime)
+                    msg.setMsgServId(msgservId)
+                    MessageUtils.processVoipMessage(msg, content)*/
+                    return
+                }
                 else -> {
                     msg = UnsupportMessage()
                     msg.setMessageDetails(content)
@@ -333,7 +342,7 @@ class MessageUtils {
             return map[".msg.emoji.\$cdnurl"]
         }
 
-        private fun notifyMessageReceived(msg: WeChatMessage) {
+        fun notifyMessageReceived(msg: WeChatMessage) {
             val i = Intent(RECEIVE_MESSAGE_BROADCAST)
             i.putExtra("msg", StrUtils.toJson(msg))
             ApplicationContext.application().sendBroadcast(i)
@@ -348,7 +357,6 @@ class MessageUtils {
             if (avoidMessageRevoke(messageDetails)) {
                 return
             }
-
 
         }
 
@@ -370,6 +378,24 @@ class MessageUtils {
                 return
             }
         }
+
+        /*private fun processVoipMessage(message: VoipMessage?, content : String) {
+            if (message == null) {
+                return
+            }
+
+            if (TextUtils.isEmpty(content)) {
+                return
+            }
+
+            val map = HookUtils.xmlToMap(content, "voipinvitemsg")
+            if (map.isEmpty()) {
+                return
+            }
+
+            val type = map[".voipinvitemsg.status"]
+            message.setVoipType(Integer.valueOf(type))
+        }*/
 
         private fun getVoiceFullPath(imgPath: String?): String? {
             val path = callStaticMethod(findClass(MessageVoiceLogicClass, Wechat.WECHAT_CLASSLOADER),
@@ -449,7 +475,6 @@ class MessageUtils {
             if (map.isEmpty()) {
                 return null
             }
-            KLog.e("=====>>>>>", map.toString())
             val content = map[".revokemsg.replacemsg"] ?: return null
             return content.split("\"".toRegex())[1]
         }

@@ -15,6 +15,7 @@ import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.UnsupportMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.VoiceMessage;
+import com.cc.core.wechat.model.message.VoipMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
 import java.io.File;
 import java.util.ArrayList;
@@ -98,6 +99,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 case WeChatMessageType.EMOJI:
                     contentView.setText("emoji表情：");
                     Glide.with(imgView.getContext()).load(((ImageMessage) msg).getImageUrl()).placeholder(R.mipmap.ic_launcher_round).into(imgView);
+                    break;
+                case WeChatMessageType.VOIP:
+                    contentView.setText("Voip消息：\n" + (((VoipMessage)msg).getVoipType() == 1 ? "语音通信" : "视频通信"));
                     break;
                 case WeChatMessageType.CARD:
                     contentView.setText("卡片消息：\n"

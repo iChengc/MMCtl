@@ -41,6 +41,7 @@ class MessageTypeAdapter : JsonSerializer<WeChatMessage>, JsonDeserializer<WeCha
             WeChatMessageType.TEXT -> TextMessage::class.java
             WeChatMessageType.CARD -> CardMessage::class.java
             WeChatMessageType.VOICE -> VoiceMessage::class.java
+            WeChatMessageType.VOIP -> VoipMessage::class.java
             else -> UnsupportMessage::class.java
         }
     }
