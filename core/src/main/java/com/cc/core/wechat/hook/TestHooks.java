@@ -1,28 +1,12 @@
 package com.cc.core.wechat.hook;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Handler;
-
-import com.cc.core.log.KLog;
-import com.cc.core.utils.StrUtils;
-import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedHelpers;
 
 public class TestHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
 
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.m", classLoader, int.class, List.class, List.class, String.class, String.class, new XC_MethodHook() {
+        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.m", classLoader, int.class, List.class, List.class, String.class, String.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 for (Object o : param.args) {
@@ -188,7 +172,7 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-        /*XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
+        XposedHelpers.findAndHookMethod("com.tencent.mm.modelvoice.q", classLoader, "P", String.class, boolean.class,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

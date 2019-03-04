@@ -129,6 +129,11 @@ public class AvoidUpdateHooks extends BaseXposedHook {
                         KLog.e("====>>>>>", "ooooooooooooooooooaaadddd");
                     }
                 });*/
-        HookUtils.Companion.deleteUpdatedAPkFile();
+
+        WorkerHandler.postOnWorkThreadDelayed(new Runnable() {
+            @Override public void run() {
+                HookUtils.Companion.deleteUpdatedAPkFile();
+            }
+        }, 5000);
     }
 }
