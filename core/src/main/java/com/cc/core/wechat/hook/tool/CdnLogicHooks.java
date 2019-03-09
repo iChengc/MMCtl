@@ -16,9 +16,9 @@ public class CdnLogicHooks extends BaseXposedHook {
         downLoadEndHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onDownloadToEnd", String.class, int.class, int.class,
             new XC_MethodHook() {
                 @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    CdnDownloadFinishListener listner = mCdnDownloadListeners.remove(param.args[0].toString());
-                    if (listner != null) {
-                        listner.onFinishDownload(param.args[0].toString());
+                    CdnDownloadFinishListener listener = mCdnDownloadListeners.remove(param.args[0].toString());
+                    if (listener != null) {
+                        listener.onFinishDownload(param.args[0].toString());
                     }
                 }
             });
@@ -26,13 +26,25 @@ public class CdnLogicHooks extends BaseXposedHook {
         c2cDownloadCompletedHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onC2CDownloadCompleted", String.class, findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadResult", Wechat.WECHAT_CLASSLOADER),
             new XC_MethodHook() {
                 @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e("onC2CDownloadCompleted =====>>>>>>>", param.args[0] + "=====" + StrUtils.toJson(param.args[1]));
-                    CdnDownloadFinishListener listner = mCdnDownloadListeners.remove(param.args[0].toString());
-                    if (listner != null) {
-                        listner.onFinishDownload(param.args[0].toString());
+                    KLog.e("onC2CDownloadCompleted =====>>>>>>>", param.args[0] + "=====" + StrUtils.toJson(param.args[1]), new Exception());
+                    CdnDownloadFinishListener listener = mCdnDownloadListeners.remove(param.args[0].toString());
+                    if (listener != null) {
+                        listener.onFinishDownload(param.args[0].toString());
                     }
                 }
             });
+
+        c2cDownloadCompletedHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onProgressChanged", String.class, int.class, int.class, boolean.class,
+                new XC_MethodHook() {
+                    @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        if (param.args[1] == param.args[2]) {
+                            CdnDownloadFinishListener listener = mCdnDownloadListeners.remove(param.args[0].toString());
+                            if (listener != null) {
+                                listener.onFinishDownload(param.args[0].toString());
+                            }
+                        }
+                    }
+                });
     }
 
     public static void registerDownloadListeners(String fileKey, CdnDownloadFinishListener listener) {

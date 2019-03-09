@@ -1,12 +1,138 @@
 package com.cc.core.wechat.hook;
 
+import com.cc.core.log.KLog;
+import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
+
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedHelpers;
 
 public class TestHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
 
-        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.m", classLoader, int.class, List.class, List.class, String.class, String.class, new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "a",
+                String.class, int.class, String.class,
+                XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====+++ aaaaaa +++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
+                    }
+                });
+        XposedHelpers.findAndHookMethod("com.tencent.mm.modelcdntran.f", classLoader, "a",
+                XposedHelpers.findClass("com.tencent.mm.storage.ax", Wechat.WECHAT_CLASSLOADER),
+                String.class, String.class, String.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====+++ downloadVideo +++==>>>>>>  ", StrUtils.toJson(o));
+
+                        }
+                        KLog.e("====+++ downloadVideo +++==>>>>>>  ", new Exception());
+                    }
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        KLog.e("====+++ result +++==>>>>>>  ", StrUtils.toJson(param.getResult()));
+                    }
+                });
+
+
+        /*XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$b", classLoader, "a",
+                findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class,
+                String.class, findClass("com.tencent.mm.protocal.c.brk", Wechat.WECHAT_CLASSLOADER),int.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====+++ bbbbbb +++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
+                    }
+                });*/
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.y", classLoader, long.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                for (Object o : param.args) {
+                    KLog.e("=====>>>>>> " + StrUtils.toJson(o));
+                }
+
+            }
+        });
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startVideoStreamingDownload",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====+++++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startC2CDownload",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startHttpMultiSocketDownloadTask",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++startHttpMultiSocketDownloadTask++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startSNSDownload",
+                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++startSNSDownload++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.modelcdntran.i", classLoader, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    KLog.e("=====>>>>>> " , new Exception("&&&&&********&&&&&&&"));
+            }
+        });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.modelcdntran.c", classLoader, "b",
+                XposedHelpers.findClass("com.tencent.mm.modelcdntran.i", Wechat.WECHAT_CLASSLOADER), int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        KLog.e("=====>>>>>> " , new Exception("&&&&&****5555555****&&&&&&&"));
+                    }
+                });
+        // String paramString1, String[] paramArrayOfString1, String paramString2, String[] paramArrayOfString2, String paramString3, String paramString4, String paramString5, int paramInt)
+
+
+        /*XposedHelpers.findAndHookMethod("com.tencent.mm.bz.h", classLoader, "a",
+                String.class, String[].class, String.class, String[].class,String.class,String.class,String.class,int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        for (Object o : param.args) {
+                            KLog.e("====++ update ++==>>>>>>  ", StrUtils.toJson(o));
+
+                        }
+                    }
+                });
+
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.pluginsdk.model.m", classLoader, int.class, List.class, List.class, String.class, String.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 for (Object o : param.args) {
@@ -63,35 +189,7 @@ public class TestHooks extends BaseXposedHook {
                     }
                 });
 
-        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startVideoStreamingDownload",
-                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER), int.class,
-                new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
-                        KLog.e("====+++++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
-                    }
-                });
-
-        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startC2CDownload",
-                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
-                new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-
-                        KLog.e("====++startC2CDownload++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
-                    }
-                });
-
-        XposedHelpers.findAndHookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "startHttpMultiSocketDownloadTask",
-                XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER),
-                new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-
-                        KLog.e("====++startHttpMultiSocketDownloadTask++==>>>>>>  ", param.args[0] + "  " + StrUtils.toJson(param.args[0]), new Exception());
-                    }
-                });
         XposedHelpers.findAndHookConstructor("com.tencent.mm.chatroom.c.g", classLoader, String.class, List.class,
                 new XC_MethodHook() {
                     @Override

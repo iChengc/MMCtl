@@ -54,7 +54,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Messenger.Companion.sendCommand(genCommand("getSnsList", 0), new Callback() {
+                    @Override
+                    public void onResult(String result) {
 
+                        KLog.e("---->>.", "getSnsList Result:" + result);
+                        Utils.showToast(result);
+                    }
+                });
                 /*Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         Utils.showToast(result);
                     }
                 });*/
-                updateRemark();
+               // updateRemark();
                 //addGroupMember();
                 /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
                     @Override
