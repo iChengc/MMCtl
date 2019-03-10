@@ -54,14 +54,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getWechatInfoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messenger.Companion.sendCommand(genCommand("getSnsList", 0), new Callback() {
+                /*Messenger.Companion.sendCommand(genCommand("getSnsList", 0), new Callback() {
                     @Override
                     public void onResult(String result) {
 
                         KLog.e("---->>.", "getSnsList Result:" + result);
                         Utils.showToast(result);
                     }
-                });
+                });*/
+                likeSns(-5427454008293773151L);
                 /*Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                     tv = v.findViewById(R.id.wechatId);
                                     tv.setText(result1.getData().getWechatId());
                                     ImageView iv = v.findViewById(R.id.avatar);
-                                    Glide.with(MainActivity.this).load(new File(result1.getData().getAvatar())).into(iv);
+                                    Glide.with(TimelineActivity.this).load(new File(result1.getData().getAvatar())).into(iv);
                                 }
                             }
                         });
@@ -326,6 +327,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void likeSns(long snsId) {
+        Messenger.Companion.sendCommand(genCommand("likeSns", snsId + ""), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+                KLog.e("---->>.", "Comment Result:" + result);
+            }
+        });
+    }
+
     static boolean bool = false;
     private void addGroupMember() {
         ArrayList<String> members = new ArrayList<>();
@@ -350,14 +360,14 @@ public class MainActivity extends AppCompatActivity {
     private SnsInfo genTextSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription("Hello Wechat!!");
-        snsInfo.setSnsType(SnsInfo.Companion.getTEXT_TYPE());
+        snsInfo.setSnsType(SnsInfo.TEXT_TYPE);
         return snsInfo;
     }
 
     private SnsInfo genVideoSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription("");
-        snsInfo.setSnsType(SnsInfo.Companion.getVIDEO_TYPE());
+        snsInfo.setSnsType(SnsInfo.VIDEO_TYPE);
         ArrayList<String> medias = new ArrayList<>();
         medias.add("/mnt/sdcard/23.mp4");
         snsInfo.setMedias(medias);
@@ -367,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
     private SnsInfo genImageSnsInfo() {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription("Hello Wechat!!");
-        snsInfo.setSnsType(SnsInfo.Companion.getIMAGE_TYPE());
+        snsInfo.setSnsType(SnsInfo.IMAGE_TYPE);
         snsInfo.setMedias(genMedias());
         return snsInfo;
     }
@@ -376,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setShareTitle("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
         snsInfo.setDescription("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
-        snsInfo.setSnsType(SnsInfo.Companion.getCARD_TYPE());
+        snsInfo.setSnsType(SnsInfo.CARD_TYPE);
         snsInfo.setUrl("https://mbd.baidu.com/newspage/data/landingsuper?context=%7B%22nid%22%3A%22news_9762242423668539096%22%7D&n_type=0&p_from=1");
         ArrayList<String> medias = new ArrayList<>();
         medias.add("http://b.hiphotos.baidu.com/image/pic/item/11385343fbf2b2114a65cd70c48065380cd78e41.jpg");

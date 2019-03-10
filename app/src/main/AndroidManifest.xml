@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cc.wechatmanager">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -11,26 +10,27 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
     <application
+        android:name=".MMApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MMApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
-
+        <activity android:name=".friendscircle.activity.TimelineActivity" android:label="@string/app_name"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity><activity android:name=".friendscircle.activity.MyImageActivity" android:label="@string/title_activity_my_image">
+    </activity><activity android:name=".friendscircle.activity.DetailActivity" >
+    </activity><activity android:name=".friendscircle.imgfile.ImgFileListActivity">
+    </activity><activity android:name=".friendscircle.imgfile.ImgsActivity" >
+    </activity><activity android:name=".friendscircle.activity.ShowBitImgActivity" >
+    </activity><activity android:name="com.ionesmile.datasource.DataSouceActivity" android:label="@string/app_name">
+    </activity><activity android:name="com.ionesmile.datasource.LogoSelectActivity" >
+    </activity>
     </application>
 
 </manifest>
