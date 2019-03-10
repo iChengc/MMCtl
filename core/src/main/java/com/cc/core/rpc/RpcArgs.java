@@ -85,7 +85,7 @@ public class RpcArgs implements Parcelable {
     }
 
     public static RpcArgs from(String msg) {
-        return StrUtils.fromJson(msg, RpcArgs.class);
+        return StrUtils.fromNumberJson(msg, RpcArgs.class);
     }
 
     public static class CallType {
@@ -97,7 +97,7 @@ public class RpcArgs implements Parcelable {
         RpcArgs rpcArgs = new RpcArgs();
         rpcArgs.time = System.currentTimeMillis();
         rpcArgs.type = CallType.EXECUTE_ACTION;
-        rpcArgs.data = StrUtils.toJson(action);
+        rpcArgs.data = StrUtils.toNumberJson(action);
         rpcArgs.id = action.getActionId();
 
         return rpcArgs;

@@ -116,6 +116,28 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("=====>>>>>> " , new Exception("&&&&&****5555555****&&&&&&&"));
                     }
                 });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "b",
+                XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class, String.class,
+                XposedHelpers.findClass("com.tencent.mm.protocal.c.brk", Wechat.WECHAT_CLASSLOADER), int.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        for (Object o : param.args) {
+                            KLog.e("=====>>>>>> send comment" , StrUtils.toJson(o));
+                        }
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "Mz", String.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        for (Object o : param.args) {
+                            KLog.e("=====>>>>>> cancel comment" , StrUtils.toJson(o));
+                        }
+                    }
+                });
         // String paramString1, String[] paramArrayOfString1, String paramString2, String[] paramArrayOfString2, String paramString3, String paramString4, String paramString5, int paramInt)
 
 

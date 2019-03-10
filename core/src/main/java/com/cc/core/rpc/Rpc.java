@@ -28,7 +28,7 @@ public class Rpc {
     }
 
     public static ActionResult call(RpcArgs rpcArgs) {
-        return call(rpcArgs.getId(), StrUtils.toJson(rpcArgs), getPort(rpcArgs));
+        return call(rpcArgs.getId(), StrUtils.toNumberJson(rpcArgs), getPort(rpcArgs));
     }
 
     public static ActionResult call(String id, String message, int port) {
@@ -62,7 +62,7 @@ public class Rpc {
             if (TextUtils.isEmpty(sb.toString())) {
                 return ActionResult.Companion.failedResult(id, "Empty response");
             }
-            return StrUtils.fromJson(sb.toString(), ActionResult.class);
+            return StrUtils.fromNumberJson(sb.toString(), ActionResult.class);
             /*out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             out.write(message, 0, message.length());
             out.flush();*/

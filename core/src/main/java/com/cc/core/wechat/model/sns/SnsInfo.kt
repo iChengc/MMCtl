@@ -44,18 +44,18 @@ import java.util.*
  */
 class SnsInfo {
     companion object {
-        val IMAGE_TYPE = 1
-        val TEXT_TYPE = 2
-        val CARD_TYPE = 3
-        val MUSIC = 4
-        val SHARE_VIDEO = 5 // 视频分享
-        val EMOJI = 10
-        val VIDEO_TYPE = 15
+        const val IMAGE_TYPE = 1
+        const val TEXT_TYPE = 2
+        const val CARD_TYPE = 3
+        const val MUSIC = 4
+        const val SHARE_VIDEO = 5 // 视频分享
+        const val EMOJI = 10
+        const val VIDEO_TYPE = 15
     }
 
 
     @SerializedName("snsId")
-    private var snsId: Long = 0 //朋友圈id
+    private var snsId: String? = null//朋友圈id
     private var createTime: Long = 0L //创建时间
     private var userName: String? = null //创建人微信id
     private var isDeleted : Boolean = false
@@ -69,11 +69,11 @@ class SnsInfo {
     private var comments : List<SnsComment>? = null
     private var likes : List<SnsLike>? = null
 
-    fun getSnsId(): Long {
+    fun getSnsId(): String? {
         return snsId
     }
 
-    fun setSnsId(snsId: Long) {
+    fun setSnsId(snsId: String?) {
         this.snsId = snsId
     }
 
@@ -85,7 +85,7 @@ class SnsInfo {
         this.createTime = createTime
     }
 
-    fun getUserNamee(): String? {
+    fun getUserName(): String? {
         return userName
     }
 

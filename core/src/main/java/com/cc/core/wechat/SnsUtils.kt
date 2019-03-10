@@ -30,21 +30,21 @@ class SnsUtils {
         private val lock = ArrayBlockingQueue<String>(1)
         //region upload sns info
         fun generateSnsUploadPackHelper(snsInfo: SnsInfo): Any? {
-            var sns: Any? = when (snsInfo.getSnsType()) {
+            /*var sns: Any? = when (snsInfo.getSnsType()) {
                 SnsInfo.TEXT_TYPE -> {
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 2)
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), SnsInfo.TEXT_TYPE)
                 }
                 SnsInfo.VIDEO_TYPE -> {
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 15)
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), SnsInfo.VIDEO_TYPE)
                 }
                 SnsInfo.CARD_TYPE -> {
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 3)
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER),  SnsInfo.CARD_TYPE)
                 }
                 else -> {
-                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), 1)
+                    newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), SnsInfo.IMAGE_TYPE)
                 }
-            }
-
+            }*/
+            val sns = newInstance(findClass(Wechat.Hook.Sns.SnsUploadPackHelper, Wechat.WECHAT_CLASSLOADER), snsInfo.getSnsType())
             setTextSns(sns, snsInfo)
 
             when (snsInfo.getSnsType()) {
@@ -164,11 +164,11 @@ class SnsUtils {
             val snsInfos = ArrayList<SnsInfo>()
             var index = 0
             for (id in snsIds) {
-                val sns = getSnsInfo(id) ?: continue
+                val sns = getWechatRawSnsInfo(id) ?: continue
                 val info = SnsInfo()
                 //info.setSnsType()
 
-                info.setSnsId(getObjectField(sns, "field_snsId") as Long)
+                info.setSnsId(getObjectField(sns, "field_snsId").toString())
                 info.setUserName(getObjectField(sns, "field_userName") as String)
                 info.setCreateTime((getObjectField(sns, "field_createTime") as Int).toLong())
 
@@ -203,11 +203,6 @@ class SnsUtils {
                     }
                 }
                 snsInfos.add(info)
-                /* info.setUrl(getObjectField(snsInfoTimeline, SnsInfoTimelineTextVar) as String)
-
-                 val snsContent = getObjectField(snsInfoTimeline, SnsInfoTimelineContentField)
-
-                 val snsMedias = getObjectField(snsContent, SnsInfoTimelineContentMediaListField) as List<*>*/
             }
             return snsInfos
         }
@@ -215,11 +210,12 @@ class SnsUtils {
         private fun parseComment(sns : Any, snsInfo:SnsInfo) {
 
             val commentBuf = getObjectField(sns, "field_attrBuf")
-            val comment = newInstance(findClass(SnsTimelineCommentProtobuf, Wechat.WECHAT_CLASSLOADER))
+            val comment = newInstance(findClass(SnsTimelineCommentLikeProtobuf, Wechat.WECHAT_CLASSLOADER))
 
             callMethod(comment, ProtobufParseFromFunc, commentBuf)
             KLog.e("+++++------>>>>>++++++", StrUtils.toJson(comment))
 
+            // 获取点赞的记录
             val likeRaw = getObjectField(comment, SnsTimelineLikeListField)
             if (likeRaw != null) {
                 val likeList = likeRaw as List<*>
@@ -227,13 +223,15 @@ class SnsUtils {
                 for (l in likeList) {
                     val like = SnsLike()
                     like.createTime = getLongField(l, SnsTimelineCommentTimeField)
-                    like.userName = getObjectField(l, SnsTimelineCommenterNameField)!! as String
+                    like.id = getIntField(l, SnsTimelineCommentIdField)
+                    like.nickName = getObjectField(l, SnsTimelineCommenterNameField)!! as String
                     like.wechatId = getObjectField(l, SnsTimelineCommenterField)!! as String
                     likes.add(like)
                 }
                 snsInfo.setLikes(likes)
             }
 
+            // 获取评论的记录
             val commentRaw = getObjectField(comment, SnsTimelineCommentListField)
             if (commentRaw != null) {
                 val commentList = commentRaw as List<*>
@@ -241,9 +239,11 @@ class SnsUtils {
                 for (l in commentList) {
                     val comment = SnsComment()
                     comment.createTime = getLongField(l, SnsTimelineCommentTimeField)
-                    comment.userName = getObjectField(l, SnsTimelineCommenterNameField)!! as String
+                    comment.nickName = getObjectField(l, SnsTimelineCommenterNameField)!! as String
                     comment.wechatId = getObjectField(l, SnsTimelineCommenterField)!! as String
                     comment.content = getObjectField(l, SnsTimelineCommentContentField)!! as String
+                    comment.id = getIntField(l, SnsTimelineCommentIdField)
+                    comment.replayId = getIntField(l, SnsTimelineCommentReplay2IdField)
                     val reply2 = getObjectField(l, SnsTimelineCommentReplay2Field)
                     if (reply2 != null) {
                         comment.reply2 = reply2 as String
@@ -254,7 +254,7 @@ class SnsUtils {
             }
         }
 
-        private fun getSnsInfo(snsId: Long): Any? {
+        fun getWechatRawSnsInfo(snsId: Long): Any? {
             return callMethod(getSnsInfoStorage(), SnsStorageGetBySnsId, snsId)
         }
 
@@ -335,56 +335,29 @@ class SnsUtils {
             if (media == null) {
                 return
             }
-            val snsScene = callStaticMethod(findClass("com.tencent.mm.storage.ax", Wechat.WECHAT_CLASSLOADER), "cpi")
+            val snsScene = callStaticMethod(findClass(SnsTimelineScene, Wechat.WECHAT_CLASSLOADER), SnsTimelineImageSceneGen)
             XposedHelpers.setIntField(snsScene, "time", snsInfo.getCreateTime().toInt())
-            callMethod(getDownloadManager(), "a", media, 2, null, snsScene)
+            callMethod(getDownloadManager(), SnsTimelineStartImageDownload, media, 2, null, snsScene)
 
         }
 
         private fun downloadSnsVideo(snsInfo: SnsInfo, index: Int) {
             insertSnsVideoPlaceholder(index)
             val videoPath = File(FileUtil.getVideoCacheDirectory(), "sight_${System.currentTimeMillis()}").absolutePath
-            val snsScene = callStaticMethod(findClass("com.tencent.mm.storage.ax", Wechat.WECHAT_CLASSLOADER), "cpn")
+            val snsScene = callStaticMethod(findClass(SnsTimelineScene, Wechat.WECHAT_CLASSLOADER), SnsTimelineVideoSceneGen)
             setIntField(snsScene, "time", snsInfo.getCreateTime().toInt())
-            val cdnInfo = callStaticMethod(findClass("com.tencent.mm.modelcdntran.f", Wechat.WECHAT_CLASSLOADER), "a",
+
+            val cdnInfo = callStaticMethod(findClass(SnsTimelineOnlineVideoService, Wechat.WECHAT_CLASSLOADER), SnsTimelineGenVideoCdnInfo,
                     snsScene, snsInfo.getMedias()!![0],
                     videoPath,
-                    //"/storage/emulated/0/tencent/MicroMsg/f8db84cda2ef6f6aa5adde1594c88c36/sns/1/1/sight_13020118609186984039",
                     "$VideoPlaceholderName-$index", 0)
             val fileKey = getObjectField(cdnInfo, "field_mediaId") as String
-            val cdnRequest = callStaticMethod(findClass("com.tencent.mm.modelvideo.o", Wechat.WECHAT_CLASSLOADER), "RM")
-            callMethod(cdnRequest, "a", cdnInfo, false)
+            val cdnRequest = callStaticMethod(findClass(SnsTimelineVideoCdnRequest, Wechat.WECHAT_CLASSLOADER), SnsTimelineVideoCdnRequestGen)
+            callMethod(cdnRequest, SnsTimelineVideoCdnRequestSend, cdnInfo, false)
             val path = waitForDownloadFinish(fileKey, videoPath)
             snsInfo.getMedias()!!.clear()
             snsInfo.addMedia(path)
         }
-
-        /*private fun downloadVideo2(snsInfo: SnsInfo) {
-            var url = snsInfo.getMedias()!![0]
-            val fileKey = callStaticMethod(findClass(Wechat.Hook.NetScene.ModelCdnUtil, Wechat.WECHAT_CLASSLOADER),
-                    Wechat.Hook.NetScene.ModelCdnUtilGetFileKeyFunc, "snsvideo", snsInfo.getCreateTime(), "sns", url)
-            val videoPath = File(FileUtil.getVideoCacheDirectory(), "sight_${System.currentTimeMillis()}").absolutePath
-
-            val request = XposedHelpers.newInstance(
-                    XposedHelpers.findClass(
-                            "com.tencent.mars.cdn.CdnLogic\$C2CDownloadRequest", Wechat.WECHAT_CLASSLOADER
-                    )
-            )
-
-            XposedHelpers.setObjectField(request, "fileKey", fileKey)
-            XposedHelpers.setObjectField(request, "savePath", videoPath)
-            XposedHelpers.setIntField(request, "fileType", 20202)
-            XposedHelpers.setIntField(request, "transforTimeoutSeconds", 600)
-            XposedHelpers.setIntField(request, "queueTimeoutSeconds", 18000)
-            //XposedHelpers.setObjectField(request, "ocIpList", map[".msg.img.\$cdnmidimgurl"])
-           // XposedHelpers.setObjectField(request, "referer", map[".msg.img.\$aeskey"])
-            XposedHelpers.setObjectField(request, "url", url)
-            XposedHelpers.setBooleanField(request, "isAutoStart", true)
-            XposedHelpers.setObjectField(request, "snsScene", "snssight")
-            XposedHelpers.callStaticMethod(
-                    XposedHelpers.findClass("com.tencent.mars.cdn.CdnLogic", Wechat.WECHAT_CLASSLOADER),
-                    "startSNSDownload", request, 0)
-        }*/
 
         private fun insertSnsVideoPlaceholder(index: Int) {
             HookUtils.executeRawQuery("select * from videoinfo2 where filename = '$VideoPlaceholderName-$index'").use { cursor ->
@@ -406,10 +379,6 @@ class SnsUtils {
             CdnLogicHooks.registerDownloadListeners(fileKey) { lock.put(videoPath) }
             return lock.poll(2, TimeUnit.MINUTES)
         }
-
-        /*fun getSnsCommentStorage(): Any {
-            return callStaticMethod(findClass(SnsCoreClass, Wechat.WECHAT_CLASSLOADER), SnsCoreGetSnsCommentStorage)
-        }*/
 
         //endregion
     }

@@ -1,9 +1,14 @@
 package com.cc.core.wechat.model.sns
 
+import com.google.gson.annotations.SerializedName
+
 open class SnsLike {
-    var userName: String? = null
+    @SerializedName("nickName")
+    var nickName: String? = null
+    @SerializedName("wechatId")
     var wechatId: String? = null
-    var createTime : Long = 0
-
-
+    @SerializedName("createTime")
+    var createTime: Long = 0
+    @SerializedName("id")
+    var id = 0
 }

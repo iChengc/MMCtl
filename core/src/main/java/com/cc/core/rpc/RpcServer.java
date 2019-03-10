@@ -2,7 +2,6 @@ package com.cc.core.rpc;
 
 import android.text.TextUtils;
 
-import com.cc.core.Constant;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
@@ -97,13 +96,13 @@ public class RpcServer {
                     } else {
                         result = Rpc.invoke(sb);
                     }
-                    out.write(StrUtils.toJson(result).getBytes(Charset.forName("utf-8")));
+                    out.write(StrUtils.toNumberJson(result).getBytes(Charset.forName("utf-8")));
                     out.flush();
                 } catch (Exception e) {
                     KLog.e("Failed to execute RPC", e);
                     if (out != null) {
                         try {
-                            out.write(StrUtils.toJson(ActionResult.Companion.failedResult("", "failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
+                            out.write(StrUtils.toNumberJson(ActionResult.Companion.failedResult("", "failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
                             out.flush();
                         } catch (Exception ex) {
                             ex.printStackTrace();

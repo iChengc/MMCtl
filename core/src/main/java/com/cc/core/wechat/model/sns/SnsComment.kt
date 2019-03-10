@@ -1,8 +1,12 @@
 package com.cc.core.wechat.model.sns
 
-import java.util.*
+import com.google.gson.annotations.SerializedName
 
 class SnsComment : SnsLike() {
-    var reply2 : String? = null
-    var content : String? = null
+    @SerializedName("reply2")
+    internal var reply2: String? = null
+    @SerializedName("content")
+    internal var content: String? = null
+    @SerializedName("replayId")
+    internal var replayId = 0
 }

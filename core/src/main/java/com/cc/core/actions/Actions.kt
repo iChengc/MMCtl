@@ -103,19 +103,19 @@ class Actions {
             val action = lookup(key)
             return if (isWechatAction(action)) {
                 try {
-                    StrUtils.toJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, id, *args))))
+                    StrUtils.toNumberJson(Rpc.call(RpcArgs.newMessage(RawAction.fromAction(action, id, *args))))
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    StrUtils.toJson(ActionResult.failedResult(id, e))
+                    StrUtils.toNumberJson(ActionResult.failedResult(id, e))
                 }
 
             } else {
-                StrUtils.toJson(action.execute(id, *args))
+                StrUtils.toNumberJson(action.execute(id, *args))
             }
         }
 
         fun receivedAction(rawAction: String): ActionResult? {
-            val raw = StrUtils.fromJson(rawAction, RawAction::class.java)
+            val raw = StrUtils.fromNumberJson(rawAction, RawAction::class.java)
             if (!checkSupported()) {
                 return ActionResult.failedResult(raw.actionId, "微信版本${WechatVersion}不支持，暂支持版本：${Arrays.toString(SupportVersion)}")
             }
