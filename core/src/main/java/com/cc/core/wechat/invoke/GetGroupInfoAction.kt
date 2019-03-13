@@ -34,11 +34,11 @@ class GetGroupInfoAction : Action {
     }
 
     private fun getGroupInfo(groupWechatId: String): GroupInfo? {
+        KLog.e("======>>>>> getGroupInfo:$groupWechatId" )
         val raw = XposedHelpers.callMethod(HookUtils.getGroupManager(), Wechat.Hook.Group.GetGroupInfoFunc, groupWechatId)
                 ?: return null
         callMethod(raw, GroupParseChatroomDataFunc)
 
-        KLog.e("======>>>>> getGroupInfo", StrUtils.toJson(raw))
         val groupInfo = StrUtils.fromJson<GroupInfo>(StrUtils.toJson(raw), GroupInfo::class.java)
                 ?: return null
 

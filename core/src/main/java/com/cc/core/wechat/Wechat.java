@@ -533,7 +533,7 @@ public class Wechat {
                 switch (version) {
                     case "6.7.2":
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
-                        CreateGroupWechatIdField = "bQz";
+                        CreateGroupWechatIdField = "rMh";
                         GetGroupInfoFunc = "ii";
                         GroupParseChatroomDataFunc = "cnZ";
                         ChatroomMembersField = "dYH";

@@ -25,6 +25,7 @@ class CreateGroupAction : Action {
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(119) { response->
             try {
+                KLog.e("+++>>>>>>", StrUtils.toJson(response))
                 val resp = XposedHelpers.getObjectField(response, Wechat.Hook.NetScene.NetSceneCmdResponseBodyKey)
                 var groupWechatId = XposedHelpers.getObjectField(resp, Wechat.Hook.Group.CreateGroupWechatIdField)
 

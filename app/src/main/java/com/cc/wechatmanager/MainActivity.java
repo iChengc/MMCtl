@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -63,15 +64,10 @@ public class MainActivity extends AppCompatActivity {
                         Utils.showToast(result);
                     }
                 });*/
-                updateRemark();
+                //updateRemark();
+                Intent i = new Intent(MainActivity.this, GroupActivity.class);
+                startActivity(i);
                 //addGroupMember();
-                /*Messenger.Companion.sendCommand(genCommand("createGroup", "xnhjcc", "wxid_smj74r8sn48o22", "wxid_ma5kf46xhg5d22", "denghongxing997955"), new Callback() {
-                    @Override
-                    public void onResult(String result) {
-
-                        KLog.e("---->>.", "createGroup Result:" + result);
-                    }
-                });*/
 
                 /*Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
                     @Override
@@ -137,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
 
                         KLog.e("---->>.", "addFriend Result:" + result);
                         ContactsResult contacts = StrUtils.fromJson(result, ContactsResult.class);
-                        final ContactsAdapter adapter = new ContactsAdapter(contacts.getData());
+                        final ContactsAdapter adapter = new ContactsAdapter();
+                        adapter.refeshData(contacts.getData());
 
                         contactListView.post(new Runnable() {
                             @Override
@@ -409,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    private Command genCommand(String key, Object... data) {
+    public static Command genCommand(String key, Object... data) {
         Command c = new Command();
         c.setKey(key);
         c.setId(UUID.randomUUID().toString());

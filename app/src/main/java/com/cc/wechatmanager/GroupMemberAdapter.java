@@ -9,67 +9,69 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
+import com.cc.core.wechat.model.group.GroupMember;
 import com.cc.core.wechat.model.user.Friend;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
-    List<Friend> contacts;
-    List<Friend> selectContacts = new LinkedList<>();
-    public ContactsAdapter() {
-        this.contacts = new ArrayList<>();
+public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.ViewHolder> {
+    List<GroupMember> members;
+    List<GroupMember> selectGroupMembers = new LinkedList<>();
+    public GroupMemberAdapter() {
+        this.members = new ArrayList<>();
     }
 
-    public Friend getItem(int position) {
-        if (contacts == null || position >= contacts.size()) {
+    public GroupMember getItem(int position) {
+        if (position >= members.size()) {
             return null;
         } else {
-            return contacts.get(position);
+            return members.get(position);
         }
     }
 
-    public void refeshData(List<Friend> data) {
-        contacts.clear();
+    public void refeshData(List<GroupMember> data) {
+        members.clear();
         if (data != null) {
-            contacts.addAll(data);
+            members.addAll(data);
         }
         notifyDataSetChanged();
     }
 
-    void onSelectContact(Friend friend, boolean isSelected) {
+    void onSelectContact(GroupMember friend, boolean isSelected) {
         if (friend == null) {
             return;
         }
 
-        if (isSelected && !selectContacts.contains(friend)) {
-            selectContacts.add(friend);
+        if (isSelected && !selectGroupMembers.contains(friend)) {
+            selectGroupMembers.add(friend);
         } else if (!isSelected) {
-            selectContacts.remove(friend);
+            selectGroupMembers.remove(friend);
         }
     }
 
-    public List<Friend> getSelectContacts() {
-        return selectContacts;
+    public List<GroupMember> getSelectContacts() {
+        return selectGroupMembers;
     }
 
     public void clearSelectContacts() {
-        selectContacts.clear();
+        selectGroupMembers.clear();
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ContactsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public GroupMemberAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
-        return new ContactsAdapter.ViewHolder(LayoutInflater.from(viewGroup.getContext())
+        return new GroupMemberAdapter.ViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_contact, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactsAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull GroupMemberAdapter.ViewHolder viewHolder, int position) {
         viewHolder.bindView(getItem(position));
     }
 
@@ -79,7 +81,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return contacts == null ? 0 : contacts.size();
+        return  members.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -98,17 +100,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             checkBox.setOnCheckedChangeListener(checkListener);
         }
 
-        void bindView(Friend friend) {
+        void bindView(GroupMember friend) {
             checkListener.friend = friend;
             Glide.with(avatar.getContext()).load(friend.getAvatar()).into(avatar);
-            nameView.setText(friend.getNickname());
+            nameView.setText(friend.getGroupNickName());
             wechatView.setText(friend.getWechatId());
-            checkBox.setChecked(selectContacts.contains(friend));
+            checkBox.setChecked(selectGroupMembers.contains(friend));
         }
     }
 
     private class CheckListener implements CompoundButton.OnCheckedChangeListener {
-        private Friend friend;
+        private GroupMember friend;
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             onSelectContact(friend, isChecked);

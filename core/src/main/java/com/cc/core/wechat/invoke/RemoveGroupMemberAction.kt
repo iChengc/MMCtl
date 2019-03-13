@@ -45,11 +45,14 @@ class RemoveGroupMemberAction : Action {
     private fun checkIsGroupOwner(groupWechatId: String): Boolean {
         val raw = XposedHelpers.callMethod(HookUtils.getGroupManager(), Wechat.Hook.Group.GetGroupInfoFunc, groupWechatId)
                 ?: return false
+        KLog.e("))(((())))))(((")
         XposedHelpers.callMethod(raw, Wechat.Hook.Group.GroupParseChatroomDataFunc)
 
+        KLog.e("))((((7777777))))))(((")
         val groupInfo = StrUtils.fromJson<GroupInfo>(StrUtils.toJson(raw), GroupInfo::class.java)
                 ?: return false
 
-        return groupWechatId.equals(groupInfo.getRoomOwner())
+        KLog.e("))((((7777777))))))(((${groupInfo.getRoomOwner()}")
+        return groupWechatId == groupInfo.getRoomOwner()
     }
 }
