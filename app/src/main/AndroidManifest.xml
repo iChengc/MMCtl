@@ -28,10 +28,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupActivity" />
-        <activity android:name=".ContactActivity" />
-        <activity android:name=".SnsActivity" />
-        <activity android:name=".MessageActivity" />
+        <activity
+            android:name=".GroupActivity"
+            android:label="群" />
+        <activity
+            android:name=".ContactActivity"
+            android:label="好友" />
+        <activity
+            android:name=".SnsActivity"
+            android:label="朋友圈" />
+        <activity
+            android:name=".MessageActivity"
+            android:label="消息" />
+        <activity android:name=".RemarkActivity"
+            android:label="备注"  />
     </application>
 
 </manifest>

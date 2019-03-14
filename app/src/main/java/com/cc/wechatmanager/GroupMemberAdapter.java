@@ -33,7 +33,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         }
     }
 
-    public void refeshData(List<GroupMember> data) {
+    public void refreshData(List<GroupMember> data) {
         members.clear();
         if (data != null) {
             members.addAll(data);
@@ -98,6 +98,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
             checkBox = itemView.findViewById(R.id.checkbox);
             checkListener = new CheckListener();
             checkBox.setOnCheckedChangeListener(checkListener);
+            checkBox.setVisibility(View.VISIBLE);
         }
 
         void bindView(GroupMember friend) {

@@ -17,7 +17,6 @@ import com.cc.core.utils.StrUtils;
 import com.cc.core.utils.Utils;
 import com.cc.core.wechat.model.group.GroupInfo;
 import com.cc.core.wechat.model.group.GroupMember;
-import com.cc.core.wechat.model.message.CardMessage;
 import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
@@ -26,7 +25,6 @@ import com.cc.wechatmanager.model.CommandResult;
 import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.CreateGroupResult;
 import com.cc.wechatmanager.model.GroupInfoResult;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,7 @@ public class GroupActivity extends AppCompatActivity {
 
         contactListView = findViewById(R.id.contactsList);
         contactListView.setLayoutManager(new LinearLayoutManager(this));
-        contactsAdapter = new ContactsAdapter();
+        contactsAdapter = new ContactsAdapter(true);
         contactListView.setAdapter(contactsAdapter);
 
         groupMemberListView = findViewById(R.id.groupMemberList);
@@ -83,7 +81,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (groupInfo == null) {
                     Utils.showToast("请先建群");
-                } else if (contactsAdapter.getSelectContacts().isEmpty()) {
+                } else if (groupMemberAdapter.getSelectContacts().isEmpty()) {
                     Utils.showToast("请先选择好友");
                 } else {
                     removeGroupMember(groupInfo.getGroupWechatId(), groupMemberAdapter.getSelectContacts());
@@ -267,7 +265,7 @@ public class GroupActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         final ContactsResult contacts = StrUtils.fromJson(result, ContactsResult.class);
-                        contactsAdapter.refeshData(contacts.getData());
+                        contactsAdapter.refreshData(contacts.getData());
                     }
                 });
             }
@@ -343,7 +341,7 @@ public class GroupActivity extends AppCompatActivity {
                     contactListView.post(new Runnable() {
                         @Override
                         public void run() {
-                            groupMemberAdapter.refeshData(groupInfo.getMemberList());
+                            groupMemberAdapter.refreshData(groupInfo.getMemberList());
                         }
                     });
                 }

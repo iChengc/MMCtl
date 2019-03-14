@@ -22,28 +22,20 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/wechatInfoLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/getWechatInfoBtn"
                     android:padding="8dp"
-                    android:text="获取登陆微信信息"
+                    android:text="个人信息"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/getWechatInfoBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="8dp"
-                    android:text="获取" />
 
                 <include
                     android:id="@+id/wechatInfo"
                     layout="@layout/item_contact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/getWechatInfoBtn" />
+                    android:layout_below="@+id/wechatInfoLabel" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -57,179 +49,37 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <TextView
+                <Button
+                    android:id="@+id/contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/getContactsBtn"
                     android:padding="8dp"
-                    android:text="获取通讯录"
+                    android:layout_margin="16dp"
+                    android:text="好友"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/getContactsBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="8dp"
-                    android:text="获取" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/contactsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/getContactsBtn" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/addFriendPhoneLabel"
+                    android:id="@+id/group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/contact"
+                    android:layout_margin="16dp"
                     android:padding="8dp"
-                    android:text="添加好友"
+                    android:text="群聊"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/addFriendPhoneInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/addFriendPhoneLabel"
-                    android:hint="手机号" />
-
-                <EditText
-                    android:id="@+id/addFriendSayHiInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/addFriendPhoneInput"
-                    android:hint="验证信息" />
 
                 <Button
-                    android:id="@+id/addFriendPhoneBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/addFriendSayHiInput"
-                    android:padding="8dp"
-                    android:text="添加好友" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/sendMsgLabel"
+                    android:id="@+id/sns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="发送消息"
+                    android:layout_below="@+id/group"
+                    android:layout_margin="16dp"
+                    android:text="发朋友圈"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/sendMsgToInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sendMsgLabel"
-                    android:hint="发送给（微信号）：" />
-
-                <EditText
-                    android:id="@+id/sendMsgContentInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sendMsgToInput"
-                    android:hint="消息内容/图片地址/视频地址" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sendMsgContentInput"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/sendTextMsgBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="8dp"
-                        android:text="发送文本" />
-
-                    <Button
-                        android:id="@+id/sendImageMsgBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/sendMsgContentInput"
-                        android:layout_centerHorizontal="true"
-                        android:layout_weight="1"
-                        android:paddingLeft="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="8dp"
-                        android:text="发送图片" />
-
-                    <Button
-                        android:id="@+id/sendVideoMsgBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/sendMsgContentInput"
-                        android:layout_toRightOf="@+id/sendImageMsgBtn"
-                        android:layout_weight="1"
-                        android:paddingLeft="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="8dp"
-                        android:text="发送视频" />
-                </LinearLayout>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/message_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="收到的消息"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/message_list"
-                    android:layout_width="match_parent"
-                    android:maxHeight="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/message_id" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
