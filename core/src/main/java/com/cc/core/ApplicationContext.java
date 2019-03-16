@@ -3,9 +3,11 @@ package com.cc.core;
 import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.FileUtil;
+import com.cc.core.utils.NTTimeUtils;
 import com.cc.core.wechat.Wechat;
 
 
@@ -21,7 +23,7 @@ public class ApplicationContext {
         // clear cache
         WorkerHandler.postOnWorkThread(new Runnable() {
             @Override public void run() {
-                FileUtil.clearCache();
+                clearCache();
             }
         });
     }
@@ -44,5 +46,15 @@ public class ApplicationContext {
         }
 
         return application;
+    }
+
+    private static void clearCache() {
+        if (application() == null) return;
+        SharedPreferences pre = application().getSharedPreferences("xposed_config", 0);
+        long lastClearDate = pre.getLong("last_clear_date", System.currentTimeMillis());
+        if (System.currentTimeMillis() - lastClearDate > NTTimeUtils.MILLIS_IN_DAY * 7) {
+            FileUtil.clearCache();
+            pre.edit().putLong("last_clear_date", System.currentTimeMillis()).apply();
+        }
     }
 }
