@@ -758,24 +758,24 @@ public class Wechat {
                         SnsStorage2Timeline = "cmi";
 
                         // TODO: 7.0.3 support
-                        SnsTimeLineContentField = "";
-                        SnsTimeLineDetailsField = "";
-                        SnsTimeLineShareTitleField = "";
-                        SnsTimeLineMediaField = "";
-                        SnsTimeLineMediaUrlField = "";
-                        SnsTimeLineShareUrlField = "";
+                        SnsTimeLineContentField = "wsu";
+                        SnsTimeLineDetailsField = "wsx";
+                        SnsTimeLineShareTitleField = "Title";
+                        SnsTimeLineMediaField = "vqu";
+                        SnsTimeLineMediaUrlField = "Url";
+                        SnsTimeLineShareUrlField = "Url";
 
                         SnsTimelineCommentLikeProtobuf = "com.tencent.mm.protocal.protobuf.bys";
                         SnsTimelineCommentProtobuf = "com.tencent.mm.protocal.protobuf.byg";
-                        SnsTimelineCommentListField = "";
-                        SnsTimelineLikeListField = "";
-                        SnsTimelineCommenterField = "";
-                        SnsTimelineCommenterNameField = "";
-                        SnsTimelineCommentTimeField = "";
-                        SnsTimelineCommentReplay2Field = "";
-                        SnsTimelineCommentContentField = "";
-                        SnsTimelineCommentIdField = "";
-                        SnsTimelineCommentReplay2IdField = "";
+                        SnsTimelineCommentListField = "wnp";
+                        SnsTimelineLikeListField = "wnm";
+                        SnsTimelineCommenterField = "uWD";
+                        SnsTimelineCommenterNameField = "vRo";
+                        SnsTimelineCommentTimeField = "ozl";
+                        SnsTimelineCommentReplay2Field = "wmV";
+                        SnsTimelineCommentContentField = "mzy";
+                        SnsTimelineCommentIdField = "wmB";
+                        SnsTimelineCommentReplay2IdField = "wmA";
 
                         SnsTimelineScene = "com.tencent.mm.storage.az";
                         SnsTimelineVideoSceneGen = "dnK";

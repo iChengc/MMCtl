@@ -12,7 +12,7 @@ public class TestHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
 
-        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "a",
+       /* XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "a",
                 String.class, int.class, String.class,
                 XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class,
                 new XC_MethodHook() {
@@ -40,7 +40,7 @@ public class TestHooks extends BaseXposedHook {
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         KLog.e("====+++ result +++==>>>>>>  ", StrUtils.toJson(param.getResult()));
                     }
-                });
+                });*/
 
 
         /*XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$b", classLoader, "a",
@@ -53,7 +53,7 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====+++ bbbbbb +++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
                     }
                 });*/
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.y", classLoader, long.class, new XC_MethodHook() {
+        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.y", classLoader, long.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 for (Object o : param.args) {
@@ -137,7 +137,7 @@ public class TestHooks extends BaseXposedHook {
                             KLog.e("=====>>>>>> cancel comment" , StrUtils.toJson(o));
                         }
                     }
-                });
+                });*/
         // String paramString1, String[] paramArrayOfString1, String paramString2, String[] paramArrayOfString2, String paramString3, String paramString4, String paramString5, int paramInt)
 
 

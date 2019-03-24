@@ -175,7 +175,7 @@ class SnsUtils {
                 parseComment(sns, info)
 
                 val snsInfoTimeline = callMethod(sns, SnsStorage2Timeline)
-                //KLog.e("+++++------>>>>>++++++", StrUtils.toJson(snsInfoTimeline))
+                // KLog.e("+++++------>>>>>++++++", StrUtils.toJson(snsInfoTimeline))
 
                 info.setSnsType(getObjectField(sns, "field_type") as Int)
                 val sourceType = getObjectField(sns, "field_sourceType") as Int
@@ -213,7 +213,7 @@ class SnsUtils {
             val comment = newInstance(findClass(SnsTimelineCommentLikeProtobuf, Wechat.WECHAT_CLASSLOADER))
 
             callMethod(comment, ProtobufParseFromFunc, commentBuf)
-            KLog.e("+++++------>>>>>++++++", StrUtils.toJson(comment))
+            // KLog.e("+++++------>>>>>++++++", StrUtils.toJson(comment))
 
             // 获取点赞的记录
             val likeRaw = getObjectField(comment, SnsTimelineLikeListField)
@@ -342,6 +342,7 @@ class SnsUtils {
         }
 
         private fun downloadSnsVideo(snsInfo: SnsInfo, index: Int) {
+            if (snsInfo.getMedias() == null) return
             insertSnsVideoPlaceholder(index)
             val videoPath = File(FileUtil.getVideoCacheDirectory(), "sight_${System.currentTimeMillis()}").absolutePath
             val snsScene = callStaticMethod(findClass(SnsTimelineScene, Wechat.WECHAT_CLASSLOADER), SnsTimelineVideoSceneGen)

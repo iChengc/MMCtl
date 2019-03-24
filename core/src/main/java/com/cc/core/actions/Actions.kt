@@ -123,7 +123,7 @@ class Actions {
             return try {
                 action.execute(raw.actionId, *raw.args!!.toTypedArray())
             } catch (t : Throwable) {
-                KLog.e("Actions", "Failed to execute action:${raw.actionName}, error:${t.localizedMessage}", t)
+                KLog.e("Actions", "Failed to execute action:${raw.actionName}, error[${t.javaClass.name}]:${t.localizedMessage}", t)
                 ActionResult.failedResult(raw.actionId, "Failed to execute action:${raw.actionName}, error:${t.localizedMessage}")
             }
         }

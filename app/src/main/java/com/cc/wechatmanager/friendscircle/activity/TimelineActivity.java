@@ -7,10 +7,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.cc.core.command.Callback;
 import com.cc.core.command.Command;
@@ -19,13 +18,10 @@ import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
 import com.cc.core.utils.Utils;
 import com.cc.wechatmanager.R;
-import com.cc.wechatmanager.friendscircle.entity.FriendEntity;
 import com.cc.wechatmanager.friendscircle.util.MyListView;
 import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.LoginUserResult;
 import com.cc.wechatmanager.model.SnsListResult;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

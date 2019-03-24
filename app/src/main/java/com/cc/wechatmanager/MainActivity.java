@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,10 +27,9 @@ import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
 import com.cc.core.wechat.model.message.WeChatMessage;
 import com.cc.core.wechat.model.sns.SnsInfo;
+import com.cc.wechatmanager.friendscircle.activity.TimelineActivity;
 import com.cc.wechatmanager.model.CommandResult;
 import com.cc.wechatmanager.model.ContactsResult;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
                         Utils.showToast(result);
                     }
                 });*/
-                likeSns(-5427454008293773151L);
+                Intent i = new Intent(MainActivity.this, TimelineActivity.class);
+                startActivity(i);
+                //likeSns(-5427454008293773151L);
                 /*Messenger.Companion.sendCommand(genCommand("uploadSns", genCardSnsInfo()), new Callback() {
                     @Override
                     public void onResult(String result) {
@@ -328,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void likeSns(long snsId) {
-        Messenger.Companion.sendCommand(genCommand("likeSns", snsId + ""), new Callback() {
+        Messenger.Companion.sendCommand(genCommand("snsLike", snsId + ""), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
                 KLog.e("---->>.", "Comment Result:" + result);
