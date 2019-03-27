@@ -1,9 +1,11 @@
 package com.cc.core.wechat
 
 import android.database.Cursor
+import android.text.TextUtils
 import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.ImageUtil
+import com.cc.core.utils.MD5
 import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.Wechat.Hook.ProtobufParseFromFunc
 import com.cc.core.wechat.Wechat.Hook.Sns.*
@@ -12,11 +14,13 @@ import com.cc.core.wechat.hook.tool.CdnLogicHooks
 import com.cc.core.wechat.model.sns.SnsComment
 import com.cc.core.wechat.model.sns.SnsInfo
 import com.cc.core.wechat.model.sns.SnsLike
+import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.*
 import java.io.File
 import java.util.*
 import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
@@ -207,7 +211,7 @@ class SnsUtils {
             return snsInfos
         }
 
-        private fun parseComment(sns : Any, snsInfo:SnsInfo) {
+        private fun parseComment(sns: Any, snsInfo: SnsInfo) {
 
             val commentBuf = getObjectField(sns, "field_attrBuf")
             val comment = newInstance(findClass(SnsTimelineCommentLikeProtobuf, Wechat.WECHAT_CLASSLOADER))
@@ -327,8 +331,12 @@ class SnsUtils {
             return snsInfo
         }
 
-        private fun getDownloadManager() : Any?{
+        private fun getDownloadManager(): Any? {
             return callStaticMethod(findClass(SnsCoreClass, Wechat.WECHAT_CLASSLOADER), SnsCoreGetDownloadManager)
+        }
+
+        fun getLazyImageLoader(): Any {
+            return callStaticMethod(findClass(SnsCoreClass, Wechat.WECHAT_CLASSLOADER), SnsCoreGetLazyImageLoaderFunc)
         }
 
         private fun downloadSnsImage(snsInfo: SnsInfo, media: Any?) {
@@ -338,7 +346,41 @@ class SnsUtils {
             val snsScene = callStaticMethod(findClass(SnsTimelineScene, Wechat.WECHAT_CLASSLOADER), SnsTimelineImageSceneGen)
             XposedHelpers.setIntField(snsScene, "time", snsInfo.getCreateTime().toInt())
             callMethod(getDownloadManager(), SnsTimelineStartImageDownload, media, 2, null, snsScene)
+            val imagePath = callMethod(getLazyImageLoader(), SnsGetImageLocalPathFunc, media) as String
 
+            waiteImageDownloadFinish(snsInfo, imagePath)
+        }
+
+        private fun waiteImageDownloadFinish(snsInfo: SnsInfo, imagePath: String) {
+            if (File(imagePath).exists()) {
+                imageDownloadFinished(snsInfo, imagePath)
+                return
+            }
+            val lock = ArrayBlockingQueue<String>(1)
+            XposedHelpers.findAndHookMethod(findClass(SnsDownloadManagerClass, Wechat.WECHAT_CLASSLOADER),
+                    "a",
+                    Int::class.javaPrimitiveType,
+                    findClass(SnsMediaClass, Wechat.WECHAT_CLASSLOADER),
+                    Int::class.javaPrimitiveType,
+                    Boolean::class.javaPrimitiveType,
+                    String::class.java,
+                    Int::class.javaPrimitiveType, object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    lock.offer("finish")
+                }
+            })
+
+            val result = lock.poll(2, TimeUnit.MINUTES)
+            if (!TextUtils.isEmpty(result)) {
+                imageDownloadFinished(snsInfo, imagePath)
+            }
+        }
+
+        private fun imageDownloadFinished(snsInfo: SnsInfo, imagePath: String) {
+            val localPath = File(FileUtil.getImageCacheDirectory(), MD5.getMD5(imagePath) + ".jpg").absolutePath
+            FileUtil.copyFile(File(imagePath), localPath)
+            KLog.e("====+++++ Image download finished +++++====", imagePath + " :: " + localPath)
+            snsInfo.addMedia(localPath)
         }
 
         private fun downloadSnsVideo(snsInfo: SnsInfo, index: Int) {

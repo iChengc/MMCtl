@@ -633,7 +633,11 @@ public class Wechat {
             public static String SnsTimelineVideoCdnRequestSend = "";
             public static String SnsTimelineImageSceneGen = "";
             // 在com.tencent.mm.plugin.sns.model.b中
+            public static String SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
             public static String SnsTimelineStartImageDownload = "";
+            public static String SnsGetImageLocalPathFunc = "";
+            public static String SnsCoreGetLazyImageLoaderFunc = "cjr" ;
+            public static String SnsMediaClass = "";
 
             public static String SnsTimelineCommentHelper = "";
             public static String SnsTimelineCommentSend = "";
@@ -710,7 +714,11 @@ public class Wechat {
                         SnsTimelineVideoCdnRequest = "com.tencent.mm.modelvideo.o";
                         SnsTimelineVideoCdnRequestGen = "RM";
 
+                        SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
                         SnsTimelineStartImageDownload = "a";
+                        SnsGetImageLocalPathFunc = "C";
+                        SnsCoreGetLazyImageLoaderFunc = "bzA";
+                        SnsMediaClass = "com.tencent.mm.protocal.c.auy";
 
                         SnsTimelineCommentHelper = "com.tencent.mm.plugin.sns.model.am$a";
                         SnsTimelineCommentSend = "b";
@@ -786,7 +794,11 @@ public class Wechat {
                         SnsTimelineVideoCdnRequest = "com.tencent.mm.modelvideo.o";
                         SnsTimelineVideoCdnRequestGen = "ajm";
 
+                        SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
                         SnsTimelineStartImageDownload = "a";
+                        SnsGetImageLocalPathFunc = "C";
+                        SnsCoreGetLazyImageLoaderFunc = "cjr" ;
+                        SnsMediaClass = "com.tencent.mm.protocal.protobuf.azc";
 
                         SnsTimelineCommentHelper = "com.tencent.mm.plugin.sns.model.am$a";
                         SnsTimelineCommentSend = "b";

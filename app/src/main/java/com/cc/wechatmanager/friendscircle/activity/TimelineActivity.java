@@ -232,6 +232,7 @@ public class TimelineActivity extends Activity {
         Messenger.Companion.sendCommand(genCommand("getSnsList", 0), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
+            	KLog.e("TimelineActivity", result);
                 final SnsListResult result1 = StrUtils.fromJson(result, SnsListResult.class);
                 if (result1 == null) {
                     return;

@@ -53,7 +53,7 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====+++ bbbbbb +++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]));
                     }
                 });*/
-        /*XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.y", classLoader, long.class, new XC_MethodHook() {
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.y", classLoader, long.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 for (Object o : param.args) {
@@ -101,7 +101,7 @@ public class TestHooks extends BaseXposedHook {
                         KLog.e("====++startSNSDownload++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]), new Exception());
                     }
                 });
-        XposedHelpers.findAndHookConstructor("com.tencent.mm.modelcdntran.i", classLoader, new XC_MethodHook() {
+        /* XposedHelpers.findAndHookConstructor("com.tencent.mm.modelcdntran.i", classLoader, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     KLog.e("=====>>>>>> " , new Exception("&&&&&********&&&&&&&"));
