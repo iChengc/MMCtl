@@ -42,7 +42,9 @@ class HookUtils {
 
         fun getLoginUserInfo(id: Int, defaultValue: Any): Any {
             val coreStorageObject = callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetConfigManagerFunc)
-
+            if (coreStorageObject == null) {
+                KLog.e("____++++++++_____")
+            }
             return callMethod(coreStorageObject, ConfigStorageGetFunc, id, defaultValue)
         }
 

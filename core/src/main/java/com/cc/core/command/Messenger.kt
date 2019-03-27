@@ -13,12 +13,11 @@ class Messenger {
             }
 
             WorkerHandler.postOnWorkThread {
-                val result: String
-                if (Utils.isEmpty(cmd.getArgs())) {
+                val result: String = if (Utils.isEmpty(cmd.getArgs())) {
 
-                    result = Actions.executeCommand(cmd.getId(), cmd.getKey())
+                    Actions.executeCommand(cmd.getId(), cmd.getKey())
                 } else {
-                    result = Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
+                    Actions.executeCommand(cmd.getId(), cmd.getKey(), *cmd.getArgs()!!.toTypedArray())
                 }
                 callback!!.onResult(result)
 

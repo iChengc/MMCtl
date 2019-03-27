@@ -3,6 +3,7 @@ package com.cc.core.wechat.invoke
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 import com.cc.core.wechat.HookUtils
+import com.cc.core.wechat.SnsUtils
 import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.hook.tool.CdnLogicHooks
 import com.cc.core.wechat.hook.tool.XLogHooks
@@ -24,7 +25,6 @@ class InitDelayHooksAction : Action {
             hooks.hook(Wechat.WECHAT_CLASSLOADER)
             Wechat.addHook(hooks)
         }
-
         return ActionResult.successResult(actionId)
     }
 

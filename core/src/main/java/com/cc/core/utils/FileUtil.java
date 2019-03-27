@@ -411,7 +411,11 @@ public class FileUtil {
         FileOutputStream output = null;
         try {
             File temp = new File(src);
-            outFile = new File(desPath + "/" + (temp.getName()).toString());
+            outFile = new File(desPath);
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            outFile = new File(outFile, temp.getName());
             input = new FileInputStream(temp);
 
             output = new FileOutputStream(outFile);

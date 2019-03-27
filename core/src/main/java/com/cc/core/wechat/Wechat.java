@@ -9,13 +9,11 @@ import com.cc.core.WorkerHandler;
 import com.cc.core.actions.Actions;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
-import com.cc.core.utils.Utils;
 import com.cc.core.wechat.invoke.InitDelayHooksAction;
 import com.cc.core.xposed.BaseXposedHook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
@@ -32,7 +30,7 @@ public class Wechat {
     public static String LoginWechatId;
     public static String WechatVersion;
 
-    public static String[] SupportVersion = new String[] {
+    public static String[] SupportVersion = new String[]{
             "6.7.2",
             "7.0.3"
     };
@@ -158,6 +156,8 @@ public class Wechat {
         public static String GetFileMd5Uitls = "";
         public static String GetFileMd5Func = "";
 
+        public static String ProtobufParseFromFunc = "";
+
         public static void init(String version) {
             Sqlite.init(version);
             Account.init(version);
@@ -195,6 +195,8 @@ public class Wechat {
 
                     GetFileMd5Uitls = "com.tencent.mm.vfs.e";
                     GetFileMd5Func = "arz";
+
+                    ProtobufParseFromFunc = "parseFrom";
                     break;
                 case "6.7.2":
                     KernelClass = "com.tencent.mm.kernel.g";
@@ -223,6 +225,8 @@ public class Wechat {
 
                     GetFileMd5Uitls = "com.tencent.mm.vfs.d";
                     GetFileMd5Func = "adF";
+
+                    ProtobufParseFromFunc = "aE";
                     break;
             }
         }
@@ -561,19 +565,6 @@ public class Wechat {
             }
         }
 
-        /**
-         * WU
-         * a 
-         * ar
-         * Co
-         * Cp
-         * Cr
-         * Cq
-         * f 
-         * de
-         * se
-         * df
-         */
         public static class Sns {
             public static String SnsUploadPackHelper = "";
             public static String LocationClass = "";
@@ -603,10 +594,60 @@ public class Wechat {
             public static String SnsSetShareUrlFun = "";
             public static String SnsSetShareUrl2Fun = "";
             public static String SnsSetShareTitleFun = "";
+
+            public static String SnsGetRequest = "";
+            public static String SnsCoreClass = "";
+            public static String SnsCoreGetInstance = "";
+            public static String SnsCoreStorageField = "";
+            public static String SnsCoreGetSnsCommentStorage = "";
+            public static String SnsCoreGetDownloadManager= "";
+            public static String SnsCoreGetSnsInfoStorage = "";
+            public static String SnsStorageGetBySnsId = "";
+            public static String SnsStorage2Timeline = "";
+
+            public static String SnsTimeLineContentField = "";
+            public static String SnsTimeLineDetailsField = "";
+            public static String SnsTimeLineShareTitleField = "";
+            public static String SnsTimeLineMediaField = "";
+            public static String SnsTimeLineMediaUrlField = "";
+            public static String SnsTimeLineShareUrlField = "";
+
+            public static String SnsTimelineCommentProtobuf = "";
+            public static String SnsTimelineCommentLikeProtobuf = "";
+            public static String SnsTimelineCommentListField = "";
+            public static String SnsTimelineLikeListField = "";
+            public static String SnsTimelineCommenterField = "";
+            public static String SnsTimelineCommenterNameField = "";
+            public static String SnsTimelineCommentTimeField = "";
+            public static String SnsTimelineCommentReplay2Field = "";
+            public static String SnsTimelineCommentContentField = "";
+            public static String SnsTimelineCommentIdField = "";
+            public static String SnsTimelineCommentReplay2IdField = "";
+
+            public static String SnsTimelineScene = "";
+            public static String SnsTimelineOnlineVideoService = "";
+            public static String SnsTimelineGenVideoCdnInfo = "";
+            public static String SnsTimelineVideoCdnRequest = "";
+            public static String SnsTimelineVideoCdnRequestGen = "";
+            public static String SnsTimelineVideoSceneGen = "";
+            public static String SnsTimelineVideoCdnRequestSend = "";
+            public static String SnsTimelineImageSceneGen = "";
+            // 在com.tencent.mm.plugin.sns.model.b中
+            public static String SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
+            public static String SnsTimelineStartImageDownload = "";
+            public static String SnsGetImageLocalPathFunc = "";
+            public static String SnsCoreGetLazyImageLoaderFunc = "cjr" ;
+            public static String SnsMediaClass = "";
+
+            public static String SnsTimelineCommentHelper = "";
+            public static String SnsTimelineCommentSend = "";
+            public static String SnsTimelineCancelLike= "";
+            public static String SnsTimelineCancelCommentRequest= "";
+
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
-                        SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        SnsUploadPackHelper = "com.tencent.mm.plugin.sns.model.ax";
                         LocationClass = "com.tencent.mm.protocal.c.atd";
                         PicWidget = "com.tencent.mm.plugin.sns.ui.ag";
                         UploadManager = "com.tencent.mm.plugin.sns.model.aw";
@@ -634,9 +675,58 @@ public class Wechat {
                         SnsSetShareUrlFun = "ML";
                         SnsSetShareUrl2Fun = "MM";
                         SnsSetShareTitleFun = "MN";
+
+                        SnsGetRequest = "com.tencent.mm.plugin.sns.model.y";
+                        SnsCoreClass = "com.tencent.mm.plugin.sns.model.af";
+                        SnsCoreGetInstance = "bzl";
+                        SnsCoreStorageField = "dBo";
+                        SnsCoreGetSnsCommentStorage = "bzI";
+                        SnsCoreGetSnsInfoStorage = "bzD";
+                        SnsStorageGetBySnsId = "fA";
+                        SnsStorage2Timeline = "bCc";
+                        SnsCoreGetDownloadManager = "bzy";
+
+                        SnsTimeLineContentField = "tcB";
+                        SnsTimeLineDetailsField = "tcE";
+                        SnsTimeLineShareTitleField = "bEj";
+                        SnsTimeLineMediaField = "sfN";
+                        SnsTimeLineMediaUrlField = "knb";
+                        SnsTimeLineShareUrlField = "knb";
+
+                        SnsTimelineCommentLikeProtobuf = "com.tencent.mm.protocal.c.brv";
+                        SnsTimelineCommentProtobuf = "com.tencent.mm.protocal.c.brk";
+                        SnsTimelineCommentListField = "sZl";
+                        SnsTimelineLikeListField = "sZi";
+                        SnsTimelineCommenterField = "rOt";
+                        SnsTimelineCommenterNameField = "sFQ";
+                        SnsTimelineCommentTimeField = "mkk";
+                        SnsTimelineCommentReplay2Field = "sYY";
+                        SnsTimelineCommentContentField = "kpS";
+                        SnsTimelineCommentIdField = "sYE";
+                        SnsTimelineCommentReplay2IdField = "sYD";
+
+                        SnsTimelineScene = "com.tencent.mm.storage.ax";
+                        SnsTimelineVideoSceneGen = "cpn";
+                        SnsTimelineImageSceneGen = "cpi";
+                        SnsTimelineOnlineVideoService = "com.tencent.mm.modelcdntran.f";
+                        SnsTimelineGenVideoCdnInfo = "a";
+                        SnsTimelineVideoCdnRequestSend = "a";
+                        SnsTimelineVideoCdnRequest = "com.tencent.mm.modelvideo.o";
+                        SnsTimelineVideoCdnRequestGen = "RM";
+
+                        SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
+                        SnsTimelineStartImageDownload = "a";
+                        SnsGetImageLocalPathFunc = "C";
+                        SnsCoreGetLazyImageLoaderFunc = "bzA";
+                        SnsMediaClass = "com.tencent.mm.protocal.c.auy";
+
+                        SnsTimelineCommentHelper = "com.tencent.mm.plugin.sns.model.am$a";
+                        SnsTimelineCommentSend = "b";
+                        SnsTimelineCancelLike = "Mz";
+                        SnsTimelineCancelCommentRequest= "com.tencent.mm.plugin.sns.model.r";
                         break;
                     case "7.0.3":
-                        SnsUploadPackHelper ="com.tencent.mm.plugin.sns.model.ax";
+                        SnsUploadPackHelper = "com.tencent.mm.plugin.sns.model.ax";
                         LocationClass = "com.tencent.mm.protocal.protobuf.axc";
                         PicWidget = "com.tencent.mm.plugin.sns.ui.ag";
                         UploadManager = "com.tencent.mm.plugin.sns.model.aw";
@@ -660,10 +750,60 @@ public class Wechat {
                         SnsSetShareThumbFun = "b";
                         SnsGetSessionIdUtil = "com.tencent.mm.model.u";
                         SnsGetSessionIdFun = "nx";
+                        SnsCoreGetDownloadManager = "cjp";
 
                         SnsSetShareUrlFun = "WX";
                         SnsSetShareUrl2Fun = "WY";
                         SnsSetShareTitleFun = "WZ";
+
+                        SnsGetRequest = "com.tencent.mm.plugin.sns.model.y";
+                        SnsCoreClass = "com.tencent.mm.plugin.sns.model.af";
+                        SnsCoreGetInstance = "cjb";
+                        SnsCoreStorageField = "evI";
+                        SnsCoreGetSnsCommentStorage = "cjz";
+                        SnsCoreGetSnsInfoStorage = "cju";
+                        SnsStorageGetBySnsId = "jW";
+                        SnsStorage2Timeline = "cmi";
+
+                        // TODO: 7.0.3 support
+                        SnsTimeLineContentField = "wsu";
+                        SnsTimeLineDetailsField = "wsx";
+                        SnsTimeLineShareTitleField = "Title";
+                        SnsTimeLineMediaField = "vqu";
+                        SnsTimeLineMediaUrlField = "Url";
+                        SnsTimeLineShareUrlField = "Url";
+
+                        SnsTimelineCommentLikeProtobuf = "com.tencent.mm.protocal.protobuf.bys";
+                        SnsTimelineCommentProtobuf = "com.tencent.mm.protocal.protobuf.byg";
+                        SnsTimelineCommentListField = "wnp";
+                        SnsTimelineLikeListField = "wnm";
+                        SnsTimelineCommenterField = "uWD";
+                        SnsTimelineCommenterNameField = "vRo";
+                        SnsTimelineCommentTimeField = "ozl";
+                        SnsTimelineCommentReplay2Field = "wmV";
+                        SnsTimelineCommentContentField = "mzy";
+                        SnsTimelineCommentIdField = "wmB";
+                        SnsTimelineCommentReplay2IdField = "wmA";
+
+                        SnsTimelineScene = "com.tencent.mm.storage.az";
+                        SnsTimelineVideoSceneGen = "dnK";
+                        SnsTimelineImageSceneGen = "dnF";
+                        SnsTimelineOnlineVideoService = "com.tencent.mm.ak.e";
+                        SnsTimelineGenVideoCdnInfo = "a";
+                        SnsTimelineVideoCdnRequestSend = "a";
+                        SnsTimelineVideoCdnRequest = "com.tencent.mm.modelvideo.o";
+                        SnsTimelineVideoCdnRequestGen = "ajm";
+
+                        SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
+                        SnsTimelineStartImageDownload = "a";
+                        SnsGetImageLocalPathFunc = "C";
+                        SnsCoreGetLazyImageLoaderFunc = "cjr" ;
+                        SnsMediaClass = "com.tencent.mm.protocal.protobuf.azc";
+
+                        SnsTimelineCommentHelper = "com.tencent.mm.plugin.sns.model.am$a";
+                        SnsTimelineCommentSend = "b";
+                        SnsTimelineCancelLike = "WL";
+                        SnsTimelineCancelCommentRequest= "com.tencent.mm.plugin.sns.model.r";
                         break;
                 }
 
