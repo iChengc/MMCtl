@@ -29,8 +29,11 @@ public class ApplicationContext {
     }
 
     public static boolean init(Application application) {
-        KLog.e(">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
         ApplicationContext.application = application;
+        if (application == null) {
+            return true;
+        }
+        KLog.e(">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
         WorkerHandler.getInstance().init();
         KLog.enableLog2Console(KLog.POLICY_MASK);
         if (application != null) {
@@ -42,7 +45,7 @@ public class ApplicationContext {
 
     public static Application application() {
         if (application == null) {
-            application = AndroidAppHelper.currentApplication();
+            // application = AndroidAppHelper.currentApplication();
         }
 
         return application;

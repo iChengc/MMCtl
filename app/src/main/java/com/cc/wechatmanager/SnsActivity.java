@@ -116,14 +116,14 @@ public class SnsActivity extends AppCompatActivity {
     private SnsInfo genTextSnsInfo(String desc) {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription(desc);
-        snsInfo.setSnsType(SnsInfo.Companion.getTEXT_TYPE());
+        snsInfo.setSnsType(SnsInfo.TEXT_TYPE);
         return snsInfo;
     }
 
     private SnsInfo genVideoSnsInfo(String desc, String video) {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription(desc);
-        snsInfo.setSnsType(SnsInfo.Companion.getVIDEO_TYPE());
+        snsInfo.setSnsType(SnsInfo.VIDEO_TYPE);
         ArrayList<String> medias = new ArrayList<>();
         medias.add(video);
         snsInfo.setMedias(medias);
@@ -133,7 +133,7 @@ public class SnsActivity extends AppCompatActivity {
     private SnsInfo genImageSnsInfo(String desc, ArrayList<String> medias) {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setDescription(desc);
-        snsInfo.setSnsType(SnsInfo.Companion.getIMAGE_TYPE());
+        snsInfo.setSnsType(SnsInfo.IMAGE_TYPE);
         snsInfo.setMedias(medias);
         return snsInfo;
     }
@@ -143,7 +143,7 @@ public class SnsActivity extends AppCompatActivity {
 
         snsInfo.setShareTitle(title);
         snsInfo.setDescription(desc);
-        snsInfo.setSnsType(SnsInfo.Companion.getCARD_TYPE());
+        snsInfo.setSnsType(SnsInfo.CARD_TYPE);
         snsInfo.setUrl(url);
         ArrayList<String> medias = new ArrayList<>();
         medias.add(thumb);
@@ -155,7 +155,7 @@ public class SnsActivity extends AppCompatActivity {
         SnsInfo snsInfo = new SnsInfo();
         snsInfo.setShareTitle("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
         snsInfo.setDescription("检察机关认定河北涞源反杀案为正当防卫 决定不起诉女生父母");
-        snsInfo.setSnsType(SnsInfo.Companion.getCARD_TYPE());
+        snsInfo.setSnsType(SnsInfo.CARD_TYPE);
         snsInfo.setUrl("https://mbd.baidu.com/newspage/data/landingsuper?context=%7B%22nid%22%3A%22news_9762242423668539096%22%7D&n_type=0&p_from=1");
         ArrayList<String> medias = new ArrayList<>();
         medias.add("http://b.hiphotos.baidu.com/image/pic/item/11385343fbf2b2114a65cd70c48065380cd78e41.jpg");

@@ -8,6 +8,9 @@ import com.cc.core.xposed.BaseXposedHook;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 
+import static com.cc.core.wechat.Wechat.Hook.Sns.SnsTimelineCommentProtobuf;
+import static com.cc.core.wechat.Wechat.Hook.Sns.SnsTimelineCommentSend;
+
 public class TestHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
@@ -99,6 +102,38 @@ public class TestHooks extends BaseXposedHook {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
                         KLog.e("====++startSNSDownload++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+// com.tencent.mm.plugin.sns.model.r
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.r", classLoader,
+                long.class, int.class, int.class, String.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++llllllllfffffffflllllll++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+        XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.o", classLoader,
+                XposedHelpers.findClass("com.tencent.mm.protocal.protobuf.byb", classLoader), String.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                        KLog.e("====++lllllllllllllll++==>>>>>>  ", param.args[1] + "  " + StrUtils.toJson(param.args[0]), new Exception());
+                    }
+                });
+
+
+        XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, SnsTimelineCommentSend,
+                XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class, String.class,
+                XposedHelpers.findClass(SnsTimelineCommentProtobuf, Wechat.WECHAT_CLASSLOADER), int.class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        for (Object o : param.args) {
+                            KLog.e("=====>>>>>> comment" , StrUtils.toJson(o));
+                        }
                     }
                 });
         /* XposedHelpers.findAndHookConstructor("com.tencent.mm.modelcdntran.i", classLoader, new XC_MethodHook() {

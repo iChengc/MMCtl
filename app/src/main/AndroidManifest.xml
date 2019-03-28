@@ -41,19 +41,7 @@
             android:label="消息" />
         <activity android:name=".RemarkActivity"
             android:label="备注"  />
-
-        <activity android:name=".friendscircle.activity.TimelineActivity" android:label="@string/app_name">
-
-        </activity>
-        <activity android:name=".friendscircle.activity.MyImageActivity">
-    </activity>
-        <activity android:name=".friendscircle.activity.DetailActivity" >
-    </activity><activity android:name=".friendscircle.imgfile.ImgFileListActivity">
-    </activity><activity android:name=".friendscircle.imgfile.ImgsActivity" >
-    </activity><activity android:name=".friendscircle.activity.ShowBitImgActivity" >
-    </activity><activity android:name="com.ionesmile.datasource.DataSouceActivity" android:label="@string/app_name">
-    </activity><activity android:name="com.ionesmile.datasource.LogoSelectActivity" >
-    </activity>
+        <activity android:name="com.kcrason.highperformancefriendscircle.TimelineActivity" />
     </application>
 
 </manifest>

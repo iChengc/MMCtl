@@ -1,11 +1,9 @@
 package com.cc.wechatmanager;
 
-import android.app.Application;
-
 import com.cc.core.ApplicationContext;
-import com.cc.core.log.KLog;
+import com.kcrason.highperformancefriendscircle.FriendsCircleApplication;
 
-public class MMApplication extends Application {
+public class MMApplication extends FriendsCircleApplication {
     @Override
     public void onCreate() {
         super.onCreate();

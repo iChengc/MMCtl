@@ -94,11 +94,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     break;
                 case WeChatMessageType.IMAGE:
                     contentView.setText("图片消息：");
-                    Glide.with(imgView.getContext()).load(new File(((ImageMessage) msg).getImageUrl())).placeholder(R.mipmap.ic_launcher_round).into(imgView);
+                    Glide.with(imgView.getContext()).load(new File(((ImageMessage) msg).getImageUrl())).into(imgView);
                     break;
                 case WeChatMessageType.EMOJI:
                     contentView.setText("emoji表情：");
-                    Glide.with(imgView.getContext()).load(((ImageMessage) msg).getImageUrl()).placeholder(R.mipmap.ic_launcher_round).into(imgView);
+                    Glide.with(imgView.getContext()).load(((ImageMessage) msg).getImageUrl()).into(imgView);
                     break;
                 case WeChatMessageType.VOIP:
                     contentView.setText("Voip消息：\n" + (((VoipMessage)msg).getVoipType() == 1 ? "语音通信" : "视频通信"));

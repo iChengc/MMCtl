@@ -80,6 +80,17 @@
                     android:text="发朋友圈"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/view_sns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_below="@+id/sns"
+                    android:layout_margin="16dp"
+                    android:text="朋友圈"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

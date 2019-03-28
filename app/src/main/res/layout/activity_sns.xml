@@ -1,56 +1,218 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/RelativeLayout"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#393a3f" >
+            android:layout_margin="8dp">
 
-            <ImageView
-                android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:paddingLeft="10dp"
-                android:src="@drawable/back" />
-            
-             <TextView
-                android:layout_width="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/addFriendPhoneLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="纯文本朋友圈"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/textSns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addFriendPhoneLabel"
+                    android:hint="说点什么..."
+                    android:padding="8dp" />
+
+                <Button
+                    android:id="@+id/textSnsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textSns"
+                    android:padding="8dp"
+                    android:text="发布" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:paddingLeft="60dp"
-                android:layout_alignParentLeft="true"
-                android:text="朋友圈"
-                android:textSize="18sp"
-                android:textColor="@android:color/white" />
-             
-             
-              <ImageView
-                android:layout_width="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/imageSnsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="图片+纯文本朋友圈"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/imageSnsDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageSnsLabel"
+                    android:hint="说点什么..."
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/imageContainer"
+                    android:layout_below="@+id/imageSnsDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/image1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="图片地址"
+                        android:padding="8dp" />
+                    <TextView
+                        android:id="@+id/addImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textSize="32sp"
+                        android:padding="12dp"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/imageSnsLabelBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageContainer"
+                    android:padding="8dp"
+                    android:text="发布" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:paddingRight="10dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/camal" />
-        </RelativeLayout>
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/cardSnsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="卡片朋友圈"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/cardSnsDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardSnsLabel"
+                    android:hint="说点什么..." />
+
+                <EditText
+                    android:id="@+id/cardSnsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardSnsDesc"
+                    android:hint="分享标题"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/cardSnsThumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardSnsTitle"
+                    android:hint="缩略图地址"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/cardSnsUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardSnsThumb"
+                    android:padding="8dp"
+                    android:hint="分享地址"
+                    android:maxHeight="300dp" />
+
+                <Button
+                    android:id="@+id/cardSnsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardSnsUrl"
+                    android:padding="8dp"
+                    android:text="发布" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/videoSnsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="视频本朋友圈"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/videoSns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videoSnsLabel"
+                    android:padding="8dp"
+                    android:hint="说点什么..." />
+
+                <EditText
+                    android:id="@+id/videoSnsUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videoSns"
+                    android:padding="8dp"
+                    android:hint="视频地址" />
+
+                <Button
+                    android:id="@+id/videoSnsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videoSnsUrl"
+                    android:padding="8dp"
+                    android:text="发布" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
-   <!-- <ListView
-        android:id="@+id/listview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />-->
-
-</LinearLayout>
+</ScrollView>

@@ -18,4 +18,6 @@
     </string-array>
 
     <string name="title_activity_logo_select">LogoSelectActivity</string>
+    <string name="translating">翻译中</string>
+    <string name="translated">已翻译</string>
 </resources>
