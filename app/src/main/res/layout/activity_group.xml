@@ -121,11 +121,21 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/sendGroupMsgTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text=""
+                    android:layout_below="@+id/sendGroupMsgLabel"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/sendGroupMsgInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/sendGroupMsgLabel"
+                    android:layout_below="@+id/sendGroupMsgTo"
                     android:hint="消息内容/图片地址/视频地址" />
 
                 <LinearLayout

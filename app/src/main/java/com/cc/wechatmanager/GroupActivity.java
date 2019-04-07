@@ -1,6 +1,10 @@
 package com.cc.wechatmanager;
 
-;import android.os.Bundle;
+;import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.core.command.Callback;
@@ -15,11 +20,13 @@ import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
 import com.cc.core.utils.Utils;
+import com.cc.core.wechat.MessageUtils;
 import com.cc.core.wechat.model.group.GroupInfo;
 import com.cc.core.wechat.model.group.GroupMember;
 import com.cc.core.wechat.model.message.ImageMessage;
 import com.cc.core.wechat.model.message.TextMessage;
 import com.cc.core.wechat.model.message.VideoMessage;
+import com.cc.core.wechat.model.message.WeChatMessage;
 import com.cc.core.wechat.model.user.Friend;
 import com.cc.wechatmanager.model.CommandResult;
 import com.cc.wechatmanager.model.ContactsResult;
@@ -31,15 +38,17 @@ import java.util.List;
 
 public class GroupActivity extends AppCompatActivity {
 
-    RecyclerView contactListView, groupMemberListView;
+    RecyclerView contactListView, groupMemberListView, messageListView;
     ContactsAdapter contactsAdapter;
     GroupMemberAdapter groupMemberAdapter;
     GroupInfo groupInfo;
+    MessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+        registerMessageBroadcast();
 
         contactListView = findViewById(R.id.contactsList);
         contactListView.setLayoutManager(new LinearLayoutManager(this));
@@ -50,6 +59,12 @@ public class GroupActivity extends AppCompatActivity {
         groupMemberListView.setLayoutManager(new LinearLayoutManager(this));
         groupMemberAdapter = new GroupMemberAdapter();
         groupMemberListView.setAdapter(groupMemberAdapter);
+
+
+        messageAdapter = new MessageAdapter();
+        messageListView = findViewById(R.id.message_list);
+        messageListView.setLayoutManager(new LinearLayoutManager(this));
+        messageListView.setAdapter(messageAdapter);
 
         findViewById(R.id.createGroupBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,12 +293,24 @@ public class GroupActivity extends AppCompatActivity {
             public void onResult(String result) {
                 final CreateGroupResult r = StrUtils.fromJson(result, CreateGroupResult.class);
                 if (r.isSuccess()) {
-                    contactListView.postDelayed(new Runnable() {
+                    TextMessage message = new TextMessage();
+                    message.setCreateTime(System.currentTimeMillis() / 1000);
+                    message.setTarget(r.getData());
+                    message.setContent("群建好了");
+
+                    Messenger.Companion.sendCommand(MainActivity.genCommand("sendMessage", message), new Callback() {
                         @Override
-                        public void run() {
-                            getGroupInfo(r.getData());
+                        public void onResult(String result) {
+                            contactListView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getGroupInfo(r.getData());
+                                }
+                            }, 1000);
                         }
-                    }, 1000);
+                    });
+
+                    Utils.showToast("创建成功，可直接在下面发送消息");
                 } else {
                     Utils.showToast("创建群失败");
                 }
@@ -291,6 +318,8 @@ public class GroupActivity extends AppCompatActivity {
                 contactListView.post(new Runnable() {
                     @Override
                     public void run() {
+                        TextView et = findViewById(R.id.sendGroupMsgTo);
+                        et.setText(r.getData());
                         contactsAdapter.clearSelectContacts();
                     }
                 });
@@ -347,5 +376,31 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    private void registerMessageBroadcast() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MessageUtils.RECEIVE_MESSAGE_BROADCAST);
+
+        registerReceiver(receiver, filter);
+    }
+
+    private MessageReceiver receiver = new MessageReceiver();
+
+    private class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String details = intent.getStringExtra("msg");
+            WeChatMessage msg = MessageUtils.Companion.messageDeserializeGson().fromJson(details, WeChatMessage.class);
+            if (TextUtils.equals(msg.getTarget(), groupInfo.getGroupWechatId())) {
+                messageAdapter.addMessage(msg);
+            }
+        }
     }
 }
