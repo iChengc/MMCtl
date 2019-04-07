@@ -9,13 +9,13 @@ import com.cc.core.WorkerHandler;
 import com.cc.core.actions.Actions;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
-import com.cc.core.utils.Utils;
+import com.cc.core.utils.FileUtil;
 import com.cc.core.wechat.invoke.InitDelayHooksAction;
 import com.cc.core.xposed.BaseXposedHook;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
@@ -64,11 +64,17 @@ public class Wechat {
             return;
         }
         XposedBridge.log(">>开始hook微信主进程");
+
         WECHAT_CLASSLOADER = lpparam.classLoader;
         Rpc.asRpcServer();
         if (!ApplicationContext.init(AndroidAppHelper.currentApplication())) {
+            // 删除热更新文件
+            removePatchFile();
             return;
         }
+        // 删除热更新文件
+        removePatchFile();
+
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
         }
@@ -81,7 +87,24 @@ public class Wechat {
         }, 10000);
     }
 
+    private static void removePatchFile() {
+        File patchFile = new File("/data/data/com.tencent.mm/tinker");
+        FileUtil.deleteDir(patchFile);
+
+        WorkerHandler.removeCallbacks(removePathFileRunnable);
+        // 每隔半小时尝试删除热更新文件
+        WorkerHandler.postOnWorkThreadDelayed(removePathFileRunnable, 1800000);
+    }
+
+    private static Runnable removePathFileRunnable = new Runnable() {
+        @Override
+        public void run() {
+            removePatchFile();
+        }
+    };
+
     public static boolean initEnvironment(String packageName) {
+
         try {
             Context context = ApplicationContext.application();
             if (context == null) {
