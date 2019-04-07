@@ -180,6 +180,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             @Override
             public void onResult(@Nullable String result) {
                 KLog.e("TimelineActivity", result);
+                mSwipeRefreshLayout.setRefreshing(false);
                 final SnsListResult result1 = StrUtils.fromJson(result, SnsListResult.class);
                 if (result1 == null) {
                     return;
@@ -190,7 +191,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     mSwipeRefreshLayout.post(new Runnable() {
                         @Override
                         public void run() {
-                            mSwipeRefreshLayout.setRefreshing(false);
                             mFriendCircleAdapter.setFriendCircleBeans(DataCenter.convert2FriendCircleBeans(result1.getData()));
                         }
                     });
