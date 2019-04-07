@@ -40,6 +40,8 @@ class AddFriendAction : Action {
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(106) { response ->
             val friendDetails = XposedHelpers.getObjectField(response, Wechat.Hook.NetScene.NetSceneCmdResponseBodyKey)
+            val antispamTicket = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.AntispamTicket)
+
             var wechatId: String
             if (XposedHelpers.getIntField(friendDetails, Wechat.Hook.AddFriend.RelationType) == 1) {
                 val wechatIdBody = XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.WechatId)
@@ -55,9 +57,9 @@ class AddFriendAction : Action {
             }
 
             if (TextUtils.isEmpty(wechatId)) {
-                lock.offer(wechatId)
+                lock.offer("")
             } else {
-                verifyUser(wechatId, XposedHelpers.getObjectField(friendDetails, Wechat.Hook.AddFriend.AntispamTicket) as String)
+                verifyUser(wechatId, if (antispamTicket == null) {""} else {antispamTicket as String})
             }
 
             /*if ("6.7.2".equals(Wechat.WechatVersion)) {
@@ -127,8 +129,10 @@ class AddFriendAction : Action {
                         String::class.java, Map::class.java, String::class.java, String::class.java)
                 .newInstance(1, args, args2, args3, "", "", null, "", "")*/
 
+        val isStranger = null == antispamTicket || "" == antispamTicket
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(137) {
+
             lock.offer(wechatId)
         }
     }
