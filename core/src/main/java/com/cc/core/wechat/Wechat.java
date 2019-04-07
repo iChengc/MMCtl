@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cc.core.ApplicationContext;
+import com.cc.core.WorkerHandler;
 import com.cc.core.log.KLog;
 import com.cc.core.rpc.Rpc;
+import com.cc.core.utils.FileUtil;
 import com.cc.core.xposed.BaseXposedHook;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,13 +56,30 @@ public class Wechat {
             return;
         }
         XposedBridge.log(">>开始hook微信主进程");
+
         WECHAT_CLASSLOADER = lpparam.classLoader;
         ApplicationContext.init(AndroidAppHelper.currentApplication());
+        // 删除热更新文件
+        removePatchFile();
+
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
         }
         Rpc.asRpcServer();
         XposedBridge.log("---->>结束hook微信主进程");
+    }
+
+    private static void removePatchFile() {
+        File patchFile = new File("/data/data/com.tencent.mm/tinker");
+        FileUtil.deleteDir(patchFile);
+
+        // 每隔半小时尝试删除热更新文件
+        WorkerHandler.postOnWorkThreadDelayed(new Runnable() {
+            @Override
+            public void run() {
+                removePatchFile();
+            }
+        }, 1800000);
     }
 
     public static void initEnvironment(String packageName) {
