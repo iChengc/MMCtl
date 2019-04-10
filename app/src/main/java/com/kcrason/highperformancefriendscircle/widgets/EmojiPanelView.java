@@ -41,9 +41,14 @@ import com.kcrason.highperformancefriendscircle.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.observers.ConsumerSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListener {
@@ -230,8 +235,8 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
 
 
     @SuppressLint("CheckResult")
-    private void asyncInitEmojiPanelData(List<EmojiDataSource> emojiDataSources) {
-       /* Single.create((SingleOnSubscribe<List<EmojiPanelBean>>) emitter ->
+    private void asyncInitEmojiPanelData(final List<EmojiDataSource> emojiDataSources) {
+        /*Single.create((SingleOnSubscribe<List<EmojiPanelBean>>) emitter ->
                 emitter.onSuccess(generateEmojiPanelBeans(emojiDataSources)))
                 .subscribeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe((emojiPanelBeans, throwable) -> {
@@ -240,6 +245,43 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
                     mEmojiIndicators.setViewPager(mViewPager).setEmojiPanelView(this).setEmojiPanelBeans(emojiPanelBeans).build();
                     isInitComplete = true;
                 });*/
+        Single.create(new SingleOnSubscribe<List<EmojiPanelBean>>() {
+            @Override
+            public void subscribe(SingleEmitter<List<EmojiPanelBean>> emitter) throws Exception {
+                emitter.onSuccess(generateEmojiPanelBeans(emojiDataSources));
+            }
+        }).subscribeOn(Schedulers.io());
+        Single.create(new SingleOnSubscribe<List<EmojiPanelBean>>() {
+            @Override
+            public void subscribe(SingleEmitter<List<EmojiPanelBean>> emitter) throws Exception {
+                emitter.onSuccess(generateEmojiPanelBeans(emojiDataSources));
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+        Single.create(new SingleOnSubscribe<List<EmojiPanelBean>>() {
+            @Override
+            public void subscribe(SingleEmitter<List<EmojiPanelBean>> emitter) throws Exception {
+                emitter.onSuccess(generateEmojiPanelBeans(emojiDataSources));
+            }
+        }).subscribe(new SingleObserver<List<EmojiPanelBean>>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(List<EmojiPanelBean> emojiPanelBeans) {
+                mEmojiPanelPagerAdapter = new EmojiPanelPagerAdapter(emojiPanelBeans);
+                mViewPager.setAdapter(mEmojiPanelPagerAdapter);
+                mEmojiIndicators.setViewPager(mViewPager).setEmojiPanelView(EmojiPanelView.this).setEmojiPanelBeans(emojiPanelBeans).build();
+                isInitComplete = true;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 
     public int getEmojiTypeSize() {

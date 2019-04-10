@@ -3,6 +3,7 @@ package com.kcrason.highperformancefriendscircle.others;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.cc.core.wechat.Wechat;
 import com.cc.core.wechat.model.sns.SnsComment;
 import com.cc.core.wechat.model.sns.SnsInfo;
 import com.cc.core.wechat.model.sns.SnsLike;
@@ -110,6 +111,7 @@ public class DataCenter {
         List<FriendCircleBean> friendCircleBeans = new ArrayList<>();
         for (SnsInfo sns : snsInfos) {
             FriendCircleBean friendCircleBean = new FriendCircleBean();
+            friendCircleBean.setSnsId(sns.getSnsId());
             friendCircleBean.setContent(sns.getDescription());
             UserBean userBean = new UserBean();
             userBean.setUserName(sns.getUserName());
@@ -130,10 +132,7 @@ public class DataCenter {
             friendCircleBean.setCommentBeans(commentBeans);
 
             if (sns.getMedias() != null) {
-                List<String> images = new ArrayList<>();
-                for (String s : sns.getMedias()) {
-                    images.add("file://" + s);
-                }
+                List<String> images = new ArrayList<>(sns.getMedias());
                 friendCircleBean.setImageUrls(images);
             }
 
@@ -149,8 +148,10 @@ public class DataCenter {
             }
 
             if (!TextUtils.isEmpty(sns.getShareTitle())) {
-                friendCircleBean.setContent("链接分享：" + sns.getShareTitle() + "[" + sns.getUrl() + "]");
+                friendCircleBean.setCardTitle(sns.getShareTitle());
             }
+
+            friendCircleBean.setUrl(sns.getUrl());
 
             OtherInfoBean otherInfoBean = new OtherInfoBean();
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
@@ -158,6 +159,9 @@ public class DataCenter {
             friendCircleBean.setOtherInfoBean(otherInfoBean);
 
             friendCircleBeans.add(friendCircleBean);
+            friendCircleBean.setViewType(sns.getSnsType() == SnsInfo.CARD_TYPE ? Constants.FriendCircleType.FRIEND_CIRCLE_TYPE_WORD_AND_URL
+            : (sns.getSnsType() == SnsInfo.IMAGE_TYPE || sns.getSnsType() == SnsInfo.VIDEO_TYPE) ? Constants.FriendCircleType.FRIEND_CIRCLE_TYPE_WORD_AND_IMAGES
+            : Constants.FriendCircleType.FRIEND_CIRCLE_TYPE_ONLY_WORD);
         }
         return friendCircleBeans;
     }

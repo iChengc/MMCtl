@@ -5,9 +5,11 @@ import android.text.SpannableStringBuilder;
 import com.kcrason.highperformancefriendscircle.utils.Utils;
 import com.kcrason.highperformancefriendscircle.enums.TranslationState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendCircleBean {
+    private String snsId;
 
     private int viewType;
 
@@ -26,6 +28,12 @@ public class FriendCircleBean {
     private boolean isShowPraise;
 
     private boolean isExpanded;
+
+    private String url;
+
+    private String thumnUrl;
+
+    private String cardTitle;
 
     public boolean isExpanded() {
         return isExpanded;
@@ -128,6 +136,40 @@ public class FriendCircleBean {
         this.praiseBeans = praiseBeans;
     }
 
+    public void praised(String wechatId, String userName) {
+        if (praiseBeans == null) {
+            praiseBeans=new ArrayList<>();
+        }
+
+        PraiseBean p = new PraiseBean();
+        p.setPraiseUserId(wechatId);
+        p.setPraiseUserName(userName);
+        praiseBeans.add(p);
+    }
+
+    public void unpraised(String wechatId) {
+        if (praiseBeans == null) {
+            return;
+        }
+
+        for (PraiseBean p : praiseBeans) {
+            if (wechatId.equals(p.getPraiseUserId())) {
+                praiseBeans.remove(p);
+                return;
+            }
+        }
+    }
+
+    public boolean isLike(String wechatId) {
+        if (praiseBeans == null) return false;
+        for (PraiseBean p : praiseBeans) {
+            if (p.getPraiseUserId().equals(wechatId)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public List<String> getImageUrls() {
         return imageUrls;
@@ -148,5 +190,35 @@ public class FriendCircleBean {
 
     private SpannableStringBuilder praiseSpan;
 
+    public String getUrl() {
+        return url;
+    }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getThumnUrl() {
+        return thumnUrl;
+    }
+
+    public void setThumnUrl(String thumnUrl) {
+        this.thumnUrl = thumnUrl;
+    }
+
+    public String getCardTitle() {
+        return cardTitle;
+    }
+
+    public void setCardTitle(String cardTitle) {
+        this.cardTitle = cardTitle;
+    }
+
+    public String getSnsId() {
+        return snsId;
+    }
+
+    public void setSnsId(String snsId) {
+        this.snsId = snsId;
+    }
 }

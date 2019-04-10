@@ -2,6 +2,7 @@ package com.cc.core.wechat
 
 import android.database.Cursor
 import android.text.TextUtils
+import android.util.Log
 import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
 import com.cc.core.utils.ImageUtil
@@ -27,7 +28,7 @@ import kotlin.collections.ArrayList
 class SnsUtils {
     companion object {
         private const val VideoPlaceholderName = "SNS_sns_table_"
-        private const val Query_SnsId_Sql = "SELECT snsId FROM SnsInfo WHERE snsId > %d AND snsId != 0 ORDER BY createTime DESC ,snsId DESC;"
+        private const val Query_SnsId_Sql = "SELECT snsId FROM SnsInfo WHERE snsId < %s AND snsId != 0 ORDER BY createTime DESC ,snsId DESC LIMIT 10;"
 
         private const val Query_Latest_SnsId_Sql = "SELECT snsId FROM SnsInfo WHERE snsId != 0 ORDER BY createTime DESC ,snsId DESC LIMIT 10;"
 
@@ -156,7 +157,7 @@ class SnsUtils {
             executeSnsDbRawQuery(if (lastSnsId == 0L) {
                 Query_Latest_SnsId_Sql
             } else {
-                String.format(Query_SnsId_Sql, lastSnsId)
+                String.format(Query_SnsId_Sql, lastSnsId.toString())
             }).use { cursor ->
                 while (cursor.moveToNext()) {
                     snsIds.add(cursor.getLong(0))
@@ -379,7 +380,7 @@ class SnsUtils {
         private fun imageDownloadFinished(snsInfo: SnsInfo, imagePath: String) {
             val localPath = File(FileUtil.getImageCacheDirectory(), MD5.getMD5(imagePath) + ".jpg").absolutePath
             FileUtil.copyFile(File(imagePath), localPath)
-            KLog.e("====+++++ Image download finished +++++====", imagePath + " :: " + localPath)
+            //KLog.e("====+++++ Image download finished +++++====", imagePath + " :: " + localPath)
             snsInfo.addMedia(localPath)
         }
 

@@ -16,10 +16,14 @@ import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.model.user.Friend;
+import com.cc.core.wechat.model.user.User;
 import com.cc.wechatmanager.R;
 import com.cc.wechatmanager.model.ContactsResult;
+import com.cc.wechatmanager.model.LoginUserResult;
 import com.cc.wechatmanager.model.SnsListResult;
 import com.kcrason.highperformancefriendscircle.adapters.FriendCircleAdapter;
+import com.kcrason.highperformancefriendscircle.beans.FriendCircleBean;
 import com.kcrason.highperformancefriendscircle.interfaces.OnPraiseOrCommentClickListener;
 import com.kcrason.highperformancefriendscircle.interfaces.OnStartSwipeRefreshListener;
 import com.kcrason.highperformancefriendscircle.others.DataCenter;
@@ -63,6 +67,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (isDestroyed()) {
+                    return;
+                }
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     Glide.with(TimelineActivity.this).resumeRequests();
                 } else {
@@ -94,8 +101,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
 
     private void asyncMakeData() {
+        getLoginUser();
         getContactList();
-        getSnsList();
+        getSnsList("0");
         /*mDisposable = Single.create(new SingleOnSubscribe<List<FriendCircleBean>>() {
             @Override
             public void subscribe(SingleEmitter<List<FriendCircleBean>> emitter) throws Exception {
@@ -141,6 +149,19 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onPraiseClick(int position) {
+
+        FriendCircleBean bean = mFriendCircleAdapter.getItem(position);
+        if (bean == null || loginUser == null) {
+            return;
+        }
+        boolean isLike = bean.isLike(loginUser.getWechatId());
+        if (isLike) {
+            bean.unpraised(loginUser.getWechatId());
+        } else {
+            bean.praised(loginUser.getWechatId(), loginUser.getNickname());
+        }
+        likeSns(bean, !isLike);
+        mFriendCircleAdapter.notifyDataSetChanged();
         Toast.makeText(this, "You Click Praise!", Toast.LENGTH_SHORT).show();
     }
 
@@ -168,9 +189,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Glide.with(context).asBitmap().load(url).into(new GlideSimpleTarget(lc));
     }
 
-    private void getSnsList() {
+    private void getSnsList(final String id) {
 
-        Messenger.Companion.sendCommand(genCommand("getSnsList", 0), new Callback() {
+        Messenger.Companion.sendCommand(genCommand("getSnsList", id), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
                 KLog.e("TimelineActivity", result);
@@ -187,12 +208,27 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 if (!result1.isSuccess()) {
                     KLog.e("can not get sns list, " + result1.getMessage());
                 } else {
+                    if (result1.getData() == null || result1.getData().isEmpty()) {
+                        return;
+                    }
                     mSwipeRefreshLayout.post(new Runnable() {
                         @Override
                         public void run() {
-                            mFriendCircleAdapter.setFriendCircleBeans(DataCenter.convert2FriendCircleBeans(result1.getData()));
+                            if ("0".equals(id)) {
+                                mFriendCircleAdapter.setFriendCircleBeans(DataCenter.convert2FriendCircleBeans(result1.getData()));
+                            } else {
+                                mFriendCircleAdapter.addFriendCircleBeans(DataCenter.convert2FriendCircleBeans(result1.getData()));
+                            }
                         }
                     });
+
+                    mSwipeRefreshLayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String id = result1.getData().get(result1.getData().size() - 1).getSnsId();
+                            getSnsList(id);
+                        }
+                    }, 2000);
                 }
             }
         });
@@ -239,20 +275,58 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             public void onResult(@Nullable String result) {
                 final ContactsResult result1 = StrUtils.fromJson(result, ContactsResult.class);
                 if (result1 == null) {
+                    KLog.e("can not get contact list, " + result1.getMessage());
                     return;
                 }
+                KLog.e("get contact result:" + result);
                 if (!result1.isSuccess()) {
                     KLog.e("can not get contact list, " + result1.getMessage());
                 } else {
                     mSwipeRefreshLayout.post(new Runnable() {
                         @Override
                         public void run() {
-
-                            mFriendCircleAdapter.setFrinds(result1.getData());
+                            List<Friend> contact = result1.getData();
+                            mFriendCircleAdapter.setFrinds(contact);
                         }
                     });
                 }
             }
         });
     }
+
+    private void getLoginUser() {
+        Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+                final LoginUserResult result1 = StrUtils.fromJson(result, LoginUserResult.class);
+                if (result1 == null) {
+                    KLog.e("can not get contact list, " + result1.getMessage());
+                    return;
+                }
+                KLog.e("get contact result:" + result);
+                if (!result1.isSuccess()) {
+                    KLog.e("can not get contact list, " + result1.getMessage());
+                } else {
+                    mSwipeRefreshLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loginUser = result1.getData();
+                            mFriendCircleAdapter.setLoginUser(result1.getData());
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void likeSns(FriendCircleBean sns, final boolean isLike) {
+        Messenger.Companion.sendCommand(genCommand(isLike ? "snsLike" : "snsLikeCancel", sns.getSnsId()), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+
+            }
+        });
+    }
+
+    private User loginUser;
 }

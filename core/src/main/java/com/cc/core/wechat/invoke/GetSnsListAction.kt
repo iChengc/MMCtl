@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 class GetSnsListAction : Action {
     private val lock = ArrayBlockingQueue<String>(1)
     override fun execute(actionId: String, vararg args: Any?): ActionResult? {
-        var snsId = if (args.isEmpty()){0L} else {(args[0] as Double).toLong()}
+        var snsId = if (args.isEmpty()){0L} else {(args[0] as String).toLong()}
         val request = newInstance(findClass(SnsGetRequest, Wechat.WECHAT_CLASSLOADER), snsId)
         HookUtils.enqueueNetScene(request, 0)
         RemoteRespHooks.registerOnResponseListener(211){response ->
