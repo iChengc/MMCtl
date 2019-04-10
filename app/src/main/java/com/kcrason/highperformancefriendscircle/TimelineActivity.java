@@ -18,10 +18,8 @@ import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
 import com.cc.wechatmanager.R;
 import com.cc.wechatmanager.model.ContactsResult;
-import com.cc.wechatmanager.model.LoginUserResult;
 import com.cc.wechatmanager.model.SnsListResult;
 import com.kcrason.highperformancefriendscircle.adapters.FriendCircleAdapter;
-import com.kcrason.highperformancefriendscircle.beans.FriendCircleBean;
 import com.kcrason.highperformancefriendscircle.interfaces.OnPraiseOrCommentClickListener;
 import com.kcrason.highperformancefriendscircle.interfaces.OnStartSwipeRefreshListener;
 import com.kcrason.highperformancefriendscircle.others.DataCenter;
@@ -36,13 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.ielse.view.imagewatcher.ImageWatcher;
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class TimelineActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         OnPraiseOrCommentClickListener, ImageWatcher.OnPictureLongPressListener, ImageWatcher.Loader {
@@ -52,6 +44,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     private FriendCircleAdapter mFriendCircleAdapter;
     private ImageWatcher mImageWatcher;
     private EmojiPanelView mEmojiPanelView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +53,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         mEmojiPanelView = findViewById(R.id.emoji_panel_view);
         mEmojiPanelView.initEmojiPanel(DataCenter.emojiDataSources);
         mSwipeRefreshLayout = findViewById(R.id.swpie_refresh_layout);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
 //        findViewById(R.id.img_back).setOnClickListener(v ->
@@ -142,6 +135,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
+        recyclerView.requestLayout();
         asyncMakeData();
     }
 
@@ -180,7 +174,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             @Override
             public void onResult(@Nullable String result) {
                 KLog.e("TimelineActivity", result);
-                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
                 final SnsListResult result1 = StrUtils.fromJson(result, SnsListResult.class);
                 if (result1 == null) {
                     return;

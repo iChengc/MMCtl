@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,6 +117,7 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
 
     @Override
     public void onBindViewHolder(BaseFriendCircleViewHolder holder, int position) {
+        Log.e("----->>>>>>", "onBindViewHolder");
         if (holder != null && mFriendCircleBeans != null && position < mFriendCircleBeans.size()) {
             final FriendCircleBean friendCircleBean = mFriendCircleBeans.get(position);
             makeUserBaseData(holder, friendCircleBean, position);

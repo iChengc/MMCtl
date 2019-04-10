@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.cc.core.log.KLog;
 import com.cc.core.utils.FileUtil;
@@ -30,10 +31,7 @@ public class ApplicationContext {
 
     public static boolean init(Application application) {
         ApplicationContext.application = application;
-        if (application == null) {
-            return true;
-        }
-        KLog.e(">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
+        Log.e("ApplicationContext", ">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
         WorkerHandler.getInstance().init();
         KLog.enableLog2Console(KLog.POLICY_MASK);
         if (application != null) {
@@ -45,7 +43,7 @@ public class ApplicationContext {
 
     public static Application application() {
         if (application == null) {
-            // application = AndroidAppHelper.currentApplication();
+            application = AndroidAppHelper.currentApplication();
         }
 
         return application;

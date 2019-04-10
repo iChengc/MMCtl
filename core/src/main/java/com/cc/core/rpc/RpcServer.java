@@ -1,6 +1,7 @@
 package com.cc.core.rpc;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.cc.core.actions.ActionResult;
 import com.cc.core.log.KLog;
@@ -38,18 +39,20 @@ public class RpcServer {
         do {
             try {
                 if (server != null) {
-                    server.close();
+                    stop();
                 }
-                KLog.e("RpcServer", ">>>> Start rpc server");
+                Log.e("RpcServer", ">>>> Start rpc server");
                 InetAddress address = InetAddress.getLoopbackAddress();
                 server = new ServerSocket(port, 50, address);
                 while (!disconnect) {
+                    Log.e("RpcServer", "Rpc server started");
                     Socket client = server.accept();
                     executor.submit(responseClient(client));
                 }
             } catch (java.net.BindException e) {
+                KLog.e("RpcServer", "Start server socket error! cannot bind to port:" + port, e);
                 break;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 KLog.e("RpcServer", "Start server socket error! Try to reconnect", e);
             }

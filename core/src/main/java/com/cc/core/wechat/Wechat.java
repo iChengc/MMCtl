@@ -66,7 +66,6 @@ public class Wechat {
         XposedBridge.log(">>开始hook微信主进程");
 
         WECHAT_CLASSLOADER = lpparam.classLoader;
-        Rpc.asRpcServer();
         if (!ApplicationContext.init(AndroidAppHelper.currentApplication())) {
             // 删除热更新文件
             removePatchFile();
@@ -74,6 +73,7 @@ public class Wechat {
         }
         // 删除热更新文件
         removePatchFile();
+        Rpc.asRpcServer();
 
         for (BaseXposedHook h : hooks) {
             h.hook(lpparam.classLoader);
