@@ -304,42 +304,6 @@ public class AvoidRiskHooks extends BaseXposedHook {
         });
     }
 
-    private void hideLibs(ClassLoader classLoader) {
-        // AccessibilityClickCount, 这个是在某些特定条件下才会启用，从目前的观察结果看Nexus 5上面似乎始终不会启用，但依然hook住以防万一
-        // 从已经看到的代码猜测这个功能是跟反赌博相关
-        /*findAndHookMethod(Wechat.Hook.AEDHLPClass,
-                classLoader,
-                Wechat.Hook.AEDHLPGetAccessibilityClickCountFunc,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                        param.setResult(0);
-                    }
-                });
-
-        // Process loaded files
-        findAndHookMethod(Wechat.Hook.NormsgSourceImplClass,
-               classLoader,
-                Wechat.Hook.NormsgSourceImplGetEnabledAccessibilityServicesFunc,
-                boolean.class,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                        String originResult = (String) param.getResult();
-                        if (!TextUtils.isEmpty(originResult)) {
-                            List<String> newResultList = new ArrayList<>();
-                            for (String file : originResult.split(",")) {
-                                if (!libHiddenFiles.contains(file.toLowerCase())) {
-                                    newResultList.add(file);
-                                }
-                            }
-
-                            param.setResult(StrUtils.join(newResultList, ","));
-                        }
-                    }
-                });*/
-    }
-
     private static boolean shouldHideThread(String threadName) {
         if (threadName != null) {
             for (String threadPrefix : threadPrefixHiddenList) {
@@ -403,6 +367,5 @@ public class AvoidRiskHooks extends BaseXposedHook {
         hideRiskPackagesFromActivityManager(classLoader);
         hideExceptionStackTrace(classLoader);
         hideFiles(classLoader);
-        hideLibs(classLoader);
     }
 }

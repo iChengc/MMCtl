@@ -26,7 +26,6 @@ public class CdnLogicHooks extends BaseXposedHook {
         c2cDownloadCompletedHook = hookMethod("com.tencent.mars.cdn.CdnLogic", classLoader, "onC2CDownloadCompleted", String.class, findClass("com.tencent.mars.cdn.CdnLogic$C2CDownloadResult", Wechat.WECHAT_CLASSLOADER),
             new XC_MethodHook() {
                 @Override protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    KLog.e("onC2CDownloadCompleted =====>>>>>>>", param.args[0] + "=====" + StrUtils.toJson(param.args[1]), new Exception());
                     CdnDownloadFinishListener listener = mCdnDownloadListeners.remove(param.args[0].toString());
                     if (listener != null) {
                         listener.onFinishDownload(param.args[0].toString());
