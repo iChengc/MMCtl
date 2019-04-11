@@ -2,12 +2,16 @@ package com.cc.core.wechat
 
 import android.database.Cursor
 import android.text.TextUtils
+import com.cc.core.log.KLog
 import com.cc.core.utils.FileUtil
+import com.cc.core.utils.StrUtils
 import com.cc.core.wechat.Wechat.Hook.*
 import com.cc.core.wechat.Wechat.Hook.Account.*
 import com.cc.core.wechat.Wechat.Hook.NetScene.*
 import com.cc.core.wechat.Wechat.Hook.Sqlite.*
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.*
+import java.io.File
 import java.util.*
 
 class HookUtils {
@@ -38,7 +42,9 @@ class HookUtils {
 
         fun getLoginUserInfo(id: Int, defaultValue: Any): Any {
             val coreStorageObject = callStaticMethod(findClass(AccountStorage, Wechat.WECHAT_CLASSLOADER), GetConfigManagerFunc)
-
+            if (coreStorageObject == null) {
+                KLog.e("____++++++++_____")
+            }
             return callMethod(coreStorageObject, ConfigStorageGetFunc, id, defaultValue)
         }
 
@@ -106,6 +112,38 @@ class HookUtils {
             )
 
             return if (rawMap == null) HashMap() else rawMap as Map<String, String>
+        }
+
+        fun deleteUpdatedAPkFile() {
+            try {
+                var wechatPath: File? = XposedHelpers.callStaticMethod(findClass("com.tencent.mm.compatible.util.h", Wechat.WECHAT_CLASSLOADER), "getExternalStorageDirectory"/*ehM*/) as File
+                if (wechatPath == null) {
+                    KLog.e("AndroidUpdateHook", "External storage directory is empty")
+                    return
+                }
+                wechatPath = File(wechatPath, "tencent/MicroMsg")
+                if (!wechatPath.isDirectory) {
+                    KLog.e("AndroidUpdateHook", "path [" + wechatPath.absolutePath + "] is not a directory")
+                }
+
+                for (f in wechatPath.listFiles()!!) {
+                    if (f.isFile) {
+                        if (StrUtils.stringNotNull(f.name).toString().contains(".apk")) {
+                            KLog.i("AndroidUpdateHook", "delete update apk file:" + f.name)
+                            f.delete()
+                        }
+                    }
+                }
+            } catch (e: Throwable) {
+                KLog.e("AndroidUpdateHook", "deleteUpdatedAPkFile failed " + e.localizedMessage)
+            }
+        }
+
+        fun getFileMd5(filePath: String?): String? {
+            val md5 = callStaticMethod(findClass(GetFileMd5Uitls, Wechat.WECHAT_CLASSLOADER), GetFileMd5Func, filePath)
+                    ?: return null
+
+            return md5 as String
         }
     }
 }

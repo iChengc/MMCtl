@@ -1,8 +1,8 @@
 package com.cc.core.rpc;
 
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.cc.core.Constant;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
@@ -39,18 +39,20 @@ public class RpcServer {
         do {
             try {
                 if (server != null) {
-                    server.close();
+                    stop();
                 }
-                KLog.e("RpcServer", ">>>> Start rpc server");
+                Log.e("RpcServer", ">>>> Start rpc server");
                 InetAddress address = InetAddress.getLoopbackAddress();
                 server = new ServerSocket(port, 50, address);
                 while (!disconnect) {
+                    Log.e("RpcServer", "Rpc server started");
                     Socket client = server.accept();
                     executor.submit(responseClient(client));
                 }
             } catch (java.net.BindException e) {
+                KLog.e("RpcServer", "Start server socket error! cannot bind to port:" + port, e);
                 break;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 KLog.e("RpcServer", "Start server socket error! Try to reconnect", e);
             }
@@ -97,13 +99,13 @@ public class RpcServer {
                     } else {
                         result = Rpc.invoke(sb);
                     }
-                    out.write(StrUtils.toJson(result).getBytes(Charset.forName("utf-8")));
+                    out.write(StrUtils.toNumberJson(result).getBytes(Charset.forName("utf-8")));
                     out.flush();
                 } catch (Exception e) {
                     KLog.e("Failed to execute RPC", e);
                     if (out != null) {
                         try {
-                            out.write(StrUtils.toJson(ActionResult.Companion.failedResult("", "failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
+                            out.write(StrUtils.toNumberJson(ActionResult.Companion.failedResult("", "failed to call rpc:" + e.getMessage())).getBytes(Charset.forName("utf-8")));
                             out.flush();
                         } catch (Exception ex) {
                             ex.printStackTrace();

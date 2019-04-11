@@ -3,16 +3,18 @@ package com.cc.core;
 import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.cc.core.actions.Actions;
 import com.cc.core.actions.accessibility.WechatAccessibilityService;
-import com.cc.core.actions.shell.impl.EnableAccessibilityAction;
 import com.cc.core.data.db.DaoMaster;
 import com.cc.core.data.db.DaoSession;
 import com.cc.core.data.db.DbService;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.Utils;
 import com.cc.core.utils.FileUtil;
+import com.cc.core.utils.NTTimeUtils;
 import com.cc.core.wechat.Wechat;
 
 import org.greenrobot.greendao.database.Database;
@@ -32,26 +34,21 @@ public class ApplicationContext {
         // clear cache
         WorkerHandler.postOnWorkThread(new Runnable() {
             @Override public void run() {
-                FileUtil.clearCache();
+                clearCache();
             }
         });
     }
 
-    public static void init(Application application) {
-        KLog.e(">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
+    public static boolean init(Application application) {
         ApplicationContext.application = application;
+        Log.e("ApplicationContext", ">>>> Application init:" + (application == null ? "null" : application.getClass().getName()));
         WorkerHandler.getInstance().init();
-        Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
         KLog.enableLog2Console(KLog.POLICY_MASK);
         if (application != null) {
             PACKAGE_NAME = application.getPackageName();
         }
-    }
 
-    private static void enableAccessibility() {
-        if (!Utils.isStartAccessibilityService(application, WechatAccessibilityService.class.getName())) {
-            KLog.e("Enable accessibility result:" + Actions.Companion.execute(EnableAccessibilityAction.class, "enableAccessibility"));
-        }
+        return Wechat.initEnvironment(Wechat.WECHAT_PACKAGE_NAME);
     }
 
     public static Application application() {
@@ -67,5 +64,15 @@ public class ApplicationContext {
         Database db = helper.getWritableDb();
         DaoMaster master = new DaoMaster(db);
         session = master.newSession();
+    }
+
+    private static void clearCache() {
+        if (application() == null) return;
+        SharedPreferences pre = application().getSharedPreferences("xposed_config", 0);
+        long lastClearDate = pre.getLong("last_clear_date", System.currentTimeMillis());
+        if (System.currentTimeMillis() - lastClearDate > NTTimeUtils.MILLIS_IN_DAY * 7) {
+            FileUtil.clearCache();
+            pre.edit().putLong("last_clear_date", System.currentTimeMillis()).apply();
+        }
     }
 }

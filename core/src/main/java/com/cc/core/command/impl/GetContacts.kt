@@ -7,7 +7,7 @@ import com.cc.core.wechat.invoke.GetContactsAction
 
 class GetContacts : Action {
     override fun execute(actionId : String, vararg args: Any?): ActionResult? {
-        return Actions.execute(GetContactsAction::class.java, actionId, args)
+        return Actions.execute(GetContactsAction::class.java, actionId, *args)
     }
 
     override fun key(): String? {

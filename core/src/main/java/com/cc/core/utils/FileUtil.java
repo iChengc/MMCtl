@@ -46,6 +46,7 @@ public class FileUtil {
     public final static String LOG_DIR = "logs";
     public final static String IMAGE_CACHE = "img";//存储的文件夹
     public final static String VIDEO_CACHE = "video";//存储的文件夹
+    public final static String VOICE_CACHE = "voice";//存储的文件夹
     public final static String PRODUCT_CACHE_DIR = "package";
 
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
@@ -337,6 +338,19 @@ public class FileUtil {
         return file;
     }
 
+    public static File getVoiceCacheDirectory() {
+        File file;
+        if (hasExternalStoragePermission(ApplicationContext.application())) {
+            file = getSubDirectory(VOICE_CACHE);
+        } else {
+            file = new File(getInternalCacheDir(), VOICE_CACHE);
+        }
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return file;
+    }
+
     /**
      * * 获取外设根路径
      *
@@ -397,7 +411,11 @@ public class FileUtil {
         FileOutputStream output = null;
         try {
             File temp = new File(src);
-            outFile = new File(desPath + "/" + (temp.getName()).toString());
+            outFile = new File(desPath);
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            outFile = new File(outFile, temp.getName());
             input = new FileInputStream(temp);
 
             output = new FileOutputStream(outFile);

@@ -8,6 +8,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
+
+import com.cc.core.ApplicationContext;
+import com.cc.core.log.KLog;
 
 import com.cc.core.ApplicationContext;
 
@@ -92,5 +96,14 @@ public class Utils {
         localIntent.setAction(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
         ApplicationContext.application().startActivity(localIntent);
+    }
+
+    public static void showToast(String message) {
+        if (ApplicationContext.application() == null) {
+            KLog.e("Show toast failed, " + message);
+            return;
+        }
+
+        Toast.makeText(ApplicationContext.application(), message, Toast.LENGTH_SHORT).show();
     }
 }
