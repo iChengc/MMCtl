@@ -66,6 +66,27 @@ public class ContactActivity extends AppCompatActivity {
                 });
             }
         });
+
+        findViewById(R.id.addFriendPhoneBtn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText et = findViewById(R.id.addFriendPhoneInput);
+                if (TextUtils.isEmpty(et.getText())) {
+                    Toast.makeText(ContactActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                }
+                String phone = et.getText().toString();
+                et = findViewById(R.id.addFriendSayHiInput);
+                String sayHi = et.getText().toString();
+
+                Messenger.Companion.sendCommand(MainActivity.genCommand("addFriendByTouch", phone, sayHi), new Callback() {
+                    @Override
+                    public void onResult(String result) {
+
+                        KLog.e("---->>.", "addFriend Result:" + result);
+                    }
+                });
+            }
+        });
         findViewById(R.id.sendTextMsgBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

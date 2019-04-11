@@ -76,8 +76,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/addFriendSayHiInput"
+                    android:layout_toLeftOf="@+id/center_flag"
                     android:padding="8dp"
                     android:text="添加好友" />
+
+                <View
+                    android:id="@+id/center_flag"
+                    android:layout_width="8dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@+id/addFriendSayHiInput"
+                    android:layout_centerHorizontal="true"/>
+
+                <Button
+                    android:id="@+id/addFriendPhoneBtn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addFriendSayHiInput"
+                    android:layout_toRightOf="@+id/center_flag"
+                    android:padding="8dp"
+                    android:text="辅助模式" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
