@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.cc.core.Constant;
 import com.cc.core.actions.ActionResult;
 import com.cc.core.actions.Actions;
-import com.cc.core.data.db.DbService;
 import com.cc.core.utils.StrUtils;
 
 import java.io.BufferedReader;
@@ -21,10 +20,6 @@ public class Rpc {
     private static RpcServer server;
 
     private static int getPort(RpcArgs rpcArgs) {
-        if (rpcArgs != null && rpcArgs.getType().equals(RpcArgs.CallType.EXECUTE_DB)) {
-            return Constant.DBHANDLER_PORT;
-        }
-
         return Constant.SOCKET_PORT;
     }
 
@@ -105,8 +100,6 @@ public class Rpc {
         switch (msg.getType()) {
             case RpcArgs.CallType.EXECUTE_ACTION:
                 return Actions.Companion.receivedAction(msg.getData());
-            case RpcArgs.CallType.EXECUTE_DB:
-                return DbService.getInstance().deliverDbOperation(msg.getData());
             default:
                 return null;
         }

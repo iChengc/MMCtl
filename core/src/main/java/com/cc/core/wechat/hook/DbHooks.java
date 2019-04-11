@@ -1,8 +1,5 @@
 package com.cc.core.wechat.hook;
 
-import com.cc.core.command.Callback;
-import com.cc.core.data.db.DbService;
-import com.cc.core.data.db.model.DBPassword;
 import com.cc.core.log.KLog;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.xposed.BaseXposedHook;
@@ -50,11 +47,6 @@ public class DbHooks extends BaseXposedHook {
                                         "PRAGMA cipher_use_hmac = %s;" +
                                         "PRAGMA cipher_page_size = %d;" +
                                         "PRAGMA kdf_iter = %d;",  Wechat.DB_PASSWORD, hmacEnabled ? "ON" : "OFF", pageSize, kdfIteration);
-                        DBPassword password = new DBPassword();
-                        password.setDecryptSql(sql);
-                        password.setPassword(new String(passwordBuffer));
-                        password.setPath(path);
-                        password.setWechatId(Wechat.LoginWechatId);
                         /*DbService.getInstance().insertDbPassword(password, new Callback() {
                             @Override
                             public void onResult(String result) {
