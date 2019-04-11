@@ -9,7 +9,7 @@ import com.cc.core.utils.Utils
 import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.invoke.StartActivityAction
 
-class AddFriendActionByAcc : AccessibilityAction() {
+class AddFriendByAccAction : AccessibilityAction() {
     override fun doAction(actionId: String, vararg args: Any?): ActionResult {
         if (args.isEmpty()) {
             return ActionResult.failedResult(actionId, "No phone was found!")
