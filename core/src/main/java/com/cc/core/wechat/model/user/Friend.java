@@ -2,9 +2,13 @@ package com.cc.core.wechat.model.user;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
 
-public class Friend implements Serializable {
+import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
+
+public class Friend implements Serializable{
     @SerializedName(value = "wechatId", alternate = "field_username")
     private String wechatId;
     // 微信号
@@ -22,6 +26,23 @@ public class Friend implements Serializable {
     private String signature;
     @SerializedName(value = "region", alternate = "cvt")
     private String region;
+
+    @Generated(hash = 849946655)
+    public Friend(String wechatId, String alias, String nickname, String remark,
+            String sex, String avatar, String signature, String region) {
+        this.wechatId = wechatId;
+        this.alias = alias;
+        this.nickname = nickname;
+        this.remark = remark;
+        this.sex = sex;
+        this.avatar = avatar;
+        this.signature = signature;
+        this.region = region;
+    }
+
+    @Generated(hash = 287143722)
+    public Friend() {
+    }
 
     public String getWechatId() {
         return wechatId;

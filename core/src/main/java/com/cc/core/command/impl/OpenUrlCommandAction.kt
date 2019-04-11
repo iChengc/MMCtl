@@ -3,7 +3,7 @@ package com.cc.core.command.impl
 import com.cc.core.actions.Action
 import com.cc.core.actions.ActionResult
 import com.cc.core.actions.Actions
-import com.cc.core.actions.accessibility.impl.BackAction
+import com.cc.core.accessibility.impl.BackAction
 import com.cc.core.utils.Utils
 import com.cc.core.wechat.invoke.OpenUrlAction
 

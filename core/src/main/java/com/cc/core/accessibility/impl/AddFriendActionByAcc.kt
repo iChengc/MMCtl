@@ -1,11 +1,10 @@
-package com.cc.core.actions.accessibility.impl
+package com.cc.core.accessibility.impl
 
 import android.text.TextUtils
 import com.cc.core.actions.ActionResult
 import com.cc.core.actions.Actions
-import com.cc.core.actions.accessibility.AccessibilityAction
+import com.cc.core.accessibility.AccessibilityAction
 import com.cc.core.command.impl.OpenWechatAction
-import com.cc.core.utils.StrUtils
 import com.cc.core.utils.Utils
 import com.cc.core.wechat.Wechat
 import com.cc.core.wechat.invoke.StartActivityAction

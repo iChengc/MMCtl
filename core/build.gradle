@@ -57,8 +57,8 @@ task genActions(dependsOn: [mkGenDirs, sourceSets]) {
                 }
         file('build/generated/source/mmctrl/com/cc/core/actions/ActionNames.java').
                 withWriterAppend('UTF-8') { writer ->
-                    fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.kt").each {
-                        writer.write("\t\t\"com.cc.core.actions.accessibility.impl." + it.name.substring(0,
+                    fileTree('src/main/java/com/cc/core/accessibility/impl').include("*.kt").each {
+                        writer.write("\t\t\"com.cc.core.accessibility.impl." + it.name.substring(0,
                                 it.name.lastIndexOf('.kt')) + "\",\n")
                     }
                 }
@@ -80,18 +80,6 @@ task genActions(dependsOn: [mkGenDirs, sourceSets]) {
                 withWriterAppend('UTF-8') { writer ->
                     writer.write("\t};\n}")
                 }
-
-        //        file('src/main/assets/actions.ini').withWriter('UTF-8') { writer ->
-        //            fileTree('src/main/java/com/cc/core/actions/shell/impl').include("*.java").each {
-        //                writer.write("com.cc.core.actions.shell.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
-        //            }
-        //        }
-        //
-        //        file('src/main/assets/actions.ini').withWriterAppend('UTF-8') { writer ->
-        //            fileTree('src/main/java/com/cc/core/actions/accessibility/impl').include("*.java").each {
-        //                writer.write("com.cc.core.actions.accessibility.impl." +  it.name.substring(0, it.name.lastIndexOf('.')) + "\n")
-        //            }
-        //        }
     }
 }
 

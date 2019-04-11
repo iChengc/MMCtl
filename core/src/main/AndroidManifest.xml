@@ -31,7 +31,7 @@
             android:value="46" />
 
         <service
-            android:name="com.cc.core.actions.accessibility.WechatAccessibilityService"
+            android:name="com.cc.core.accessibility.WechatAccessibilityService"
             android:enabled="true"
             android:exported="true"
             android:label="微信管理"

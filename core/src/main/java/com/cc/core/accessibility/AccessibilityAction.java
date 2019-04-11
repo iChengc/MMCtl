@@ -1,4 +1,4 @@
-package com.cc.core.actions.accessibility;
+package com.cc.core.accessibility;
 
 import android.accessibilityservice.AccessibilityService;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import com.cc.core.utils.StrUtils;
 import com.cc.core.utils.Utils;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.wechat.Wechat.Resources;
-import com.cc.core.wechat.invoke.StartActivityAction;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

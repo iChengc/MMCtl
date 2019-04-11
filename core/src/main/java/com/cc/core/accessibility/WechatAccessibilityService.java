@@ -1,4 +1,4 @@
-package com.cc.core.actions.accessibility;
+package com.cc.core.accessibility;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
@@ -10,7 +10,7 @@ public class WechatAccessibilityService extends AccessibilityService {
     private static final String TAG = WechatAccessibilityService.class.getSimpleName();
     private static WechatAccessibilityService mInstance;
 
-    //public static final String ACCESSIBILITY_SERVICE_NAME = "com.cc.core/com.cc.core.actions.accessibility.WechatAccessibilityService";
+    //public static final String ACCESSIBILITY_SERVICE_NAME = "com.cc.core/WechatAccessibilityService";
     public WechatAccessibilityService() {
         mInstance = this;
     }
