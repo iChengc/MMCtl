@@ -2,6 +2,7 @@ package com.kcrason.highperformancefriendscircle.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -154,6 +155,7 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
                     public void onImageClick(int position, View view) {
                         mImageWatcher.show((ImageView) view, wordAndImagesViewHolder.nineGridView.getImageViews(),
                                 friendCircleBean.getImageUrls());
+                        ((Activity)mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
                 });
                 wordAndImagesViewHolder.nineGridView.setAdapter(new NineImageAdapter(mContext, mRequestOptions,

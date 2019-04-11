@@ -41,7 +41,8 @@
             android:label="消息" />
         <activity android:name=".RemarkActivity"
             android:label="备注"  />
-        <activity android:name="com.kcrason.highperformancefriendscircle.TimelineActivity" />
+        <activity android:name="com.kcrason.highperformancefriendscircle.TimelineActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
     </application>
 
 </manifest>
