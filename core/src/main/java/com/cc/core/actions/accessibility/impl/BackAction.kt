@@ -4,9 +4,10 @@ import com.cc.core.actions.ActionResult
 import com.cc.core.actions.accessibility.AccessibilityAction
 
 class BackAction : AccessibilityAction() {
-    override fun execute(actiongId : String, vararg args: Any?): ActionResult? {
+
+    override fun doAction(actionId: String, vararg args: Any?): ActionResult {
         val result = systemBack()
-        return if (result) ActionResult.successResult(actiongId) else ActionResult.failedResult(actiongId, "can not execute back")
+        return if (result) ActionResult.successResult(actionId) else ActionResult.failedResult(actionId, "can not execute back")
     }
 
     override fun key(): String {

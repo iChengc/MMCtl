@@ -139,12 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 EditText et = findViewById(R.id.addFriendPhoneInput);
                 if (TextUtils.isEmpty(et.getText())) {
                     Toast.makeText(MainActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 String phone = et.getText().toString();
                 et = findViewById(R.id.addFriendSayHiInput);
                 String sayHi = et.getText().toString();
 
-                Messenger.Companion.sendCommand(genCommand("addFriend", phone, sayHi), new Callback() {
+                Messenger.Companion.sendCommand(genCommand("addFriendByTouch", phone, sayHi), new Callback() {
                     @Override
                     public void onResult(String result) {
 

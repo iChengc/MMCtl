@@ -2,8 +2,14 @@ package com.cc.core.utils;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
+
+import com.cc.core.ApplicationContext;
 
 import java.io.File;
 import java.util.List;
@@ -73,5 +79,18 @@ public class Utils {
             return null;
         }
         return file.getAbsolutePath();
+    }
+
+    /**
+     * 获取应用详情页面intent（如果找不到要跳转的界面，也可以先把用户引导到系统设置页面）
+     *
+     * @return
+     */
+    public static void go2AccessibilitySetting() {
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        localIntent.setAction(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+
+        ApplicationContext.application().startActivity(localIntent);
     }
 }

@@ -472,33 +472,26 @@ public class Wechat {
         public final static String WEBVIEW_ACTIVITY_CLASS_NAME = "com.tencent.mm.plugin.webview.ui.tools.WebViewUI";
         public static String PROGRESS_DIALOG_CLASS_NAME = "";
 
-
         // 系统权限弹框节点
         public final static String NODE_SYSTEM_PERMISSION_MESSAGE = "com.android.packageinstaller:id/permission_message";
         public final static String NODE_SYSTEM_PERMISSION_DO_NOT_ASK = "com.android.packageinstaller:id/do_not_ask_checkbox";
         public final static String NODE_SYSTEM_PERMISSION_ALLOW = "com.android.packageinstaller:id/permission_allow_button";
         public final static String NODE_SYSTEM_PERMISSION_DENY = "com.android.packageinstaller:id/permission_deny_button";
 
-        // 取消
-        public final static String NODE_DIALOG_CONFIRM_CANCEL = "取消";
         // android手机anr等待按钮
         public final static String NODE_DIALOG_ANR_WAITING = "android:id/button2";
 
-        public final static String NODE_ANDROID_LIST = "android:id/list";
         public final static String NODE_ANDROID_TITLE = "android:id/title";
-        public final static String NODE_ANDROID_SUMMARY = "android:id/summary";
 
         // 对话框内容
         public final static String NODE_DIALOG_CONTENT_CANCEL_INSTALL = "是否取消安装？";
-        public final static String NODE_DIALOG_CONTENT_QUIT_MALL = "你要关闭购物页面?";
         public final static String NODE_DIALOG_CONTENT_QUIT_TRANSACTION = "是否要放弃本次交易？";// 对话框内容
 
         public static String LOADING_DIALOG = "";
-
-        // 搜索窗口的返回节点
-        public static String NODE_SEARCH_BACK = "";
         // 其他窗口的返回节点 - 比如 我 - 设置 界面
         public static String NODE_OTHER_BACK = "";
+        // 其他窗口的返回节点 - 比如 我 - 设置 界面
+        public static String NODE_OTHER_BACK1 = "";
         // 加载的ProgressBar节点 - 界面中间弹出的loading，比如 断网，打开我的二维码页面
         public static String NODE_LOADING_BACK = "";
         // 对话框取消按钮
@@ -507,48 +500,41 @@ public class Wechat {
         public static String NODE_DIALOG_CONFIRM = "";
         // 对话框内容
         public static String NODE_DIALOG_CONTENT = "";
-        // 对话框标题 比如 发现-购物-点 x
-        public static String NODE_DIALOG_TITLE = "";
-        // 对话框另一种标题，比如登录密码错误的弹框
-        public static String NODE_DIALOG_SUMMARY = "";
-        // 微信打开网页的progress bar节点
-        public static String NODE_WEBVIEW_PROGRESSBAR = "";
         // action bar go button
         public static String NODE_ACTION_BAR_GO_BUTTON = "";
-
-        public static String NODE_WECHAT_ACTIONBAR = "";
         //ContentMenu 选项
         public static String NODE_CONTENT_MENU_ITEM_TEXT = "";
-        // 第一次打开摇一摇时的"请注意"弹框，微信安装后第一次使用时会弹出该框，见 bzy-ai/octopus#1513
-        public static String NODE_SHAKE_ATTENTION_ACKNOWLEDGE_BUTTON = "";
-
-        public static String NODE_CLOSE_UPLOAD_ID_CARD_DIALOG_BUTTON = "";
 
         public static void init(String version) {
             switch (version) {
                 case "6.7.2":
                     LOADING_DIALOG = "com.tencent.mm:id/a06";
-                    NODE_SEARCH_BACK = "com.tencent.mm:id/ja";
                     NODE_OTHER_BACK = "com.tencent.mm:id/j7";
                     NODE_LOADING_BACK = "com.tencent.mm:id/a05";
                     NODE_DIALOG_CANCEL = "com.tencent.mm:id/api";
                     NODE_DIALOG_CONFIRM = "com.tencent.mm:id/apj";
                     NODE_DIALOG_CONTENT = "com.tencent.mm:id/chb";
-                    NODE_DIALOG_TITLE = "com.tencent.mm:id/ch2";
-                    NODE_DIALOG_SUMMARY = "com.tencent.mm:id/ch7";
 
                     NODE_ACTION_BAR_GO_BUTTON = "com.tencent.mm:id/iv";
-                    NODE_WEBVIEW_PROGRESSBAR = "com.tencent.mm:id/b38";
-                    NODE_WECHAT_ACTIONBAR = "com.tencent.mm:id/ie";
                     NODE_CONTENT_MENU_ITEM_TEXT = "com.tencent.mm:id/ci";
-                    NODE_SHAKE_ATTENTION_ACKNOWLEDGE_BUTTON = "com.tencent.mm:id/dfg";
-                    NODE_CLOSE_UPLOAD_ID_CARD_DIALOG_BUTTON = "com.tencent.mm:id/al6"; // 通过上个版本的key所在resource xml的特征搜到
+                    PROGRESS_DIALOG_CLASS_NAME = "com.tencent.mm.ui.base.p";
+                    break;
+                case "7.0.3":
+                    LOADING_DIALOG = "com.tencent.mm:id/a5w";
+                    NODE_OTHER_BACK = "com.tencent.mm:id/ka";
+                    NODE_OTHER_BACK1 = "com.tencent.mm:id/ke";
+                    NODE_LOADING_BACK = "com.tencent.mm:id/a05";
+                    NODE_DIALOG_CANCEL = "com.tencent.mm:id/az9";
+                    NODE_DIALOG_CONFIRM = "com.tencent.mm:id/az_";
+                    NODE_DIALOG_CONTENT = "com.tencent.mm:id/d6y";
+
+                    NODE_ACTION_BAR_GO_BUTTON = "com.tencent.mm:id/k1";
+                    NODE_CONTENT_MENU_ITEM_TEXT = "com.tencent.mm:id/ci";
                     PROGRESS_DIALOG_CLASS_NAME = "com.tencent.mm.ui.base.p";
                     break;
             }
             HomePage.init(version);
             Search.init(version);
-            ChatRoom.init(version);
             ContactInfo.init(version);
             SayHiUI.init(version);
         }
@@ -557,7 +543,7 @@ public class Wechat {
         public static class HomePage {
 
             // 首页tab文字-我
-            public static final String TAB_WECHAT_TEXT = "微信";
+            public static final String TAB_WECHAT_TEXT = "Chats";
 
             // 主页tab的节点
             public static String NODE_TAB = "";
@@ -574,22 +560,17 @@ public class Wechat {
                         PLUS_BTN = "com.tencent.mm:id/hp";
                         POP_PLUS_ITEM = "com.tencent.mm:id/ci";
                         break;
-                }
-            }
-        }
-
-        public static class ChatRoom {
-
-            public static void init(String version) {
-                switch (version) {
-                    case "6.7.2":
+                    case "7.0.3":
+                        NODE_TAB = "com.tencent.mm:id/bq";
+                        NODE_TAB_TEXT = "com.tencent.mm:id/d7b";
+                        PLUS_BTN = "com.tencent.mm:id/iq";
+                        POP_PLUS_ITEM = "com.tencent.mm:id/ci";
+                        break;
                 }
             }
         }
 
         public static class Search {
-            public static String ADD_FRIEND_SEARCH_INPUT = "";
-            public static String ADD_FRIEND_SEARCH_MAIN_INPUT = "";
 
             public static String FTS_ADD_FRIEND_UI = "";
             public static String FTS_ADD_FRIEND_LIST = "";
@@ -599,10 +580,13 @@ public class Wechat {
                 switch (version) {
                     case "6.7.2":
                         FTS_ADD_FRIEND_UI = "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI";
-                        ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/jd";
-                        ADD_FRIEND_SEARCH_MAIN_INPUT = "com.tencent.mm:id/bhl";
                         FTS_ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/jd";
                         FTS_ADD_FRIEND_LIST = "com.tencent.mm:id/bh9";
+                        break;
+                    case "7.0.3":
+                        FTS_ADD_FRIEND_UI = "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI";
+                        FTS_ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/kh";
+                        FTS_ADD_FRIEND_LIST = "com.tencent.mm:id/bwh";
                         break;
                 }
             }
@@ -612,9 +596,7 @@ public class Wechat {
             public static String CONTACT_INFO_UI = "";
             public static String ADD_FRIEND_BTN = "";
             public static String SELECT_CONTACT_UI = "";
-            public static String SELECT_CONTACT_INPUT = "";
-            public static String SELECT_CONTACT_LIST = "";
-            public static String SELECT_CONTACT_CONFIRM_BTN = "";
+            public static String CONTACT_INFO_LIST = "";
 
             public static void init(String version) {
                 switch (version) {
@@ -623,9 +605,13 @@ public class Wechat {
                         CONTACT_INFO_UI = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";
 
                         ADD_FRIEND_BTN = "com.tencent.mm:id/arl";
-                        SELECT_CONTACT_INPUT = "com.tencent.mm:id/cmy";
-                        SELECT_CONTACT_LIST = "com.tencent.mm:id/h8";
-                        SELECT_CONTACT_CONFIRM_BTN = "com.tencent.mm:id/iv";
+                        break;
+                    case "7.0.3":
+                        SELECT_CONTACT_UI = "com.tencent.mm.ui.contact.SelectContactUI";
+                        CONTACT_INFO_UI = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";
+
+                        ADD_FRIEND_BTN = "com.tencent.mm:id/cs";
+                        CONTACT_INFO_LIST = "android:id/list";
                         break;
                 }
             }
@@ -634,12 +620,18 @@ public class Wechat {
         public static class SayHiUI {
             public static String SAY_HI_UI = "";
             public static String SEND_BTN = "";
+            public static String SAY_HI_INPUT = "";
 
             public static void init(String version) {
                 switch (version) {
                     case "6.7.2":
                         SAY_HI_UI = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";
                         SEND_BTN = "com.tencent.mm:id/iv";
+                        break;
+                    case "7.0.3":
+                        SAY_HI_UI = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";
+                        SEND_BTN = "com.tencent.mm:id/jx";
+                        SAY_HI_INPUT = "com.tencent.mm:id/e0o";
                         break;
                 }
             }
