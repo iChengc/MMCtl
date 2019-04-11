@@ -61,60 +61,11 @@ class AddFriendAction : Action {
             } else {
                 verifyUser(wechatId, if (antispamTicket == null) {""} else {antispamTicket as String})
             }
-
-            /*if ("6.7.2".equals(Wechat.WechatVersion)) {
-                val jsonObject = JSONObject(response).optJSONObject("dVG").optJSONObject("dUj")
-                var wechatId: String
-                if (jsonObject.optInt("eWZ") == 1) {
-                    wechatId = jsonObject.optJSONObject("sgh").optString("sVc")
-                    if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
-                        val sb = StringBuilder(wechatId)
-                        sb.insert(4, "_")
-                        wechatId = sb.toString()
-                    }
-                } else {
-                    wechatId = jsonObject.optJSONObject("sgx").optString("sVc")
-                }
-
-                if (TextUtils.isEmpty(wechatId)) {
-                    lock.offer(wechatId)
-                } else {
-                    verifyUser(wechatId, jsonObject.optString("sqc"))
-                }
-            } else if ("7.0.3".equals(Wechat.WechatVersion)) {
-                val jsonObject = JSONObject(response).optJSONObject("feW").optJSONObject("fdy")
-                var wechatId: String
-                if (jsonObject.optInt("gfi") == 1) {
-                    wechatId = jsonObject.optJSONObject("vqP").optString("wiP")
-                    if (wechatId.startsWith("wxid") && wechatId.length == 18 && wechatId.elementAt(4) != '_') {
-                        val sb = StringBuilder(wechatId)
-                        sb.insert(4, "_")
-                        wechatId = sb.toString()
-                    }
-                } else {
-                    wechatId = jsonObject.optJSONObject("vrl").optString("wiP")
-                }
-
-                if (TextUtils.isEmpty(wechatId)) {
-                    lock.offer(wechatId)
-                } else {
-                    verifyUser(wechatId, jsonObject.optString("vAm"))
-                }
-            }*/
         }
         return lock.poll(30, TimeUnit.SECONDS)
     }
 
     private fun verifyUser(wechatId: String?, antispamTicket: String) {
-        /* =====>>>>>> 1
-          ["xnhjcc"]
-          [15]
-          ["v2_936b8a81d0373f569028ea01e15bbb5e76f73c98c7fbfb8778f6d8998d224132dddc0b8d62f6709256f2c0bff29b022d@stranger"]
-          ""
-          ""
-          null
-          ""
-          ""*/
         val args = ArrayList<String?>()
         args.add(wechatId)
         val args2 = ArrayList<Int>()
@@ -124,10 +75,6 @@ class AddFriendAction : Action {
 
         val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
                 1, args, args2, args3, "", "", null, "", "")
-        /*val request = XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
-                .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
-                        String::class.java, Map::class.java, String::class.java, String::class.java)
-                .newInstance(1, args, args2, args3, "", "", null, "", "")*/
 
         val isStranger = null == antispamTicket || "" == antispamTicket
         HookUtils.enqueueNetScene(request, 0)
@@ -147,10 +94,6 @@ class AddFriendAction : Action {
 
         val request = XposedHelpers.newInstance(XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER),
                 2, args, args2, null, sayHi, "", mapArgs, null, "")
-        /*val request = XposedHelpers.findClass(Wechat.Hook.NetScene.FriendRequestNetSceneClass, Wechat.WECHAT_CLASSLOADER)
-                .getConstructor(Int::class.javaPrimitiveType, List::class.java, List::class.java, List::class.java, String::class.java,
-                        String::class.java, Map::class.java, String::class.java, String::class.java)
-                .newInstance(2, args, args2, null, sayHi, "", mapArgs, null, "")*/
 
         HookUtils.enqueueNetScene(request, 0)
     }

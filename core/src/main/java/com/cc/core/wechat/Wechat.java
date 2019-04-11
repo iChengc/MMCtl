@@ -33,7 +33,6 @@ public class Wechat {
     public static String WechatVersion;
 
     public static String[] SupportVersion = new String[]{
-            "6.7.2",
             "7.0.3"
     };
 
@@ -223,36 +222,6 @@ public class Wechat {
 
                     ProtobufParseFromFunc = "parseFrom";
                     break;
-                case "6.7.2":
-                    KernelClass = "com.tencent.mm.kernel.g";
-                    LOGGER = "com.tencent.mm.sdk.platformtools.y";
-                    UploadCrashLogClass = "com.tencent.mm.sandbox.monitor.a";
-                    UploadCrashLogFunc = "fV";
-                    UploadCrashWXRecoveryUploadServiceClass = "com.tencent.recovery.wx.service.WXRecoveryUploadService";
-                    UploadCrashWXRecoveryUploadServicePushDataFunc = "pushData";
-                    UploadCrashLogEnumClass = "com.tencent.mm.plugin.report.service.h";
-                    UploadCrashLogEnumFunc = "a";
-                    UploadCrashCrashUploaderServiceClass = "com.tencent.mm.crash.CrashUploaderService";
-                    UploadCrashCrashUploaderServiceOnHandleIntentFunc = "onHandleIntent";
-                    UploadCrashTraceRouteClass = "com.tencent.mm.plugin.traceroute.b.a.f";
-                    UploadCrashTraceRouteFunc = "a";
-                    UploadCrashStackReportUploaderClass = "com.tencent.mm.platformtools.ae";
-                    UploadCrashStackReportUploaderFunc = "a";
-                    SaveAnrWatchDogClass = "com.tencent.mm.sdk.a.b";
-                    SaveAnrWatchDogSetHandlerFunc = "a";
-                    SaveAnrWatchDogHandlerClass = "com.tencent.mm.sdk.a.c";
-                    MMCrashReporter = "com.tencent.mm.app.k";
-                    ConstantsStorage = "com.tencent.mm.storage.ac";
-                    WechatStorageCrashPath = "dFK";
-
-                    commonWechatSdkXmlParserClass = "com.tencent.mm.sdk.platformtools.bm";
-                    commonWechatSdkXmlParserToMapFunc = "r";
-
-                    GetFileMd5Uitls = "com.tencent.mm.vfs.d";
-                    GetFileMd5Func = "adF";
-
-                    ProtobufParseFromFunc = "aE";
-                    break;
             }
         }
 
@@ -330,20 +299,6 @@ public class Wechat {
                         RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
                         RegionCodeDecoderEncodeFunc = "az";
                         break;
-                    case "6.7.2":
-                        AccountStorage = "com.tencent.mm.model.c";
-                        ContactStorageLogic = "com.tencent.mm.model.s";
-                        ContactStorageLogicUpdateRemark = "b";
-                        GetContactManagerFunc = "EO";
-                        GetGroupManagerFunc = "EX";
-                        GetConfigManagerFunc = "CQ";
-                        GetMsgInfoManagerFunc = "EQ";
-                        GetConversationManagerFunc = "ET";
-                        GetContactInfoFunc = "ZQ";
-                        ConfigStorageGetFunc = "get";
-                        RegionCodeDecoderClass = "com.tencent.mm.storage.RegionCodeDecoder";
-                        RegionCodeDecoderEncodeFunc = "an";
-                        break;
                 }
             }
         }
@@ -356,12 +311,6 @@ public class Wechat {
 
             static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        GetDBHelerFunc = "Dg";
-                        DBRawQueryFunc = "rawQuery";
-                        DBExecSqlFunc = "gf";
-                        DbHelperField = "dBo";
-                        break;
                     case "7.0.3":
                         GetDBHelerFunc = "Qe";
                         DBRawQueryFunc = "rawQuery";
@@ -399,30 +348,6 @@ public class Wechat {
 
             static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        GetNetSceneQueueClass = "com.tencent.mm.model.av";
-                        GetNetSceneQueueFunc = "CB";
-                        NetSceneEnqueueFunc = "a";
-                        NetSceneRequestClass = "com.tencent.mm.af.m";
-                        NetSceneQueueClass = "com.tencent.mm.af.p";
-                        NetSceneEndFunc = "onSceneEnd";
-                        FriendRequestNetSceneClass = "com.tencent.mm.pluginsdk.model.m";
-                        SearchFriendNetSceneClass = "com.tencent.mm.plugin.messenger.a.f";
-                        // SearchFriendNetSceneClass = "com.tencent.mm.plugin.brandservice.b.h";
-                        NetSceneRemoteRespClass = "com.tencent.mm.af.v";
-
-                        NetSceneSendMsgClass = "com.tencent.mm.modelmulti.h";
-                        NetSceneUploadMsgImg = "com.tencent.mm.ap.l";
-                        NetSceneUploadMsgImgMaskResId = 2130838032;
-                        NetSceneUploadMsgVideo = "com.tencent.mm.pluginsdk.model.j";
-                        UploadMsgVideoHandler = "com.tencent.mm.sdk.f.e";
-                        ModelCdnUtil = "com.tencent.mm.modelcdntran.d";
-                        ModelCdnUtilGetFileKeyFunc = "a";
-
-                        NetSceneResponseBodyKey = "dVG";
-                        NetSceneCmdResponseBodyKey = "dUj";
-                        NetSceneResponseStringBooleanValueKey = "sVc";
-                        break;
                     case "7.0.3":
                         GetNetSceneQueueClass = "com.tencent.mm.model.av";
                         GetNetSceneQueueFunc = "Pw";
@@ -459,12 +384,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        RelationType = "eWZ";
-                        WechatId = "sgh";
-                        DecriptyWechatId = "sgx";
-                        AntispamTicket = "sqc";
-                        break;
                     case "7.0.3":
                         RelationType = "gfi";
                         WechatId = "vqP";
@@ -498,25 +417,6 @@ public class Wechat {
             public static void init(String version) {
 
                 switch (version) {
-                    case "6.7.2":
-                        MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
-                        MessageSyncExtensionProcessCommonMessageFunc = "a";
-                        SyncMessageNotifierClass = "com.tencent.mm.plugin.messenger.foundation.a.t";
-                        ProtocolAddMsgInfoClass = "com.tencent.mm.af.e.a";
-
-                        MessageInfoFieldId = "dsF";
-                        MessageContentFieldId = "rMB";
-                        MessageToFieldId = "rMz";
-                        MessageTypeFieldId = "knu";
-                        MessageDatetimeFieldId = "mkk";
-                        MessageServIdFieldId = "rMG";
-
-                        MessageVoiceLogicClass = "com.tencent.mm.modelvoice.q";
-                        MessageVoiceLogicGetVoiceFullPathFunc = "P";
-
-                        AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
-                        AppMsgLogicSendFunc = "a";
-                        break;
                     case "7.0.3":
                         MessageSyncExtensionClass = "com.tencent.mm.plugin.messenger.foundation.c";
                         MessageSyncExtensionProcessCommonMessageFunc = "a";
@@ -535,7 +435,6 @@ public class Wechat {
                         //MessageFromFieldId = "";
                         MessageServIdFieldId = "oPR";
 
-                        //TODO: support 7.0.3
                         AppMsgLogic = "com.tencent.mm.pluginsdk.model.app.l";
                         AppMsgLogicSendFunc = "a";
                         break;
@@ -560,19 +459,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
-                        CreateGroupWechatIdField = "rMh";
-                        GetGroupInfoFunc = "ii";
-                        GroupParseChatroomDataFunc = "cnZ";
-                        ChatroomMembersField = "dYH";
-                        ChatroomMemberGroupNicknameField = "dkZ";
-                        ChatroomMemberInviterField = "dlb";
-                        RoomServiceFactoryClass = "com.tencent.mm.roomsdk.a.b";
-                        RoomServiceFactoryGetRoomService = "Xr";
-                        RoomServiceGetRequest = "a";
-                        SendAddMemberRequest = "cjP";
-                        break;
                     case "7.0.3":
                         CreateGroupRequest = "com.tencent.mm.chatroom.c.g";
                         CreateGroupWechatIdField = "uUb";
@@ -658,10 +544,10 @@ public class Wechat {
             public static String SnsTimelineVideoCdnRequestSend = "";
             public static String SnsTimelineImageSceneGen = "";
             // 在com.tencent.mm.plugin.sns.model.b中
-            public static String SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
+            public static String SnsDownloadManagerClass = "";
             public static String SnsTimelineStartImageDownload = "";
             public static String SnsGetImageLocalPathFunc = "";
-            public static String SnsCoreGetLazyImageLoaderFunc = "cjr" ;
+            public static String SnsCoreGetLazyImageLoaderFunc = "" ;
             public static String SnsMediaClass = "";
 
             public static String SnsTimelineCommentHelper = "";
@@ -671,85 +557,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        SnsUploadPackHelper = "com.tencent.mm.plugin.sns.model.ax";
-                        LocationClass = "com.tencent.mm.protocal.c.atd";
-                        PicWidget = "com.tencent.mm.plugin.sns.ui.ag";
-                        UploadManager = "com.tencent.mm.plugin.sns.model.aw";
-
-                        UploadFun = "byo";
-
-                        SnsSetDescriptionFun = "MI";
-                        SnsSetLocationFun = "a";
-                        SnsSetAtUsersFun = "ah";
-                        SnsSetIsPrivateFun = "xh";
-                        SnsSetWatcherTypeFun = "xk";
-                        SnsSetSyncQQZoneFun = "xi";
-                        SnsSetShareTypeFun = "xj";
-                        SnsSetUrlFun = "f";
-                        SnsSetWatchersFun = "ct";
-                        SnsSetSessionIdFun = "setSessionId";
-                        SnsSetMediaInfoFun = "cu";
-                        SnsSetVideoInfoFun = "q";
-                        SnsSetAppIdFun = "MQ";
-                        SnsSetAppNameFun = "MR";
-                        SnsSetShareThumbFun = "b";
-                        SnsGetSessionIdUtil = "com.tencent.mm.model.u";
-                        SnsGetSessionIdFun = "ie";
-
-                        SnsSetShareUrlFun = "ML";
-                        SnsSetShareUrl2Fun = "MM";
-                        SnsSetShareTitleFun = "MN";
-
-                        SnsGetRequest = "com.tencent.mm.plugin.sns.model.y";
-                        SnsCoreClass = "com.tencent.mm.plugin.sns.model.af";
-                        SnsCoreGetInstance = "bzl";
-                        SnsCoreStorageField = "dBo";
-                        SnsCoreGetSnsCommentStorage = "bzI";
-                        SnsCoreGetSnsInfoStorage = "bzD";
-                        SnsStorageGetBySnsId = "fA";
-                        SnsStorage2Timeline = "bCc";
-                        SnsCoreGetDownloadManager = "bzy";
-
-                        SnsTimeLineContentField = "tcB";
-                        SnsTimeLineDetailsField = "tcE";
-                        SnsTimeLineShareTitleField = "bEj";
-                        SnsTimeLineMediaField = "sfN";
-                        SnsTimeLineMediaUrlField = "knb";
-                        SnsTimeLineShareUrlField = "knb";
-
-                        SnsTimelineCommentLikeProtobuf = "com.tencent.mm.protocal.c.brv";
-                        SnsTimelineCommentProtobuf = "com.tencent.mm.protocal.c.brk";
-                        SnsTimelineCommentListField = "sZl";
-                        SnsTimelineLikeListField = "sZi";
-                        SnsTimelineCommenterField = "rOt";
-                        SnsTimelineCommenterNameField = "sFQ";
-                        SnsTimelineCommentTimeField = "mkk";
-                        SnsTimelineCommentReplay2Field = "sYY";
-                        SnsTimelineCommentContentField = "kpS";
-                        SnsTimelineCommentIdField = "sYE";
-                        SnsTimelineCommentReplay2IdField = "sYD";
-
-                        SnsTimelineScene = "com.tencent.mm.storage.ax";
-                        SnsTimelineVideoSceneGen = "cpn";
-                        SnsTimelineImageSceneGen = "cpi";
-                        SnsTimelineOnlineVideoService = "com.tencent.mm.modelcdntran.f";
-                        SnsTimelineGenVideoCdnInfo = "a";
-                        SnsTimelineVideoCdnRequestSend = "a";
-                        SnsTimelineVideoCdnRequest = "com.tencent.mm.modelvideo.o";
-                        SnsTimelineVideoCdnRequestGen = "RM";
-
-                        SnsDownloadManagerClass = "com.tencent.mm.plugin.sns.model.b";
-                        SnsTimelineStartImageDownload = "a";
-                        SnsGetImageLocalPathFunc = "C";
-                        SnsCoreGetLazyImageLoaderFunc = "bzA";
-                        SnsMediaClass = "com.tencent.mm.protocal.c.auy";
-
-                        SnsTimelineCommentHelper = "com.tencent.mm.plugin.sns.model.am$a";
-                        SnsTimelineCommentSend = "b";
-                        SnsTimelineCancelLike = "Mz";
-                        SnsTimelineCancelCommentRequest= "com.tencent.mm.plugin.sns.model.r";
-                        break;
                     case "7.0.3":
                         SnsUploadPackHelper = "com.tencent.mm.plugin.sns.model.ax";
                         LocationClass = "com.tencent.mm.protocal.protobuf.axc";
@@ -790,7 +597,6 @@ public class Wechat {
                         SnsStorageGetBySnsId = "jW";
                         SnsStorage2Timeline = "cmi";
 
-                        // TODO: 7.0.3 support
                         SnsTimeLineContentField = "wsu";
                         SnsTimeLineDetailsField = "wsx";
                         SnsTimeLineShareTitleField = "Title";
@@ -877,18 +683,6 @@ public class Wechat {
 
         public static void init(String version) {
             switch (version) {
-                case "6.7.2":
-                    LOADING_DIALOG = "com.tencent.mm:id/a06";
-                    NODE_OTHER_BACK = "com.tencent.mm:id/j7";
-                    NODE_LOADING_BACK = "com.tencent.mm:id/a05";
-                    NODE_DIALOG_CANCEL = "com.tencent.mm:id/api";
-                    NODE_DIALOG_CONFIRM = "com.tencent.mm:id/apj";
-                    NODE_DIALOG_CONTENT = "com.tencent.mm:id/chb";
-
-                    NODE_ACTION_BAR_GO_BUTTON = "com.tencent.mm:id/iv";
-                    NODE_CONTENT_MENU_ITEM_TEXT = "com.tencent.mm:id/ci";
-                    PROGRESS_DIALOG_CLASS_NAME = "com.tencent.mm.ui.base.p";
-                    break;
                 case "7.0.3":
                     LOADING_DIALOG = "com.tencent.mm:id/a5w";
                     NODE_OTHER_BACK = "com.tencent.mm:id/ka";
@@ -924,12 +718,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        NODE_TAB = "com.tencent.mm:id/chn";
-                        NODE_TAB_TEXT = "com.tencent.mm:id/chp";
-                        PLUS_BTN = "com.tencent.mm:id/hp";
-                        POP_PLUS_ITEM = "com.tencent.mm:id/ci";
-                        break;
                     case "7.0.3":
                         NODE_TAB = "com.tencent.mm:id/bq";
                         NODE_TAB_TEXT = "com.tencent.mm:id/d7b";
@@ -948,11 +736,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        FTS_ADD_FRIEND_UI = "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI";
-                        FTS_ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/jd";
-                        FTS_ADD_FRIEND_LIST = "com.tencent.mm:id/bh9";
-                        break;
                     case "7.0.3":
                         FTS_ADD_FRIEND_UI = "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI";
                         FTS_ADD_FRIEND_SEARCH_INPUT = "com.tencent.mm:id/kh";
@@ -970,12 +753,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        SELECT_CONTACT_UI = "com.tencent.mm.ui.contact.SelectContactUI";
-                        CONTACT_INFO_UI = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";
-
-                        ADD_FRIEND_BTN = "com.tencent.mm:id/arl";
-                        break;
                     case "7.0.3":
                         SELECT_CONTACT_UI = "com.tencent.mm.ui.contact.SelectContactUI";
                         CONTACT_INFO_UI = "com.tencent.mm.plugin.profile.ui.ContactInfoUI";
@@ -994,10 +771,6 @@ public class Wechat {
 
             public static void init(String version) {
                 switch (version) {
-                    case "6.7.2":
-                        SAY_HI_UI = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";
-                        SEND_BTN = "com.tencent.mm:id/iv";
-                        break;
                     case "7.0.3":
                         SAY_HI_UI = "com.tencent.mm.plugin.profile.ui.SayHiWithSnsPermissionUI";
                         SEND_BTN = "com.tencent.mm:id/jx";
