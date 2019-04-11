@@ -1,4 +1,4 @@
-package com.cc.core.actions.accessibility;
+package com.cc.core.accessibility;
 
 import android.view.accessibility.AccessibilityEvent;
 

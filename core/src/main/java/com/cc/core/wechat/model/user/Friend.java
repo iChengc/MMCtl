@@ -2,9 +2,14 @@ package com.cc.core.wechat.model.user;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.io.Serializable;
 
+@Entity
 public class Friend implements Serializable {
+    @Id
     @SerializedName(value = "wechatId", alternate = "field_username")
     private String wechatId;
     // 微信号

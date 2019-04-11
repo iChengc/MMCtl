@@ -1,7 +1,7 @@
-package com.cc.core.actions.accessibility.impl
+package com.cc.core.accessibility.impl
 
 import com.cc.core.actions.ActionResult
-import com.cc.core.actions.accessibility.AccessibilityAction
+import com.cc.core.accessibility.AccessibilityAction
 
 class BackAction : AccessibilityAction() {
 

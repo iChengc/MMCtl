@@ -6,13 +6,10 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.cc.core.actions.Actions;
-import com.cc.core.actions.accessibility.WechatAccessibilityService;
 import com.cc.core.data.db.DaoMaster;
 import com.cc.core.data.db.DaoSession;
 import com.cc.core.data.db.DbService;
 import com.cc.core.log.KLog;
-import com.cc.core.utils.Utils;
 import com.cc.core.utils.FileUtil;
 import com.cc.core.utils.NTTimeUtils;
 import com.cc.core.wechat.Wechat;
