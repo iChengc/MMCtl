@@ -22,7 +22,7 @@ public class EmojiPanelActivity extends AppCompatActivity {
         findViewById(R.id.show).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                emojiPanelView.showEmojiPanel();
+                emojiPanelView.showEmojiPanel(0);
             }
         });
     }

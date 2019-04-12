@@ -3,6 +3,7 @@ package com.kcrason.highperformancefriendscircle.others;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.cc.core.ApplicationContext;
 import com.cc.core.wechat.Wechat;
 import com.cc.core.wechat.model.sns.SnsComment;
 import com.cc.core.wechat.model.sns.SnsInfo;
@@ -123,9 +124,11 @@ public class DataCenter {
                     CommentBean commentBean = new CommentBean();
                     commentBean.setCommentType(TextUtils.isEmpty(c.getReply2()) ?
                             Constants.CommentType.COMMENT_TYPE_SINGLE : Constants.CommentType.COMMENT_TYPE_REPLY);
-                    commentBean.setParentUserName(c.getNickName());
-                    commentBean.setChildUserName(c.getReply2());
+                    commentBean.setParentUserName(c.getReply2());
+                    commentBean.setChildUserName(TextUtils.isEmpty(c.getNickName()) ? c.getWechatId() : c.getNickName());
+
                     commentBean.setCommentContent(c.getContent());
+                    commentBean.build(ApplicationContext.application());
                     commentBeans.add(commentBean);
                 }
             }
@@ -136,6 +139,7 @@ public class DataCenter {
                 friendCircleBean.setImageUrls(images);
             }
 
+
             if (sns.getLikes() != null) {
                 List<PraiseBean> praiseBeans = new ArrayList<>();
                 for (SnsLike like : sns.getLikes()) {
@@ -145,6 +149,7 @@ public class DataCenter {
                     praiseBeans.add(bean);
                 }
                 friendCircleBean.setPraiseBeans(praiseBeans);
+                SpanUtils.makePraiseSpan(ApplicationContext.application(), praiseBeans);
             }
 
             if (!TextUtils.isEmpty(sns.getShareTitle())) {

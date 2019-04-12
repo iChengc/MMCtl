@@ -16,6 +16,7 @@ import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.model.sns.SnsCommentRequest;
 import com.cc.core.wechat.model.user.Friend;
 import com.cc.core.wechat.model.user.User;
 import com.cc.wechatmanager.R;
@@ -56,6 +57,20 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         setContentView(R.layout.activity_timeline);
         mEmojiPanelView = findViewById(R.id.emoji_panel_view);
         mEmojiPanelView.initEmojiPanel(DataCenter.emojiDataSources);
+        mEmojiPanelView.setClickSendListener(new EmojiPanelView.OnClickSendBtnListener() {
+            @Override
+            public void onClickSendBtn(int adapterPosition, String comment) {
+                FriendCircleBean bean = mFriendCircleAdapter.getItem(adapterPosition);
+                if (bean == null || loginUser == null) {
+                    return;
+                }
+
+                SnsCommentRequest request = new SnsCommentRequest();
+                request.setContent(comment);
+                request.setSnsId(bean.getSnsId());
+                commentSns(request);
+            }
+        });
         mSwipeRefreshLayout = findViewById(R.id.swpie_refresh_layout);
         recyclerView = findViewById(R.id.recycler_view);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -168,7 +183,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public void onCommentClick(int position) {
 //        Toast.makeText(this, "you click comment", Toast.LENGTH_SHORT).show();
-        mEmojiPanelView.showEmojiPanel();
+        mEmojiPanelView.showEmojiPanel(position);
     }
 
     @Override
@@ -321,6 +336,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void likeSns(FriendCircleBean sns, final boolean isLike) {
         Messenger.Companion.sendCommand(genCommand(isLike ? "snsLike" : "snsLikeCancel", sns.getSnsId()), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+
+            }
+        });
+    }
+
+    private void commentSns( SnsCommentRequest comment) {
+        Messenger.Companion.sendCommand(genCommand("snsComment", comment), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
 

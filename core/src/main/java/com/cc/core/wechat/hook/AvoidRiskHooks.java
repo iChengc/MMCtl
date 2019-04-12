@@ -26,13 +26,13 @@ public class AvoidRiskHooks extends BaseXposedHook {
     private static List<String> riskPackages;
     private static List<String> classPrefixHiddenList;
     private static List<String> threadPrefixHiddenList;
-    private static List<String> libHiddenFiles;
 
     static {
         riskPackages = new ArrayList<>();
         riskPackages.add("eu.chainfire.supersu");
         riskPackages.add("com.joeykrim.rootcheck");
         riskPackages.add("de.robv.android.xposed.installer");
+        riskPackages.add("io.va.exposed");
         riskPackages.add(ApplicationContext.PACKAGE_NAME);
 
         classPrefixHiddenList = new ArrayList<>();
@@ -41,16 +41,8 @@ public class AvoidRiskHooks extends BaseXposedHook {
 
         threadPrefixHiddenList = new ArrayList<>();
         classPrefixHiddenList.add("de.robv.android.xposed");
+        classPrefixHiddenList.add("io.va.exposed");
         threadPrefixHiddenList.add(ApplicationContext.PACKAGE_NAME);
-
-        libHiddenFiles = new ArrayList<>();
-        libHiddenFiles.add("/data/dalvik-cache/arm/data@app@com.cc.wechatmanager-0@base.apk@classes.dex");
-        libHiddenFiles.add("/data/dalvik-cache/arm/data@app@com.cc.wechatmanager-1@base.apk@classes.dex");
-        libHiddenFiles.add("/data/dalvik-cache/arm/data@app@com.cc.wechatmanager-2@base.apk@classes.dex");
-        libHiddenFiles.add("/data/dalvik-cache/arm/system@framework@XposedBridge.jar@classes.dex".toLowerCase());
-        libHiddenFiles.add("/system/bin/app_process32_xposed");
-        libHiddenFiles.add("/system/lib/libxposed_art.so");
-        libHiddenFiles.add("/system/bin/app_process32_xposed");
 
 
     }

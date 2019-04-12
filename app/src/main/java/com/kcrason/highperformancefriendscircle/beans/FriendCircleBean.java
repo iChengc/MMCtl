@@ -2,6 +2,7 @@ package com.kcrason.highperformancefriendscircle.beans;
 
 import android.text.SpannableStringBuilder;
 
+import com.cc.core.utils.StrUtils;
 import com.kcrason.highperformancefriendscircle.utils.Utils;
 import com.kcrason.highperformancefriendscircle.enums.TranslationState;
 
@@ -115,7 +116,7 @@ public class FriendCircleBean {
 
     public void setContent(String content) {
         this.content = content;
-        setContentSpan(new SpannableStringBuilder(content));
+        setContentSpan(new SpannableStringBuilder(StrUtils.stringNotNull(content)));
     }
 
     public List<CommentBean> getCommentBeans() {

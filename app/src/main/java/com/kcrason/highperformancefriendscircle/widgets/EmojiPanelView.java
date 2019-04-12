@@ -71,10 +71,13 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
 
     private ImageView mImageSwitch;
 
+    private View mSendBtn;
+
     private int mDisplayHeight;
 
     private boolean isKeyBoardShow;
     private boolean isInitComplete;
+    private int mAdapterPosition = -1;
 
     public EmojiPanelView(Context context) {
         super(context);
@@ -168,6 +171,17 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         mEmojiIndicators = itemView.findViewById(R.id.emoji_indicators);
         addOnSoftKeyBoardVisibleListener((Activity) getContext(), this);
         addView(itemView);
+        mSendBtn = itemView.findViewById(R.id.send);
+        mSendBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickSendListener != null) {
+                    mClickSendListener.onClickSendBtn(mAdapterPosition, mEditText.getText().toString());
+                }
+                mEditText.setText(null);
+                dismiss();
+            }
+        });
     }
 
 
@@ -288,7 +302,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         return mEmojiDataSources == null ? 0 : mEmojiDataSources.size();
     }
 
-    public void showEmojiPanel() {
+    public void showEmojiPanel(int adapterPosition) {
         if (isInitComplete) {
             if (mLayoutPanel != null) {
                 mLayoutPanel.setVisibility(VISIBLE);
@@ -298,6 +312,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
             initEmojiPanel(mEmojiDataSources);
         }
         showSoftKeyBoard();
+        mAdapterPosition = adapterPosition;
     }
 
     private void showOrHideAnimation(final boolean isShow) {
@@ -315,6 +330,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         }
         mImageSwitch.setImageResource(R.drawable.input_smile_drawable);
         hideSoftKeyBoard();
+        mAdapterPosition = -1;
     }
 
 
@@ -487,4 +503,13 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         }
     }
 
+    private OnClickSendBtnListener mClickSendListener;
+
+    public void setClickSendListener(OnClickSendBtnListener clickSendListener) {
+        this.mClickSendListener = clickSendListener;
+    }
+
+    public interface OnClickSendBtnListener {
+        void onClickSendBtn(int adapterPosition, String comment);
+    }
 }
