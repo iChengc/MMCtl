@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.cc.core.wechat.model.sns.SnsComment;
 import com.cc.wechatmanager.R;
 import com.kcrason.highperformancefriendscircle.utils.Utils;
 import com.kcrason.highperformancefriendscircle.interfaces.OnPraiseOrCommentClickListener;
@@ -20,6 +21,7 @@ public class CommentOrPraisePopupWindow extends PopupWindow implements View.OnCl
     private int mPopupWindowHeight;
     private int mPopupWindowWidth;
     private int mCurrentPosition;
+    private SnsComment mComment;
 
     public CommentOrPraisePopupWindow(Context context) {
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_window_praise_or_comment_view, null);
@@ -44,6 +46,11 @@ public class CommentOrPraisePopupWindow extends PopupWindow implements View.OnCl
 
     public CommentOrPraisePopupWindow setCurrentPosition(int currentPosition) {
         mCurrentPosition = currentPosition;
+        return this;
+    }
+
+    public CommentOrPraisePopupWindow setReplyComment(SnsComment comment) {
+        mComment = comment;
         return this;
     }
 
@@ -74,7 +81,7 @@ public class CommentOrPraisePopupWindow extends PopupWindow implements View.OnCl
 
         } else if (i == R.id.layout_comment) {
             if (mOnPraiseOrCommentClickListener != null) {
-                mOnPraiseOrCommentClickListener.onCommentClick(mCurrentPosition);
+                mOnPraiseOrCommentClickListener.onCommentClick(mCurrentPosition, mComment);
             }
 
         } else {

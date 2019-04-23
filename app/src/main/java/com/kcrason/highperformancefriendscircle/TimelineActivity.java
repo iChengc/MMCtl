@@ -16,6 +16,7 @@ import com.cc.core.command.Command;
 import com.cc.core.command.Messenger;
 import com.cc.core.log.KLog;
 import com.cc.core.utils.StrUtils;
+import com.cc.core.wechat.model.sns.SnsComment;
 import com.cc.core.wechat.model.sns.SnsCommentRequest;
 import com.cc.core.wechat.model.user.Friend;
 import com.cc.core.wechat.model.user.User;
@@ -24,6 +25,7 @@ import com.cc.wechatmanager.model.ContactsResult;
 import com.cc.wechatmanager.model.LoginUserResult;
 import com.cc.wechatmanager.model.SnsListResult;
 import com.kcrason.highperformancefriendscircle.adapters.FriendCircleAdapter;
+import com.kcrason.highperformancefriendscircle.beans.CommentBean;
 import com.kcrason.highperformancefriendscircle.beans.FriendCircleBean;
 import com.kcrason.highperformancefriendscircle.interfaces.OnPraiseOrCommentClickListener;
 import com.kcrason.highperformancefriendscircle.interfaces.OnStartSwipeRefreshListener;
@@ -181,9 +183,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    public void onCommentClick(int position) {
+    public void onCommentClick(int position, SnsComment comment) {
 //        Toast.makeText(this, "you click comment", Toast.LENGTH_SHORT).show();
-        mEmojiPanelView.showEmojiPanel(position);
+        mEmojiPanelView.showEmojiPanel(position, comment);
     }
 
     @Override
@@ -345,6 +347,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void commentSns( SnsCommentRequest comment) {
         Messenger.Companion.sendCommand(genCommand("snsComment", comment), new Callback() {
+            @Override
+            public void onResult(@Nullable String result) {
+
+            }
+        });
+    }
+
+    public static void cancelCommentSns( CommentBean comment) {
+        Messenger.Companion.sendCommand(genCommand("snsCommentCancel", comment.getSnsId(), comment.getId()), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.wechatmanager.R;
+import com.kcrason.highperformancefriendscircle.TimelineActivity;
 import com.kcrason.highperformancefriendscircle.interfaces.OnTimerResultListener;
 import com.kcrason.highperformancefriendscircle.others.SimpleWeakObjectPool;
 import com.kcrason.highperformancefriendscircle.utils.TimerUtils;
@@ -68,21 +69,42 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
             for (int i = 0; i < newCount; i++) {
                 boolean hasChild = i < oldCount;
                 View childView = hasChild ? getChildAt(i) : null;
-                CommentBean commentBean = commentBeans.get(i);
+                final CommentBean commentBean = commentBeans.get(i);
                 SpannableStringBuilder commentSpan = commentBean.getCommentContentSpan();
                 TranslationState translationState = commentBean.getTranslationState();
                 if (childView == null) {
                     childView = COMMENT_TEXT_POOL.get();
                     if (childView == null) {
-                        addViewInLayout(makeCommentItemView(commentSpan, i, translationState, isStartAnimation), i, generateMarginLayoutParams(i), true);
+                        childView = makeCommentItemView(commentSpan, i, translationState, isStartAnimation);
+                        addViewInLayout(childView, i, generateMarginLayoutParams(i), true);
                     } else {
-                        addCommentItemView(childView, commentSpan, i, translationState, isStartAnimation);
+                        addCommentItemView(childView, commentBean, commentSpan, i, translationState, isStartAnimation);
                     }
                 } else {
                     updateCommentData(childView, commentSpan, i, translationState, isStartAnimation);
                 }
+                childView.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        onClickComment(commentBean);
+                        return true;
+                    }
+                });
+                childView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickComment(commentBean);
+                    }
+                });
+
             }
             requestLayout();
+        }
+    }
+
+    void onClickComment(CommentBean comment) {
+        if (comment != null) {
+            TimelineActivity.cancelCommentSns(comment);
         }
     }
 
@@ -128,7 +150,7 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
     /**
      * 添加需要的Comment View
      */
-    private void addCommentItemView(View view, SpannableStringBuilder builder, int index, TranslationState translationState, boolean isStartAnimation) {
+    private void addCommentItemView(View view, CommentBean comment, SpannableStringBuilder builder, int index, TranslationState translationState, boolean isStartAnimation) {
         if (view instanceof CommentTranslationLayoutView) {
             if (translationState == TranslationState.START) {
                 addViewInLayout(makeCommentItemView(builder, index, translationState, isStartAnimation), index, generateMarginLayoutParams(index), true);
@@ -254,5 +276,18 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
         Toast.makeText(getContext(), "已收藏", Toast.LENGTH_SHORT).show();
     }
 
+    OnReplyComment onReplyComment;
+
+    public OnReplyComment getOnReplyComment() {
+        return onReplyComment;
+    }
+
+    public void setOnReplyComment(OnReplyComment onReplyComment) {
+        this.onReplyComment = onReplyComment;
+    }
+
+    public interface OnReplyComment {
+        void onReplyComment(CommentBean commentBean);
+    }
 
 }

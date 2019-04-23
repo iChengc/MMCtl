@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.cc.core.wechat.model.sns.SnsComment;
 import com.cc.wechatmanager.R;
 import com.kcrason.highperformancefriendscircle.beans.emoji.EmojiBean;
 import com.kcrason.highperformancefriendscircle.beans.emoji.EmojiDataSource;
@@ -78,6 +79,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
     private boolean isKeyBoardShow;
     private boolean isInitComplete;
     private int mAdapterPosition = -1;
+    private SnsComment replyComment;
 
     public EmojiPanelView(Context context) {
         super(context);
@@ -302,7 +304,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         return mEmojiDataSources == null ? 0 : mEmojiDataSources.size();
     }
 
-    public void showEmojiPanel(int adapterPosition) {
+    public void showEmojiPanel(int adapterPosition, SnsComment comment) {
         if (isInitComplete) {
             if (mLayoutPanel != null) {
                 mLayoutPanel.setVisibility(VISIBLE);
@@ -313,6 +315,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
         }
         showSoftKeyBoard();
         mAdapterPosition = adapterPosition;
+        this.replyComment = comment;
     }
 
     private void showOrHideAnimation(final boolean isShow) {

@@ -126,8 +126,10 @@ public class DataCenter {
                             Constants.CommentType.COMMENT_TYPE_SINGLE : Constants.CommentType.COMMENT_TYPE_REPLY);
                     commentBean.setParentUserName(c.getReply2());
                     commentBean.setChildUserName(TextUtils.isEmpty(c.getNickName()) ? c.getWechatId() : c.getNickName());
-
+                    commentBean.setId(c.getId());
+                    commentBean.setSnsId(sns.getSnsId());
                     commentBean.setCommentContent(c.getContent());
+                    commentBean.setComment(c);
                     commentBean.build(ApplicationContext.application());
                     commentBeans.add(commentBean);
                 }
@@ -149,7 +151,7 @@ public class DataCenter {
                     praiseBeans.add(bean);
                 }
                 friendCircleBean.setPraiseBeans(praiseBeans);
-                SpanUtils.makePraiseSpan(ApplicationContext.application(), praiseBeans);
+                friendCircleBean.setPraiseSpan(SpanUtils.makePraiseSpan(ApplicationContext.application(), praiseBeans));
             }
 
             if (!TextUtils.isEmpty(sns.getShareTitle())) {

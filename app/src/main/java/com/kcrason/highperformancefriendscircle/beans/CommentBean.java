@@ -3,13 +3,16 @@ package com.kcrason.highperformancefriendscircle.beans;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 
+import com.cc.core.wechat.model.sns.SnsComment;
 import com.kcrason.highperformancefriendscircle.Constants;
 import com.kcrason.highperformancefriendscircle.utils.SpanUtils;
 import com.kcrason.highperformancefriendscircle.enums.TranslationState;
 
 public class CommentBean {
-
+    private int id;
+    private String snsId;
     private int commentType;
+    private SnsComment comment;
 
     private String parentUserName;
 
@@ -79,6 +82,29 @@ public class CommentBean {
         this.commentContent = commentContent;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSnsId() {
+        return snsId;
+    }
+
+    public void setSnsId(String snsId) {
+        this.snsId = snsId;
+    }
+
+    public SnsComment getComment() {
+        return comment;
+    }
+
+    public void setComment(SnsComment comment) {
+        this.comment = comment;
+    }
 
     /**
      * 富文本内容

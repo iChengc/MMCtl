@@ -24,6 +24,8 @@ import com.cc.core.wechat.model.user.User;
 import com.cc.wechatmanager.R;
 import com.cc.wechatmanager.model.LoginUserResult;
 import com.kcrason.highperformancefriendscircle.Constants;
+import com.kcrason.highperformancefriendscircle.TimelineActivity;
+import com.kcrason.highperformancefriendscircle.beans.CommentBean;
 import com.kcrason.highperformancefriendscircle.beans.PraiseBean;
 import com.kcrason.highperformancefriendscircle.enums.TranslationState;
 import com.kcrason.highperformancefriendscircle.interfaces.OnItemClickPopupMenuListener;
@@ -238,6 +240,14 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
         } else {
             holder.layoutPraiseAndComment.setVisibility(View.GONE);
         }
+        holder.verticalCommentWidget.setOnReplyComment(new VerticalCommentWidget.OnReplyComment() {
+            @Override
+            public void onReplyComment(CommentBean commentBean) {
+                if (mContext instanceof Activity) {
+                    ((TimelineActivity)mContext).onCommentClick(position, commentBean.getComment());
+                }
+            }
+        });
 
         holder.imgPraiseOrComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +259,8 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
                     }
                     mCommentOrPraisePopupWindow
                             .setOnPraiseOrCommentClickListener(mOnPraiseOrCommentClickListener)
-                            .setCurrentPosition(position);
+                            .setCurrentPosition(position)
+                    .setReplyComment(null);
                     if (mCommentOrPraisePopupWindow.isShowing()) {
                         mCommentOrPraisePopupWindow.dismiss();
                     } else {

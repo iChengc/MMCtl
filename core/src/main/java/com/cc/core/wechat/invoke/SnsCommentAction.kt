@@ -28,7 +28,7 @@ class SnsCommentAction : Action {
             setObjectField(replayComment, SnsTimelineCommentReplay2Field, comment.replayComment!!.reply2)
             setIntField(replayComment, SnsTimelineCommentReplay2IdField, comment.replayComment!!.replayId)
             setObjectField(replayComment, SnsTimelineCommentContentField, comment.replayComment!!.content)
-            setLongField(replayComment, SnsTimelineCommentTimeField, comment.replayComment!!.createTime)
+            setIntField(replayComment, SnsTimelineCommentTimeField, comment.replayComment!!.createTime.toInt())
         }
         XposedHelpers.callStaticMethod(XposedHelpers.findClass(Wechat.Hook.Sns.SnsTimelineCommentHelper, Wechat.WECHAT_CLASSLOADER), Wechat.Hook.Sns.SnsTimelineCommentSend, sns, 2, comment.content, replayComment, 0, 0)
 

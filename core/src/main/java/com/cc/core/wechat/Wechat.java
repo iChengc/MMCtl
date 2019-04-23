@@ -59,7 +59,7 @@ public class Wechat {
 
     public static void start(XC_LoadPackage.LoadPackageParam lpparam) {
         if (ApplicationContext.application() != null) {
-            KLog.e(">>>>已经Hook微信，无需再hook");
+            XposedBridge.log(">>>>已经Hook微信，无需再hook");
             return;
         }
         XposedBridge.log(">>开始hook微信主进程");
@@ -88,6 +88,10 @@ public class Wechat {
 
     private static void removePatchFile() {
         File patchFile = new File("/data/data/com.tencent.mm/tinker");
+        if (ApplicationContext.application() != null) {
+            patchFile = new File(ApplicationContext.application().getFilesDir(), "tinker");
+        }
+
         FileUtil.deleteDir(patchFile);
 
         WorkerHandler.removeCallbacks(removePathFileRunnable);
