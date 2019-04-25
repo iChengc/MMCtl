@@ -124,12 +124,17 @@ public class DataCenter {
                     CommentBean commentBean = new CommentBean();
                     commentBean.setCommentType(TextUtils.isEmpty(c.getReply2()) ?
                             Constants.CommentType.COMMENT_TYPE_SINGLE : Constants.CommentType.COMMENT_TYPE_REPLY);
-                    commentBean.setParentUserName(c.getReply2());
-                    commentBean.setChildUserName(TextUtils.isEmpty(c.getNickName()) ? c.getWechatId() : c.getNickName());
+                    if (TextUtils.isEmpty(c.getReply2())) {
+                        commentBean.setChildUserName(TextUtils.isEmpty(c.getNickName()) ? c.getWechatId() : c.getNickName());
+                    } else {
+                        commentBean.setParentUserName(TextUtils.isEmpty(c.getNickName()) ? c.getWechatId() : c.getNickName());
+                        commentBean.setChildUserName(c.getReply2());
+                    }
                     commentBean.setId(c.getId());
                     commentBean.setSnsId(sns.getSnsId());
                     commentBean.setCommentContent(c.getContent());
                     commentBean.setComment(c);
+                    commentBean.setChildWechatId(c.getWechatId());
                     commentBean.build(ApplicationContext.application());
                     commentBeans.add(commentBean);
                 }

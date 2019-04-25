@@ -61,7 +61,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         mEmojiPanelView.initEmojiPanel(DataCenter.emojiDataSources);
         mEmojiPanelView.setClickSendListener(new EmojiPanelView.OnClickSendBtnListener() {
             @Override
-            public void onClickSendBtn(int adapterPosition, String comment) {
+            public void onClickSendBtn(int adapterPosition, SnsComment reply, String comment) {
                 FriendCircleBean bean = mFriendCircleAdapter.getItem(adapterPosition);
                 if (bean == null || loginUser == null) {
                     return;
@@ -70,6 +70,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 SnsCommentRequest request = new SnsCommentRequest();
                 request.setContent(comment);
                 request.setSnsId(bean.getSnsId());
+                if (!reply.getWechatId().equals(loginUser.getWechatId())) {
+                    request.setReplayComment(reply);
+                }
+
                 commentSns(request);
             }
         });
@@ -145,7 +149,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     Utils.hideSwipeRefreshLayout(mSwipeRefreshLayout);
                     if (friendCircleBeans != null && throwable == null) {
                         mFriendCircleAdapter.setFriendCircleBeans(friendCircleBeans);
-                    }
+                    } \"-5405625322811682704\",\n    417\n  ]\n}",
+      "id": "d0c984c0-d2e1-4393-b28d-599e351a26ec",
                 });*/
     }
 
@@ -153,6 +158,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mSwipeRefreshLayout.removeCallbacks(getSnsRunnable);
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -239,13 +245,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         }
                     });
 
-                    mSwipeRefreshLayout.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            String id = result1.getData().get(result1.getData().size() - 1).getSnsId();
-                            getSnsList(id);
-                        }
-                    }, 2000);
+                    getSnsRunnable.result1 = result1;
+                    mSwipeRefreshLayout.postDelayed(getSnsRunnable, 2000);
                 }
             }
         });
@@ -311,6 +312,17 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         });
     }
 
+    private GetSnsRunnable getSnsRunnable = new GetSnsRunnable();
+
+    class GetSnsRunnable implements  Runnable {
+        SnsListResult result1;
+        @Override
+        public void run() {
+            String id = result1.getData().get(result1.getData().size() - 1).getSnsId();
+            getSnsList(id);
+        }
+    }
+
     private void getLoginUser() {
         Messenger.Companion.sendCommand(genCommand("getLoginUserInfo"), new Callback() {
             @Override
@@ -340,7 +352,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Messenger.Companion.sendCommand(genCommand(isLike ? "snsLike" : "snsLikeCancel", sns.getSnsId()), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
-
+                refreshSnsList();
             }
         });
     }
@@ -349,7 +361,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Messenger.Companion.sendCommand(genCommand("snsComment", comment), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
-
+                refreshSnsList();
             }
         });
     }
@@ -358,9 +370,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Messenger.Companion.sendCommand(genCommand("snsCommentCancel", comment.getSnsId(), comment.getId()), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
-
             }
         });
+    }
+
+    void refreshSnsList() {
+        mSwipeRefreshLayout.removeCallbacks(getSnsRunnable);
+        getSnsList("0");
     }
 
     private User loginUser;

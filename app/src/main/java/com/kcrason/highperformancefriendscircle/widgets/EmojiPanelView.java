@@ -178,7 +178,7 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
             @Override
             public void onClick(View v) {
                 if (mClickSendListener != null) {
-                    mClickSendListener.onClickSendBtn(mAdapterPosition, mEditText.getText().toString());
+                    mClickSendListener.onClickSendBtn(mAdapterPosition, replyComment, mEditText.getText().toString());
                 }
                 mEditText.setText(null);
                 dismiss();
@@ -513,6 +513,6 @@ public class EmojiPanelView extends LinearLayout implements OnKeyBoardStateListe
     }
 
     public interface OnClickSendBtnListener {
-        void onClickSendBtn(int adapterPosition, String comment);
+        void onClickSendBtn(int adapterPosition, SnsComment reply, String comment);
     }
 }

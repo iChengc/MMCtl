@@ -23,6 +23,8 @@ public class CommentBean {
     private int childUserId;
 
     private String commentContent;
+    private String parentWechatId;
+    private String childWechatId;
 
     private TranslationState translationState = TranslationState.START;
 
@@ -104,6 +106,22 @@ public class CommentBean {
 
     public void setComment(SnsComment comment) {
         this.comment = comment;
+    }
+
+    public String getParentWechatId() {
+        return parentWechatId;
+    }
+
+    public void setParentWechatId(String parentWechatId) {
+        this.parentWechatId = parentWechatId;
+    }
+
+    public String getChildWechatId() {
+        return childWechatId;
+    }
+
+    public void setChildWechatId(String childWechatId) {
+        this.childWechatId = childWechatId;
     }
 
     /**

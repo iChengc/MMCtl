@@ -86,7 +86,7 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
                 childView.setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        onClickComment(commentBean);
+                        onLongClickComment(commentBean);
                         return true;
                     }
                 });
@@ -103,6 +103,14 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
     }
 
     void onClickComment(CommentBean comment) {
+        if (comment != null) {
+            if (onReplyComment != null) {
+                onReplyComment.onReplyComment(comment);
+            }
+        }
+    }
+
+    void onLongClickComment(CommentBean comment) {
         if (comment != null) {
             TimelineActivity.cancelCommentSns(comment);
         }
