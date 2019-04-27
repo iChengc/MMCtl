@@ -21,14 +21,14 @@ class SnsCommentAction : Action {
 
         val sns = SnsUtils.getWechatRawSnsInfo(comment.snsId!!.toLong()) ?: return ActionResult.failedResult(actionId, "can not find sns by id:${comment.snsId}")
         val replayComment = newInstance(findClass(SnsTimelineCommentProtobuf, Wechat.WECHAT_CLASSLOADER))
-        if (comment.replayComment != null) {
-            setObjectField(replayComment, SnsTimelineCommenterField, comment.replayComment!!.wechatId)
-            setObjectField(replayComment, SnsTimelineCommenterNameField, comment.replayComment!!.nickName)
-            setIntField(replayComment, SnsTimelineCommentIdField, comment.replayComment!!.id)
-            setObjectField(replayComment, SnsTimelineCommentReplay2Field, comment.replayComment!!.reply2)
-            setIntField(replayComment, SnsTimelineCommentReplay2IdField, comment.replayComment!!.replayId)
-            setObjectField(replayComment, SnsTimelineCommentContentField, comment.replayComment!!.content)
-            setIntField(replayComment, SnsTimelineCommentTimeField, comment.replayComment!!.createTime.toInt())
+        if (comment.comment != null) {
+            setObjectField(replayComment, SnsTimelineCommenterField, comment.comment!!.wechatId)
+            setObjectField(replayComment, SnsTimelineCommenterNameField, comment.comment!!.nickName)
+            setIntField(replayComment, SnsTimelineCommentIdField, comment.comment!!.id)
+            setObjectField(replayComment, SnsTimelineCommentReplay2Field, comment.comment!!.reply2)
+            setIntField(replayComment, SnsTimelineCommentReplay2IdField, comment.comment!!.replayId)
+            setObjectField(replayComment, SnsTimelineCommentContentField, comment.comment!!.content)
+            setIntField(replayComment, SnsTimelineCommentTimeField, comment.comment!!.createTime.toInt())
         }
         XposedHelpers.callStaticMethod(XposedHelpers.findClass(Wechat.Hook.Sns.SnsTimelineCommentHelper, Wechat.WECHAT_CLASSLOADER), Wechat.Hook.Sns.SnsTimelineCommentSend, sns, 2, comment.content, replayComment, 0, 0)
 

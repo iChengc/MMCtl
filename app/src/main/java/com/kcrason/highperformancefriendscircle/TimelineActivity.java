@@ -1,13 +1,17 @@
 package com.kcrason.highperformancefriendscircle;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -70,8 +74,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 SnsCommentRequest request = new SnsCommentRequest();
                 request.setContent(comment);
                 request.setSnsId(bean.getSnsId());
-                if (!reply.getWechatId().equals(loginUser.getWechatId())) {
-                    request.setReplayComment(reply);
+                if (reply != null && !reply.getWechatId().equals(loginUser.getWechatId())) {
+                    request.setComment(reply);
                 }
 
                 commentSns(request);
@@ -224,6 +228,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
                 final SnsListResult result1 = StrUtils.fromJson(result, SnsListResult.class);
                 if (result1 == null) {
                     return;
@@ -352,7 +360,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Messenger.Companion.sendCommand(genCommand(isLike ? "snsLike" : "snsLikeCancel", sns.getSnsId()), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
-                refreshSnsList();
+                refreshSnsList(isLike ? "正在点赞" : "正在取消点赞");
             }
         });
     }
@@ -361,23 +369,54 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Messenger.Companion.sendCommand(genCommand("snsComment", comment), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
-                refreshSnsList();
+                refreshSnsList("正在发送评论");
             }
         });
     }
 
-    public static void cancelCommentSns( CommentBean comment) {
-        Messenger.Companion.sendCommand(genCommand("snsCommentCancel", comment.getSnsId(), comment.getId()), new Callback() {
+    public void cancelCommentSns( CommentBean comment) {
+        if (!TextUtils.isEmpty(comment.getParentWechatId()) && !comment.getParentWechatId().equals(loginUser.getWechatId())) {
+            Toast.makeText(this, "只能删除自己的评论！", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(comment.getParentWechatId()) && !comment.getChildWechatId().equals(loginUser.getWechatId())) {
+            Toast.makeText(this, "只能删除自己的评论！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SnsCommentRequest request = new SnsCommentRequest();
+        request.setSnsId(comment.getSnsId());
+        request.setComment(comment.getComment());
+        Messenger.Companion.sendCommand(genCommand("snsCommentCancel", request), new Callback() {
             @Override
             public void onResult(@Nullable String result) {
+                KLog.e("gggggg", result);
+                refreshSnsList("正在删除评论");
             }
         });
     }
 
-    void refreshSnsList() {
+    void refreshSnsList(final String message) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                showProgressDialog(message);
+            }
+        });
         mSwipeRefreshLayout.removeCallbacks(getSnsRunnable);
         getSnsList("0");
     }
 
+    private void showProgressDialog(String message) {
+
+       // mSwipeRefreshLayout.setRefreshing(true);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
     private User loginUser;
+    private ProgressDialog progressDialog;
 }

@@ -112,7 +112,7 @@ public class VerticalCommentWidget extends LinearLayout implements ViewGroup.OnH
 
     void onLongClickComment(CommentBean comment) {
         if (comment != null) {
-            TimelineActivity.cancelCommentSns(comment);
+            ((TimelineActivity)getContext()).cancelCommentSns(comment);
         }
     }
 

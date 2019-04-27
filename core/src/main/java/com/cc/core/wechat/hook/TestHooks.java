@@ -14,8 +14,17 @@ import static com.cc.core.wechat.Wechat.Hook.Sns.SnsTimelineCommentSend;
 public class TestHooks extends BaseXposedHook {
     @Override
     public void hook(ClassLoader classLoader) {
-
-       /* XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "a",
+        /* XposedHelpers.findAndHookConstructor("com.tencent.mm.plugin.sns.model.r", classLoader,
+                long.class, int.class, XposedHelpers.findClass("com.tencent.mm.protocal.protobuf.byg", classLoader), Object.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        for (Object o : param.args) {
+                            KLog.e("====++llllllllfffffffflllllll++==>>>>>>  ", StrUtils.toJson(o));
+                        }
+                    }
+                });
+       XposedHelpers.findAndHookMethod("com.tencent.mm.plugin.sns.model.am$a", classLoader, "a",
                 String.class, int.class, String.class,
                 XposedHelpers.findClass("com.tencent.mm.plugin.sns.storage.n", Wechat.WECHAT_CLASSLOADER), int.class,
                 new XC_MethodHook() {

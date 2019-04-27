@@ -7,6 +7,6 @@ class SnsCommentRequest {
     var snsId : String? = null
     @SerializedName("content")
     var content : String? = null
-    @SerializedName("replayComment")
-    var replayComment : SnsComment? = null
+    @SerializedName("comment")
+    var comment : SnsComment? = null
 }
